@@ -3,13 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainmenuComponent } from "./mainmenu/mainmenu.component";
-import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainmenuComponent,
-    TestComponent
+    MainmenuComponent
   ],
   imports: [
     [
