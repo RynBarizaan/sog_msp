@@ -1,0 +1,12 @@
+
+
+  <div class="SliderContainer">
+    <h5 style="margin-top: 18%">Wie viel Personen sind in der Sitzordnung</h5>
+    <ng5-slider class="slider"  [(value)]="value" [options]="options"></ng5-slider>
+    <input class="personCount" [(ngModel)]="value">
+    <button class="nextButton" (click)="toGruppe()">Weiter</button>
+    <button class="backButton" >Zurück</button>
+  </div>
+
+
+
