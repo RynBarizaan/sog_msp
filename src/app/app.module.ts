@@ -10,9 +10,10 @@ import {MatSliderModule} from "@angular/material/slider";
 import {MatCardModule} from "@angular/material/card";
 import {MatNativeDateModule} from '@angular/material/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Ng5SliderModule} from "ng5-slider";
 import {MatInputModule} from "@angular/material/input";
-import {RouterModule} from "@angular/router";
+import {NgxSliderModule} from "@angular-slider/ngx-slider";
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import {AppRoutingModule} from "./app-routing.module";
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {RouterModule} from "@angular/router";
     MainmenuComponent,
     GroupTableComponent,
     SliderComponent,
+    PageNotFoundComponent,
 
   ],
   imports: [
@@ -32,13 +34,9 @@ import {RouterModule} from "@angular/router";
     MatCardModule,
     MatNativeDateModule,
     ReactiveFormsModule,
-    Ng5SliderModule,
+    NgxSliderModule,
     MatInputModule,
-    RouterModule.forRoot([
-      {path:'', component:SliderComponent},
-      {path: 'groupTable/:value', component:GroupTableComponent}
-
-    ])
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

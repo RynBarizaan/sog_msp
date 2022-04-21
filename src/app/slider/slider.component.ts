@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Options} from "ng5-slider";
+import {Options} from "@angular-slider/ngx-slider";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
