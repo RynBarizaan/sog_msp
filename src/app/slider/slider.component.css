@@ -38,12 +38,7 @@
   position: absolute;
   bottom: 12%;
   right: 11%;
-  font-size: 15px;
-  background-color: #11b0e7;
-  color: white;
-  border: none;
-  padding: 1.5%;
-  cursor: pointer;
+
 
 }
 .backButton{
@@ -51,12 +46,7 @@
   position: absolute;
   bottom: 12%;
   left: 11%;
-  font-size: 15px;
-  background-color: #11b0e7;
-  color: white;
-  border: none;
-  padding: 1.5%;
-  cursor: pointer;
+
 
 }
 

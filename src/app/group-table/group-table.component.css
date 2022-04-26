@@ -22,3 +22,8 @@
   cursor: pointer;
 
 }
+.info-container{
+  display: inline-block;
+  width: 50%;
+  vertical-align:middle;
+}

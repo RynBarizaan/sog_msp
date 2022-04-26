@@ -2,8 +2,8 @@
   <h5 style="margin-top: 18%">Anzahl von Personen in der Sitzordnung</h5>
   <ngx-slider class="slider"  [(value)]="value" [options]="options"></ngx-slider>
   <input class="personCount" [(ngModel)]="value">
-  <button class="nextButton btn-primary" (click)="toGruppe()">Weiter</button>
-  <button class="backButton btn-primary" routerLink="/mainmenu">Zurück</button>
+  <button type="button"  class="nextButton btn btn-outline-dark" (click)="toGruppe()">Weiter</button>
+  <button class="backButton btn btn-outline-dark" routerLink="/mainmenu">Zurück</button>
 </div>
 
 

@@ -6,11 +6,12 @@ import {SliderComponent} from "./slider/slider.component";
 import {GroupTableComponent} from "./group-table/group-table.component";
 
 
+
 const routes: Routes = [
   { path: 'mainmenu', component:MainmenuComponent },
   { path: '', redirectTo:'/mainmenu', pathMatch:'full'},
   { path: 'group-slider', component:SliderComponent },
-  { path: 'groupTable', component:GroupTableComponent },
+  { path: 'groupTable/:value', component:GroupTableComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
