@@ -1,9 +1,22 @@
 <div class="container h-100 mt-3 bg-light border rounded-3 text-center">
-  <div class="col text-center mt-5 mb-5">
-    <button type="button" routerLink="/group-slider" class="btn btn-primary mb-3 btn-lg btn-block" [ngStyle]="{'background-color':this.isDataExcist() ? 'green' : 'blue' }">Gruppe erstellen</button> oder <button type="button" routerLinkActive="/room-slider" class="btn btn-secondary mb-3 btn-sm btn-block">Importieren</button>
-    <br>
-    <button type="button" routerLink="/room-slider" class="btn btn-primary mb-3 btn-lg btn-block">Raum erstellen</button> oder <button type="button" routerLinkActive="/room-slider" class="btn btn-secondary mb-3 btn-sm btn-block">Importieren</button>
-    <br>
-    <button type="button" routerLink="/generate" disabled class="btn btn-primary mb-3 btn-lg btn-block">Sitzordnung erstellen</button>
+  <div class="row text-center mt-5 mb-5">
+    <div class="col">
+      <div class="col-sm-3 btn-group">
+        <button type="button" routerLink="/group-slider" class="w-75 btn btn-primary mb-3 btn-lg btn-block" [ngStyle]="{'background-color':this.isDataExcist() ? 'green' : 'light-blue' }">Gruppe erstellen</button>
+        <button type="button" routerLinkActive="/room-slider" class="btn btn-secondary mb-3 btn-sm btn-block">Importieren</button>
+      </div>
+    </div>
+    <div class="w-100"></div>
+    <div class="col">
+      <div class="col-sm-3 btn-group">
+        <button type="button" routerLink="/room-slider" class="w-75 btn btn-primary mb-3 btn-lg btn-block" [ngStyle]="{'background-color':this.isDataExcist() ? 'green' : 'light-blue' }">Raum erstellen</button>
+        <button type="button" routerLinkActive="/room-slider" class="btn btn-secondary mb-3 btn-sm btn-block">Importieren</button>
+      </div>
+    </div>
+    <div class="w-100"></div>
+    <div class="col">
+      <button type="button" routerLink="/generate" disabled class="col-sm-3 btn btn-primary mb-3 btn-lg btn-block" [ngStyle]="{'background-color':this.isDataExcist() ? 'green' : 'light-blue' }">Sitzordnung erstellen</button>
+    </div>
   </div>
 </div>
+
