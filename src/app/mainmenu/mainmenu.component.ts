@@ -14,12 +14,13 @@ export class MainmenuComponent implements OnInit {
   }
 
   isDataExcist(): boolean{
-    let dataLength=this.persondataservice.person.length;
-   if (dataLength != 0)
-    return true;
-   else {
-     return false;
-   }
+    // @ts-ignore
+    let dataLength=JSON.parse(localStorage.getItem("isDataConfirm"));
+    if (dataLength)
+      return true;
+    else {
+      return false;
+    }
   }
 
 }
