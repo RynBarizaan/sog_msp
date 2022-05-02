@@ -14,6 +14,11 @@ import {MatInputModule} from "@angular/material/input";
 import {NgxSliderModule} from "@angular-slider/ngx-slider";
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import {AppRoutingModule} from "./app-routing.module";
+import { ExportCSVComponent } from './export-csv/export-csv.component';
+import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+
 
 
 
@@ -24,6 +29,7 @@ import {AppRoutingModule} from "./app-routing.module";
     GroupTableComponent,
     SliderComponent,
     PageNotFoundComponent,
+    ExportCSVComponent,
 
 
   ],
@@ -39,6 +45,10 @@ import {AppRoutingModule} from "./app-routing.module";
     NgxSliderModule,
     MatInputModule,
     AppRoutingModule,
+    MatPasswordStrengthModule.forRoot(),
+    MatPasswordStrengthModule,
+    MatIconModule,
+    MatSlideToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

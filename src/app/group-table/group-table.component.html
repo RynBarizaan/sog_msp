@@ -40,9 +40,19 @@
     </td>
     </tbody>
   </table>
-  <button  type="button" class="btn btn-outline-dark" style="float: right" (click)="confirmList()" [ngStyle]="{'display':this.TheStatus ? 'block' : 'none' }">Weiter</button>
-  <button  type="button" class="btn btn-outline-dark" style="float: right" (click)="saveList()" [ngStyle]="{'display':!this.TheStatus ? 'block' : 'none' }" >Bestätigen</button>
-  <button  type="button" class="btn btn-outline-dark" style="float: left" (click)="toSlider()">Zurück</button>
+  <div class="btn-group mr-2" style="float: right">
+    <button  type="button" class="btn btn-outline-dark "  (click)="confirmList()" [ngStyle]="{'display':this.TheStatus ? 'block' : 'none' }">Weiter</button>
+  </div>
+
+  <div class="btn-group mr-2"  >
+    <button  type="button" class="btn btn-outline-dark" (click)="exportDialogBox()" [ngStyle]="{'display':!this.TheStatus ? 'block' : 'none' }">Exportieren</button>
+  </div>
+  <div class="btn-group mr-2" style="float: right">
+    <button  type="button" class="btn btn-outline-dark"  (click)="saveList()" [ngStyle]="{'display':!this.TheStatus ? 'block' : 'none' }" >Bestätigen</button>
+  </div>
+  <div class="btn-group mr-2"style="float: left">
+    <button  type="button" class="btn btn-outline-dark "  (click)="toSlider()">Zurück</button>
+  </div>
 </div>
 
 <!-- Modal -->
@@ -140,5 +150,5 @@
 
 
 
-
 <!--app-person-properties></app-person-properties-->
+<app-export-csv></app-export-csv>

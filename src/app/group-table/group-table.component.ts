@@ -5,6 +5,7 @@ import {Person} from "../model/person";
 import {PersonDataService} from "../person-data.service";
 import {Injectable} from '@angular/core';
 
+
 declare var window: any;
 @Component({
   selector: 'app-group-table',
@@ -19,6 +20,7 @@ export class GroupTableComponent {
 // @ts-ignore
   formModal:any;
   formModal1:any;
+  formModal2:any;
   index: number | undefined;
   firstName: string | undefined;
   lastName: string | undefined;
@@ -31,8 +33,6 @@ export class GroupTableComponent {
 
 
 
-
-
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private personData:PersonDataService) {
 
   }
@@ -41,14 +41,17 @@ export class GroupTableComponent {
     this.formModal = new  window.bootstrap.Modal(
       document.getElementById("errorMessage"));
     this.formModal1 = new  window.bootstrap.Modal(
-      document.getElementById("exampleModalCenter"))
+      document.getElementById("exampleModalCenter"));
+    this.formModal2 = new  window.bootstrap.Modal(
+      document.getElementById("exampleModalCenter1"));
 
   }
-
-  test(){
-// @ts-ignore
-    var test=JSON.parse(localStorage.getItem("person"));
-    console.log(test);
+ //Dialog Box for Export Data as CSV
+   closeEXP(){
+    this.formModal2.hide();
+   }
+  exportDialogBox(){
+    this.formModal2.show();
   }
 
 
@@ -85,8 +88,6 @@ export class GroupTableComponent {
   }
 
 
-
-
 ////// check if the there are a empty Input //////
   istInputEmpty(){
     for(var x=0; x<this.listOfContacts.length ; x++){
@@ -115,6 +116,7 @@ export class GroupTableComponent {
 
   }
 
+
 /////// close the Model of Error //////
   closeErrorMessageModal(){
     this.formModal.hide();
@@ -135,8 +137,6 @@ export class GroupTableComponent {
   (click)=" !this.TheStatus? openModal(i+1,group.Vorname,group.Nachname):''"
 
    */
-
-
 
 
   setNeighborList(Vorname:string, Nachname:string){
@@ -169,7 +169,6 @@ export class GroupTableComponent {
   closeModal(){
     this.formModal1.hide();
   }
-
 
   saveProperties(){
     const checkboxBesideDoor = document.getElementById('besideDoor',) as HTMLInputElement | null;
@@ -214,11 +213,6 @@ export class GroupTableComponent {
       this.listOfContacts[this.index-1]['Frontal'] = false;
     }
     this.formModal1.hide();
-
   }
-
-
-
-
 
 }
