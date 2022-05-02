@@ -1,0 +1,90 @@
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content"><div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLongTitle1">Erstellemn Sie eine Passwort um ihre Daten zu Schutzen</h5>
+      <br>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+      <div class="modal-body">
+        <div>
+          <mat-slide-toggle #toggle>Password Details Anzeigen</mat-slide-toggle>
+          <mat-form-field appearance="outline" style="width: 100%" >
+            <mat-label>Password</mat-label>
+
+            <input
+              matInput
+              #passwordWithValidation
+              [type]="hide ? 'password' : 'text'"
+              required
+              [formControl]="passwordComponent.passwordFormControl"
+              placeholder="Password"
+              [(ngModel)]="password"
+            />
+            <button class="btnE" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint align="end" aria-live="polite">
+              {{passwordWithValidation.value.length}} / 20
+            </mat-hint>
+            <mat-error
+              *ngIf="passwordComponent.passwordFormControl.hasError('required')"
+            >
+              Password is required
+            </mat-error>
+            <mat-error
+              *ngIf="passwordComponent.passwordFormControl.hasError('pattern')"
+            >
+              Password is not valid
+            </mat-error>
+          </mat-form-field>
+          <mat-password-strength
+            #passwordComponent
+            class="green"
+            (onStrengthChanged)="onStrengthChanged($event)"
+
+            [password]="passwordWithValidation.value"
+          >
+          </mat-password-strength>
+          <!--Password's strength info-->
+          <mat-password-strength-info
+            *ngIf="toggle.checked"
+            [lowerCaseCriteriaMsg]="'mindestens eine kleine buchstaben '"
+            [passwordComponent]="passwordComponent"
+            [enableScoreInfo]="true"
+
+          >
+          </mat-password-strength-info>
+          <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponent.color">
+            <mat-label>Password wiederholen</mat-label>
+            <input
+              matInput
+              #passwordWithValidation
+              [type]="hide ? 'password' : 'text'"
+              required
+              [formControl]="passwordComponent.passwordFormControl"
+              placeholder="Password wiederholen"
+              [(ngModel)]="confirmPassword"
+            />
+            <mat-error
+              *ngIf="confirmPassword !=password"
+            >
+              Password is required
+            </mat-error>
+            <button class="btnE" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Schlißen</button>
+        <button type="button" class="btn btn-outline-dark" (click)="ExportCSV()">Speichern und als CSV herunterladen</button>
+      </div>
+    </div>
+  </div>
+</div>
