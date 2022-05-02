@@ -32,12 +32,12 @@
             <mat-error
               *ngIf="passwordComponent.passwordFormControl.hasError('required')"
             >
-              Password is required
+              Passwort wird benötigt
             </mat-error>
             <mat-error
               *ngIf="passwordComponent.passwordFormControl.hasError('pattern')"
             >
-              Password is not valid
+              Passwort ist ungültig
             </mat-error>
           </mat-form-field>
           <mat-password-strength
@@ -51,9 +51,12 @@
           <!--Password's strength info-->
           <mat-password-strength-info
             *ngIf="toggle.checked"
-            [lowerCaseCriteriaMsg]="'mindestens eine kleine buchstaben '"
-            [passwordComponent]="passwordComponent"
-            [enableScoreInfo]="true"
+            [lowerCaseCriteriaMsg]="'enthält mindestens ein unteres Zeichen '"
+            [upperCaseCriteriaMsg]="'enthält mindestens ein oberes Zeichen '"
+            [digitsCriteriaMsg]="'enthält mindestens eine Ziffer '"
+            [specialCharsCriteriaMsg]="'enthält mindestens ein Sonderzeichen' "
+            [minCharsCriteriaMsg]="'enthält mindestens 8 Zeichen' "
+            [passwordComponent]="passwordComponent">
 
           >
           </mat-password-strength-info>
@@ -68,11 +71,7 @@
               placeholder="Password wiederholen"
               [(ngModel)]="confirmPassword"
             />
-            <mat-error
-              *ngIf="confirmPassword !=password"
-            >
-              Password is required
-            </mat-error>
+
             <button class="btnE" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
               <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
