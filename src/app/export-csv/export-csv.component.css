@@ -1,0 +1,13 @@
+.btnE{
+  padding: 0;
+  border: none;
+  background: none;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.example-right-align {
+  -moz-appearance: textfield;
+}

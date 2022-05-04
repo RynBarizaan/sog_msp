@@ -10,71 +10,67 @@
     </div>
       <div class="modal-body">
         <div>
-          <mat-slide-toggle #toggle>Password Details Anzeigen</mat-slide-toggle>
-          <mat-form-field appearance="outline" style="width: 100%" >
-            <mat-label>Password</mat-label>
+          <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color" >
+            <mat-label>Passwort</mat-label>
 
-            <input
-              matInput
-              #passwordWithValidation
-              [type]="hide ? 'password' : 'text'"
-              required
-              [formControl]="passwordComponent.passwordFormControl"
-              placeholder="Password"
-              [(ngModel)]="password"
-            />
-            <button class="btnE" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+            <input #myInput matInput
+                   #passwordWithValidation
+                   placeholder="Neue passwort eingeben"
+                   [type]="hide ? 'password': 'text'"
+                   required
+                   [formControl]="passwordComponentWithValidation.passwordFormControl"
+                   [(ngModel)]="password" />
+
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' :
+              'visibility_off'}}</mat-icon>
             <mat-hint align="end" aria-live="polite">
-              {{passwordWithValidation.value.length}} / 20
+              {{passwordWithValidation.value.length}} / 25
             </mat-hint>
             <mat-error
-              *ngIf="passwordComponent.passwordFormControl.hasError('required')"
+              *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')"
             >
-              Passwort wird benötigt
+              Bitte neue password eingeben
             </mat-error>
             <mat-error
-              *ngIf="passwordComponent.passwordFormControl.hasError('pattern')"
+              *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('pattern')"
             >
               Passwort ist ungültig
             </mat-error>
           </mat-form-field>
+          <br>
           <mat-password-strength
-            #passwordComponent
-            class="green"
+            #passwordComponentWithValidation
             (onStrengthChanged)="onStrengthChanged($event)"
-
             [password]="passwordWithValidation.value"
           >
           </mat-password-strength>
           <!--Password's strength info-->
           <mat-password-strength-info
-            *ngIf="toggle.checked"
-            [lowerCaseCriteriaMsg]="'enthält mindestens ein unteres Zeichen '"
-            [upperCaseCriteriaMsg]="'enthält mindestens ein oberes Zeichen '"
-            [digitsCriteriaMsg]="'enthält mindestens eine Ziffer '"
-            [specialCharsCriteriaMsg]="'enthält mindestens ein Sonderzeichen' "
-            [minCharsCriteriaMsg]="'enthält mindestens 8 Zeichen' "
-            [passwordComponent]="passwordComponent">
+            [lowerCaseCriteriaMsg]="'Enthält mindestens ein unteres Zeichen '"
+            [upperCaseCriteriaMsg]="'Enthält mindestens ein oberes Zeichen '"
+            [digitsCriteriaMsg]="'Enthält mindestens eine Ziffer '"
+            [specialCharsCriteriaMsg]="'Enthält mindestens ein Sonderzeichen' "
+            [minCharsCriteriaMsg]="'Enthält mindestens 8 Zeichen' "
+            [passwordComponent]="passwordComponentWithValidation">
 
           >
           </mat-password-strength-info>
-          <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponent.color">
-            <mat-label>Password wiederholen</mat-label>
-            <input
-              matInput
-              #passwordWithValidation
-              [type]="hide ? 'password' : 'text'"
-              required
-              [formControl]="passwordComponent.passwordFormControl"
-              placeholder="Password wiederholen"
-              [(ngModel)]="confirmPassword"
-            />
-
-            <button class="btnE" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+          <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
+            <mat-label>Passwort bestätigen</mat-label>
+            <input #myInput2
+              matInput  placeholder="Passwort bestätigen" [type]="hide ?
+              'password' : 'text'"
+              [formControl]="confirmFormControl"
+                   required
+                   pattern="{{ myInput.value }}"
+              [(ngModel)]="confirmPassword"/>
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' :
+              'visibility_off'}}</mat-icon>
+            <mat-error *ngIf="confirmFormControl.hasError('required')">
+              Bitte Bestätige das Passwort
+            </mat-error>
+            <mat-error *ngIf="confirmFormControl.hasError('pattern')">
+              Passwort & Passwort bestätigen stimmen nicht überein            </mat-error>
           </mat-form-field>
 
         </div>

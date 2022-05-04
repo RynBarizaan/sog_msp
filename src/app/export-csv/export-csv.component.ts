@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, FormControl, Validators,} from '@angular/forms';
@@ -21,7 +21,9 @@ declare var window: any;
 @Component({
   selector: 'app-export-csv',
   templateUrl: './export-csv.component.html',
-  styleUrls: ['./export-csv.component.css']
+  styleUrls: ['./export-csv.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExportCSVComponent {
   // @ts-ignore
@@ -29,9 +31,10 @@ export class ExportCSVComponent {
   Encrypt: Array<any> = [];
   password!: string;
   confirmPassword!:string;
+  message!:string;
   formModal!: any;
-  inputType: any;
-  hide = true;
+  inputType = false;
+  hide = false;
 
   constructor(public groupTable: GroupTableComponent,) {
   }
@@ -44,22 +47,37 @@ export class ExportCSVComponent {
     this.formModal = new window.bootstrap.Modal(
       document.getElementById("exampleModalCenter1"));
   }
+//Password page
 
-  onStrengthChanged(strength: number) {
-    if (strength === 100) {
-      console.log("password is valed", strength, " %")
+  confirmFormControl = new FormControl('', [
+    Validators.required,
+  ]);
+  onStrengthChanged(strength: any): boolean {
+    if (strength === 100 && this.password === this.confirmPassword && this.password !="") {
+      return this.inputType = true;
+
     } else {
-      console.log("Password is valid", strength, " %")
+      return this.inputType = false;
+      //this.message ="Bitte wiederholen sie ihre password";
+      console.log("Bitte pas eingeben")
+
     }
   }
 
+  @ViewChild('myInput') myInput!: ElementRef;
+  @ViewChild('myInput2') myInput2!: ElementRef;
+
+
+  //Export Data as Encrypt/CSV
+
   ExportCSV() {
 
-    if (this.password === "" || this.password ===null && this.confirmPassword ==="" || this.confirmPassword === null) {
+    this.myInput2.nativeElement.focus();
+    this.myInput.nativeElement.focus();
 
-    } else {
 
-      var arr = [];
+
+    var arr = [];
       for (let i = 0; i < this.listOfContacts.length; i++) {
         arr.push(this.listOfContacts[i]['Vorname'])
         arr.push(this.listOfContacts[i]['Nachname'])
@@ -70,8 +88,6 @@ export class ExportCSVComponent {
       }
       this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr.toString(), this.password.trim()).toString()));
 
-      console.log(this.Encrypt)
-
       var options = {
         fieldSeparator: ',',
         quoteStrings: '',
@@ -81,9 +97,12 @@ export class ExportCSVComponent {
         useBom: false,
         headers: ["Vorname", "Nachname", "Eigenschaften"]
       };
+    if (this.inputType){
+
       new ngxCsv(this.Encrypt, "Liste der Personen", options);
+      }
     }
-  }
+
 }
 
 
