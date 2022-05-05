@@ -1,4 +1,5 @@
 <div class="container text-center mt-4">
+  <label style="float: left;" [ngStyle]="{'display':this.TheStatus ? 'none' : 'block' }">Klicken Sie auf die Zeilen, um die Eigenschaften zu zuweisen.</label>
   <table class="table table-striped table-hover">
     <thead  class="table-dark">
     <tr>
@@ -22,6 +23,10 @@
 
       <td>
         <input   (blur)="updateList(i, 'Nachname', $event)" [ngStyle]="{'cursor':this.TheStatus ? 'text' : 'pointer' }" placeholder="Nachname eintragen" value="{{group.Nachname}}" style="text-align:center; outline:none;width: 100%;height: 100%; border: none; background:none" [readOnly]="!this.TheStatus" />
+        <svg [ngStyle]="{'display':this.TheStatus ? 'none' : 'initial' }" style="float: right; position: absolute; margin: 5px -29px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+        </svg>
       </td>
 
       <td *ngIf="this.TheStatus">
@@ -43,7 +48,6 @@
   <div class="btn-group mr-2" style="float: right">
     <button  type="button" class="btn btn-outline-dark "  (click)="confirmList()" [ngStyle]="{'display':this.TheStatus ? 'block' : 'none' }">Weiter</button>
   </div>
-
   <div class="btn-group mr-2"  >
     <button  type="button" class="btn btn-outline-dark" (click)="exportDialogBox()" [ngStyle]="{'display':!this.TheStatus ? 'block' : 'none' }">Exportieren</button>
   </div>
@@ -54,6 +58,7 @@
     <button  type="button" class="btn btn-outline-dark "  (click)="toSlider()">Zurück</button>
   </div>
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -78,6 +83,18 @@
           </div>
           <div class="row">
             <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="frontOfTheRoom">
+              <label class="form-check-label" for="frontOfTheRoom">
+                Vorne im Raum
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="backOfTheRoom">
+              <label class="form-check-label" for="backOfTheRoom">
+                Hinten im Raum
+              </label>
+            </div>
+            <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="besideWindow">
               <label class="form-check-label" for="besideWindow">
                 Fensternähe
@@ -101,8 +118,7 @@
                 Frontal
               </label>
             </div>
-
-            <label class="form-check-label" >
+            <label class="form-check-label" style="padding-left:0;">
               darf nicht neben
               <div class="container containerProperties" style="float: right">
                 <div *ngFor="let group of neighborList;  let i = index" class="form-check">
@@ -127,7 +143,6 @@
 
 
 
-
 <!-- Modal -->
 <div class="modal fade" id="errorMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -139,7 +154,7 @@
         </button>
       </div>
       <div class="modal-body">
-        Tragen Sie alle Felder ein, Bitte!
+        {{modalText}}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-dark" (click)="closeErrorMessageModal()">OK</button>
@@ -150,5 +165,7 @@
 
 
 
+
 <!--app-person-properties></app-person-properties-->
+
 <app-export-csv></app-export-csv>

@@ -13,14 +13,16 @@ export class MainmenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   isDataExcist(): boolean{
     // @ts-ignore
-    let dataLength=JSON.parse(localStorage.getItem("isDataConfirm"));
+    let dataLength=JSON.parse(sessionStorage.getItem("isDataConfirm"));
     if (dataLength)
       return true;
     else {
       return false;
     }
   }
+
 
 }

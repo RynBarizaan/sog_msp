@@ -27,7 +27,7 @@ declare var window: any;
 })
 export class ExportCSVComponent {
   // @ts-ignore
-  listOfContacts: Array<any> = JSON.parse(localStorage.getItem("person"));
+  listOfContacts: Array<any> = JSON.parse(sessionStorage.getItem("person"));
   Encrypt: Array<any> = [];
   password!: string;
   confirmPassword!:string;
