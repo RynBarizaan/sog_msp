@@ -34,11 +34,9 @@ export class ExportCSVComponent {
   message!:string;
   formModal!: any;
   inputType = false;
-  hide = false;
+  hide = true;
 
-  constructor(public groupTable: GroupTableComponent,) {
-  }
-
+  constructor(public groupTable: GroupTableComponent,) {};
   closeModal() {
     this.groupTable.closeEXP()
   }
@@ -71,11 +69,10 @@ export class ExportCSVComponent {
   //Export Data as Encrypt/CSV
 
   ExportCSV() {
-
+    // @ts-ignore
+    this.listOfContacts= JSON.parse(sessionStorage.getItem("person"));
     this.myInput2.nativeElement.focus();
     this.myInput.nativeElement.focus();
-
-
 
     var arr = [];
       for (let i = 0; i < this.listOfContacts.length; i++) {
@@ -85,7 +82,12 @@ export class ExportCSVComponent {
         arr.push(this.listOfContacts[i]['Tafelnähe'])
         arr.push(this.listOfContacts[i]['Frontal'])
         arr.push(this.listOfContacts[i]['Fensternähe'])
+        for (let x=0; x<this.listOfContacts[i]['AunahmenVonNachbern'].length; x++){
+          arr.push(this.listOfContacts[i]['AunahmenVonNachbern'][x]);
+        }
       }
+
+console.log(arr);
       this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr.toString(), this.password.trim()).toString()));
 
       var options = {
@@ -98,7 +100,6 @@ export class ExportCSVComponent {
         headers: ["Vorname", "Nachname", "Eigenschaften"]
       };
     if (this.inputType){
-
       new ngxCsv(this.Encrypt, "Liste der Personen", options);
       }
     }

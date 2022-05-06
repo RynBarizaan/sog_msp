@@ -30,9 +30,6 @@ export class SliderComponent  {
   toGruppe(){
 
 
-
-
-
     var personData=sessionStorage.getItem("person");
     if (personData == null){
       this.start();

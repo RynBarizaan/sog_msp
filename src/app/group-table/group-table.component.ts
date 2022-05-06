@@ -83,7 +83,7 @@ export class GroupTableComponent {
 //// back to Silder Component  /////
   toSlider(){
     if(this.TheStatus){
-      sessionStorage.setItem("person", JSON.stringify(""));
+      //sessionStorage.removeItem('person');
       this.router.navigate(['/group-slider']);
     }
     else {
@@ -141,7 +141,9 @@ export class GroupTableComponent {
     showPropertiesModal(){
   this.formModal1.show();
   }
-
+showPropertiesModal(){
+    this.formModal1.show();
+  }
 
   /*
   (click)=" !this.TheStatus? openModal(i+1,group.Vorname,group.Nachname):''"
@@ -257,7 +259,6 @@ export class GroupTableComponent {
         else if (!checkboxNeighbor?.checked) {
 
           // @ts-ignore
-          if (this.listOfContacts[this.index-1]['AunahmenVonNachbern'][x] != undefined){
             const index = this.listOfContacts.findIndex(object => {
               return object.Vorname === this.neighborList[x]['Vorname'];
             });
@@ -266,7 +267,7 @@ export class GroupTableComponent {
             delete this.listOfContacts[index]['AunahmenVonNachbern'][x];
             // @ts-ignore
             console.log(this.listOfContacts[this.index-1]['AunahmenVonNachbern']);
-          }
+
 
         }
       }

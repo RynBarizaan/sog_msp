@@ -21,8 +21,8 @@
                    [formControl]="passwordComponentWithValidation.passwordFormControl"
                    [(ngModel)]="password" />
 
-            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' :
-              'visibility_off'}}</mat-icon>
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' :
+              'visibility'}}</mat-icon>
             <mat-hint align="end" aria-live="polite">
               {{passwordWithValidation.value.length}} / 25
             </mat-hint>
@@ -64,8 +64,8 @@
                    required
                    pattern="{{ myInput.value }}"
               [(ngModel)]="confirmPassword"/>
-            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' :
-              'visibility_off'}}</mat-icon>
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' :
+              'visibility'}}</mat-icon>
             <mat-error *ngIf="confirmFormControl.hasError('required')">
               Bitte Bestätige das Passwort
             </mat-error>
