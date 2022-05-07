@@ -18,7 +18,6 @@ import { ExportCSVComponent } from './export-csv/export-csv.component';
 import { MatPasswordStrengthModule } from "@angular-material-extensions/password-strength";
 import {MatIconModule} from "@angular/material/icon";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import { PersonPropertiesComponent } from './person-properties/person-properties.component';
 
 
 
@@ -30,7 +29,6 @@ import { PersonPropertiesComponent } from './person-properties/person-properties
     SliderComponent,
     PageNotFoundComponent,
     ExportCSVComponent,
-    PersonPropertiesComponent,
 
 
   ],
