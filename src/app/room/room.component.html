@@ -1,0 +1,84 @@
+<div id="popupContainer" *ngIf="isPopup">
+  <div id="popupForm">
+
+    <div id="headerPopup">
+      Bitte bestätigen Sie die Löschung!
+    </div>
+    <div id="contentPopup">
+      Wollen Sie diesen Element endgültig löschen ?<br>
+      <br>
+    </div>
+    <div id="popUpActions">
+      <button (click)="isPopup = false">Nein</button>
+      <button (click)="deleteDesk(); isPopup = false">Ja</button>
+    </div>
+
+  </div>
+</div>
+<div id="container">
+  <div id="toolbar">
+    <div class="left-container-child" >
+      <div><label class="label-left-dark label-left-title">Raumfläche</label></div>
+      <div class="horizontal-left-side-element">
+        <div class="horizontal-width">
+          <div><label class="label-left-dark">Länge</label></div>
+          <input type="number" min="{{minimumWidth}}" max="{{maximumWidth}}" value="{{ standardRooms[0].width }}" [(ngModel)]="standardRooms[0].width"  name="scene-width" (change)="updateVisualisation(standardRooms[0].width,standardRooms[0].height)">
+        </div>
+        <div class="horizontal-width">
+          <div><label class="label-left-dark">Breite</label></div>
+          <input type="number" min="{{minimumHeight}}" max="{{maximumHeight}}" value="{{ standardRooms[0].height }}" name="scene-height" [(ngModel)]="standardRooms[0].height" (change)="updateVisualisation(standardRooms[0].width,standardRooms[0].height)">
+        </div>
+      </div>
+    </div>
+
+    <div class="left-container-child" >
+      <div><label class="label-left-dark label-left-title">Schreibtische</label></div>
+      <div class="horizontal-left-side-element" *ngFor="let desk of roomDesks" style="height: 100px;">
+        <div class="horizontal-width">
+          <div><label class="label-left-dark">Typ</label></div>
+          <label  style="color: #999; font-family: 'Segoe UI';">{{desk.desktyp}}</label>
+        </div>
+        <div class="horizontal-width">
+          <div><label class="label-left-dark">Plätze</label></div>
+          <label  style="color: #999; font-family: 'Segoe UI';">{{desk.place}}</label>
+        </div>
+        <div class="horizontal-width">
+          <div><label class="label-left-dark">X</label></div>
+          <input type="number" value="{{desk.x}}" id="elx{{desk.id}}" (change)="updateDesks(desk.id)" [ngModel]="desk.x"   style="color: #999; font-family: 'Segoe UI';">
+        </div>
+        <div class="horizontal-width">
+          <div><label class="label-left-dark">Y</label></div>
+          <input type="number" value="{{desk.y}}" id="ely{{desk.id}}" (change)="updateDesks(desk.id)" [ngModel]="desk.y"   style="color: #999; font-family: 'Segoe UI';">
+        </div>
+        <div class="horizontal-width">
+          <div><label class="label-left-dark">Rotation</label></div>
+          <input type="number" value="{{desk.degRotation}}" id="elr{{desk.id}}" (change)="updateDesks(desk.id)" [(ngModel)]="desk.degRotation"  style="color: #999; font-family: 'Segoe UI';">
+        </div>
+        <div class="horizontal-width" style="line-height: 110px;">
+          <label (click)="isPopup = true; currentId = desk.id"><span class="material-icons">delete_sweep</span></label>
+        </div>
+      </div>
+      <div style="width: 100%; height: 50px;">
+        <label style="float: right"><span class="material-icons">add</span></label>
+      </div>
+    </div>
+
+
+
+    <div class="left-container-child" >
+      <div><label class="label-left-dark label-left-title">Türen</label></div>
+
+    </div>
+
+    <div class="left-container-child" >
+      <div><label class="label-left-dark label-left-title">Fenster</label></div>
+
+    </div>
+  </div>
+
+
+
+  <div id="visualiser">
+    <div id="roomvisualiser"></div>
+  </div>
+</div>

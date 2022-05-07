@@ -1,0 +1,181 @@
+#container {
+  position: absolute;
+  width: 1300px;
+  height: 850px;
+  background-color: rgb(248,249,250);
+  margin-top: 20px;
+  border-radius: 10px;
+  border: 1px #ddd solid;
+}
+
+#toolbar {
+  position: relative;
+  width: 416px;
+  height: 850px;
+  background-color: rgb(248,249,250);
+  float: left;
+  border-radius: 10px 0px 0px 10px;
+  border-right: 1px #ddd solid;
+}
+
+#visualiser {
+  position: relative;
+  width: 702px;
+  height: 702px;
+  float: left;
+  margin: 80px 90px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.material-icons:hover {
+  color: #777777;
+  cursor: pointer;
+}
+
+
+label.label-left-dark {
+  color: #777;
+  font-family: arial;
+  font-size: 1.1em;
+  margin-bottom: 0.2em;
+  display: block;
+}
+
+label.label-left-title {
+  margin-bottom: 1em;
+  font-weight: 600;
+  display: block;
+  font-size: 1.3em;
+}
+
+input[type=number] {
+  padding-left: 5px;
+  color: #777;
+  font-size: 1.1em;
+  width: 70px;
+  height: 35px;
+  background-color: rgb(248,249,250);
+  border: 1px solid #ddd;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
+  width: 0.9rem;
+  height: 2.5rem;
+  cursor: pointer;
+  border: solid black;
+  border-width: 0 4px;
+}
+
+.horizontal-left-side-element {
+  display: flex;
+  justify-items: left;
+  gap:12px;
+}
+
+.left-container-child {
+  padding: 20px 20px 20px 20px;
+  border-bottom: 1px solid #ddd;
+  overflow-y: scroll;
+  max-height: 330px;
+}
+
+.horizontal-width {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  color: #C6C6C6;
+  text-align: center;
+  font-family: arial;
+  font-size: 20px;
+  padding: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #e1e1e1;
+}
+
+#popupContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: arial;
+  color: #777;
+}
+
+#popupForm {
+  margin-top: 10%;
+  box-shadow: 5px 5px 10px #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  z-index: 10;
+  position: absolute;
+}
+
+#headerPopup {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: 1.4em;
+  font-weight: bold;
+
+  padding: 30px;
+}
+
+#contentPopup {
+  padding: 30px 0px;
+  font-size: 1em;
+  padding: 30px;
+}
+
+#popUpActions {
+  float: right;
+  display: flex;
+  gap: 10px;
+  padding: 0px 30px 20px 0px;
+}
+#popUpActions button{
+  padding: 3px 10px;
+  border: 0;
+  height: 30px;
+  width: 70px;
+  background-color: #ddd;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+#popUpActions button:hover{
+  background-color: #ccc;
+}
+
+#popUpActions button:active{
+  background-color: #999;
+  color: #fff;
+}
