@@ -38,7 +38,9 @@ export class ExportCSVComponent {
 
   constructor(public groupTable: GroupTableComponent,) {};
   closeModal() {
-    this.groupTable.closeEXP()
+    this.groupTable.closeEXP();
+    this.password='';
+    this.confirmPassword='';
   }
 
   ngOnInit(): void {
@@ -104,6 +106,7 @@ console.log(arr);
       };
     if (this.inputType){
       new ngxCsv(this.Encrypt, "Liste der Personen", options);
+      this.closeModal();
       }
     }
 
