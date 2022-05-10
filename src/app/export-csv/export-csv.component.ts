@@ -82,8 +82,11 @@ export class ExportCSVComponent {
         arr.push(this.listOfContacts[i]['Tafelnähe'])
         arr.push(this.listOfContacts[i]['Frontal'])
         arr.push(this.listOfContacts[i]['Fensternähe'])
-        for (let x=0; x<this.listOfContacts[i]['AunahmenVonNachbern'].length; x++){
-          arr.push(this.listOfContacts[i]['AunahmenVonNachbern'][x]);
+        arr.push(this.listOfContacts[i]['HintenImRaum'])
+        arr.push(this.listOfContacts[i]['VorneImRaum'])
+
+        for (let x=0; x<this.listOfContacts[i]['AusnahmenVonNachbern'].length; x++){
+          arr.push(this.listOfContacts[i]['AusnahmenVonNachbern'][x]);
         }
       }
 
