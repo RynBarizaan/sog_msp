@@ -1,5 +1,5 @@
 import {Component, OnInit, SimpleChanges} from '@angular/core';
-import Konva from 'konva';
+import Konva from "konva";
 
 @Component({
   selector: 'app-room',

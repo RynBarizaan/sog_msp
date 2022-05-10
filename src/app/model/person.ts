@@ -9,6 +9,7 @@ export class Person{
     public Tafelnähe:boolean,
     public VorneImRaum:boolean,
     public HintenImRaum:boolean,
-    public AunahmenVonNachbern:Array<any>,
+    public AusnahmenVonNachbern:Array<any>,
+    public AusnahmenVonNachbernAsBoolean:Array<any>,
   ){}
 }

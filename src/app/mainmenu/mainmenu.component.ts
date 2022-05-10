@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {PersonDataService} from "../person-data.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -14,7 +13,7 @@ gruppeStatus:string = 'Gruppe erstellen';
   ngOnInit(): void {
   }
 
-
+////// check if a grupp already created /////
   isDataExcist(): boolean{
     // @ts-ignore
     let dataLength=JSON.parse(sessionStorage.getItem("isDataConfirm"));
@@ -27,15 +26,19 @@ gruppeStatus:string = 'Gruppe erstellen';
       return false;
     }
   }
+
+  ////////// edit or create a Grupp ////
   editOrCreatGruppe(){
 if (this.isDataExcist()){
   sessionStorage.setItem("TheStatus", JSON.stringify(true));
-  this.router.navigate(['/groupTable/value']);
+  this.router.navigate(['/groupTable/edit']);
 }
 else {
   this.router.navigate(['/group-slider']);
 }
   }
+
+  ////// delete the Grupp  /////
   removeGruppe(){
     sessionStorage.setItem("isDataConfirm", JSON.stringify(false));
     sessionStorage.setItem("TheStatus", JSON.stringify(true));
