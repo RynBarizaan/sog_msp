@@ -1,0 +1,40 @@
+<div class="modal fade" id="ModalBoxImport" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content"><div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLongTitle">Passende Verschlüsselte datei auswählen und eine gültige passwort eingeben!</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+      <div class="modal-body "style="width: 100%;">
+        <span class="material-icons md-48">file_open</span>
+        <input type="file" #csvReader class="form-control form-control-lg btn-file" style="width: 80%; left:22px" name="Upload CSV" id="txtFileUpload" accept=".csv"/>
+        <small id="FileTypHelp" class="form-text text-muted" style="margin-left: 70px">eine gültige CSV Datei Auswählen</small> <br>
+        <span class="material-icons md-48 mt-2">lock</span>
+
+        <mat-form-field appearance="outline" style="width: 80%; left: 20px"  class="mr-2">
+          <mat-label>Passwort</mat-label>
+
+          <input #myInput matInput
+                 #passwordWithValidation
+                 placeholder="passwort eingeben"
+                 [type]="hide ? 'password': 'text'"
+                 required
+                 [formControl]="passFormControl"
+                 [(ngModel)]="password" />
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' :
+            'visibility'}}</mat-icon>
+          <mat-error *ngIf="passFormControl.hasError('required')">
+            Bitte password eingeben
+          </mat-error>
+        </mat-form-field>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Schlißen</button>
+        <button type="button" class="btn btn-outline-dark" (click)="test()">Beschtätigen und Importieren</button>
+      </div>
+    </div>
+  </div>
+</div>

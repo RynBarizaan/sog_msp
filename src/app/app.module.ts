@@ -19,6 +19,7 @@ import { MatPasswordStrengthModule } from "@angular-material-extensions/password
 import {MatIconModule} from "@angular/material/icon";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { RoomComponent } from './room/room.component';
+import { ImportCsvComponent } from './import-csv/import-csv.component';
 
 
 
@@ -31,6 +32,7 @@ import { RoomComponent } from './room/room.component';
     PageNotFoundComponent,
     ExportCSVComponent,
     RoomComponent,
+    ImportCsvComponent,
 
 
   ],

@@ -1,16 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 
+
+declare var window:any;
 @Component({
   selector: 'app-mainmenu',
   templateUrl: './mainmenu.component.html',
   styleUrls: ['./mainmenu.component.css']
 })
 export class MainmenuComponent implements OnInit {
-gruppeStatus:string = 'Gruppe erstellen';
+  formModal:any;
+
+  gruppeStatus:string = 'Gruppe erstellen';
   constructor(private router: Router) { }
 
+  // Modal Box for Import-CSV
   ngOnInit(): void {
+    this.formModal = new window.bootstrap.Modal(
+      document.getElementById("ModalBoxImport"))
+  }
+  closeModal() {
+    this.formModal.hide();
+  }
+  ImportBox(){
+    this.formModal.show();
   }
 
 ////// check if a grupp already created /////
