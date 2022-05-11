@@ -10,6 +10,7 @@ declare var window:any;
 })
 export class MainmenuComponent implements OnInit {
   formModal:any;
+  formModalDelete: any;
 
   gruppeStatus:string = 'Gruppe erstellen';
   constructor(private router: Router) { }
@@ -18,6 +19,9 @@ export class MainmenuComponent implements OnInit {
   ngOnInit(): void {
     this.formModal = new window.bootstrap.Modal(
       document.getElementById("ModalBoxImport"))
+    this.formModalDelete = new window.bootstrap.Modal(
+      document.getElementById("InfoMessage")
+    )
   }
   closeModal() {
     this.formModal.hide();
@@ -53,10 +57,19 @@ else {
 
   ////// delete the Grupp  /////
   removeGruppe(){
+    this.formModalDelete.show();
+
+  }
+
+  closeInfoMessageModal() {
+    this.formModalDelete.hide();
+  }
+
+  confirmModalText() {
     sessionStorage.setItem("isDataConfirm", JSON.stringify(false));
     sessionStorage.setItem("TheStatus", JSON.stringify(true));
     sessionStorage.removeItem('person');
     this.gruppeStatus = 'Gruppe erstellen';
+    this.formModalDelete.hide();
   }
-
 }
