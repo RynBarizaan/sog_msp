@@ -31,7 +31,7 @@ export class MainmenuComponent implements OnInit {
   }
 
 ////// check if a grupp already created /////
-  isDataExcist(): boolean{
+  isDataExist(): boolean{
     // @ts-ignore
     let dataLength=JSON.parse(sessionStorage.getItem("isDataConfirm"));
     if (dataLength){
@@ -45,8 +45,8 @@ export class MainmenuComponent implements OnInit {
   }
 
   ////////// edit or create a Grupp ////
-  editOrCreatGruppe(){
-if (this.isDataExcist()){
+  editOrCreatGroup(){
+if (this.isDataExist()){
   sessionStorage.setItem("TheStatus", JSON.stringify(true));
   this.router.navigate(['/groupTable/edit']);
 }
