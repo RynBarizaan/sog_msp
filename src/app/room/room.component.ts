@@ -1,5 +1,7 @@
 import {Component, OnInit, SimpleChanges} from '@angular/core';
-import Konva from "konva";
+import Konva from 'konva';
+import { jsPDF } from "jspdf"
+import html2canvas from "html2canvas";
 
 @Component({
   selector: 'app-room',
@@ -12,19 +14,20 @@ export class RoomComponent implements OnInit {
     {
       "id": 0,
       "name": "Standard Room 1",
-      "width": 8,
-      "height": 8
+      "width": 9,
+      "height": 9
     }
   ]
 
   roomDesks: {id: number, desktyp: string, place: number, factory: string, x: number, y: number, degRotation: number, firstname1: string, lastname1: string, firstname2?: string, lastname2?: string}[] = [
-    {"id": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-1", "x": 150, "y": 200, "degRotation": 0, "firstname1": "Salim", "lastname1": "Laghrari"},
-    {"id": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-2", "x": 450, "y": 200, "degRotation": 0, "firstname1": "Lucas", "lastname1": "Kleppek"},
-    {"id": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-3", "x": 150, "y": 350, "degRotation": 0, "firstname1": "Zakaria", "lastname1": "Sahibi"},
-    {"id": 3, "desktyp": "eckig", "place": 1, "factory": "s-s-4", "x": 450, "y": 350, "degRotation": 0, "firstname1": "Haneef", "lastname1": "Aboush"},
-    {"id": 4, "desktyp": "eckig", "place": 1, "factory": "s-s-5", "x": 150, "y": 500, "degRotation": 0, "firstname1": "Niklas", "lastname1": "Jochimiak"},
-    {"id": 5, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 450, "y": 500, "degRotation": 0, "firstname1": "Sherzod", "lastname1": "Khakimov"},
-    {"id": 6, "desktyp": "eckig", "place": 2, "factory": "s-b-7", "x": 245, "y": 60, "degRotation": 0, "firstname1": "Sören", "lastname1": "Schwerk", "firstname2": "Andre", "lastname2": "Quaß"},
+    {"id": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 150, "y": 50, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 450, "y": 50, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-1", "x": 150, "y": 200, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 3, "desktyp": "eckig", "place": 1, "factory": "s-s-2", "x": 450, "y": 200, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 4, "desktyp": "eckig", "place": 1, "factory": "s-s-3", "x": 150, "y": 350, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 5, "desktyp": "eckig", "place": 1, "factory": "s-s-4", "x": 450, "y": 350, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 6, "desktyp": "eckig", "place": 1, "factory": "s-s-5", "x": 150, "y": 500, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 7, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 450, "y": 500, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
   ]
   roomDoors: { id: number, "factory": string,  x: number, y: number, degRotation: number}[] = [
     {"id": 0, "factory": "l-1", "x": 0, "y": 0, "degRotation": 0},
@@ -38,10 +41,9 @@ export class RoomComponent implements OnInit {
   ]
 
 
-  maximumWidth: number = 30;
-  minimumWidth: number = 5;
-  maximumHeight: number = 30;
-  minimumHeight: number = 5;
+
+
+
   visualisedRoom: number = 0;
   widthStage: number = 700;
   heightStage: number = 700;
@@ -50,25 +52,90 @@ export class RoomComponent implements OnInit {
   heightMeter: number = this.standardRooms[0].height;
   widthSmallDesk?: number;
   heightSmallDesk?: number;
+  radiusSmallDesk?: number;
+  radiusBigDesk?: number;
   widthBigDesk?: number;
   heightBigDesk?: number;
   widthChair?: number;
   heightChair?: number;
   positionXDeleteIcon?: number;
+  positionXDeleteIcon2?: number;
   positionYDeleteIcon?: number;
   radiusDeleteIcon?: number;
+  radiusSmallTriangle?: number;
+  stageWidthInMeter?: number;
+  stageHeightInMeter?: number;
 
+  units: string[] = ['m', 'cm', 'mm'];
+  vorselectedUnit: string = 'm';
+  selectedUnit: string = 'm';
+  islinked: boolean = false;
 
+  minWidth: number = 5;
+  maxWidth: number = 30;
+  minHeight: number = 5;
+  maxHeight: number = 30;
 
   stage?: any;
   layerDesks?: any;
   layerDoors?: any;
   layerWindows?: any;
 
-  isPopup: boolean = false;
+  isToDelete: boolean = false;
+  isToAdd: boolean = false;
   currentId?: any;
+  selectedElement?: number;
+
+  deskToAdd: any =
+    {
+      "desktyp": 'eckig',
+      "place": 1,
+      "x": 0,
+      "y": 0,
+      "degRotation": 0,
+    };
 
   constructor() {
+  }
+
+  addDesk(desktyp: string, place: number, x: number, y: number, rotation: number): void {
+    let desk: any = {
+      "id": this.roomDesks.length,
+      "desktyp": desktyp,
+      "place": place,
+      "factory": this.factoryCodeConstructor(desktyp, place, this.roomDesks.length),
+      "x": x,
+      "y": y,
+      "degRotation": rotation,
+      "firstname1": 'Max',
+      "lastname1": 'Mustermann',
+      "firstname2": 'Max',
+      "lastname2": 'Mustermann',
+    }
+    this.roomDesks.push(desk);
+    this.layerDesks.destroy();
+    this.drawDesks();
+  }
+
+  factoryCodeConstructor(desktyp: string, place: number, id: number) : string {
+    console.log(place)
+    console.log(desktyp)
+    let factCode: string = '';
+    if(desktyp == 'eckig') {
+      factCode += 's-'
+    } else if (desktyp == 'rund') {
+      factCode += 'r-'
+    } else if (desktyp == 'dreieckig') {
+      factCode += 't-'
+    }
+    if(place == 1) {
+      factCode += 's-';
+    } else if(place == 2) {
+      factCode += 'b-';
+    }
+    factCode += id;
+    console.log(factCode)
+    return factCode;
   }
 
   updateDesks(id: number): void {
@@ -81,6 +148,7 @@ export class RoomComponent implements OnInit {
     let idr = 'elr'+id;
     let r : any = document.getElementById(idr);
     this.roomDesks[id].degRotation = r.valueAsNumber;
+    //console.log(this.roomDesks[id])
     this.layerDesks.destroy();
     this.drawDesks();
   }
@@ -91,6 +159,7 @@ export class RoomComponent implements OnInit {
       width: this.widthStage,
       height: this.heightStage,
     });
+
     this.calculateMeter(this.standardRooms[0].width,this.standardRooms[0].height);
     this.calculateElements();
     let backgroundLayer = new Konva.Layer();
@@ -112,11 +181,7 @@ export class RoomComponent implements OnInit {
 
     this.drawDesks();
 
-
-
   }
-
-
 
   drawDesks(): void {
     this.layerDesks = new Konva.Layer();
@@ -160,7 +225,16 @@ export class RoomComponent implements OnInit {
 
   updateVisualisation(width: number, height: number): void {
 
-    if (width >= this.minimumWidth && width <= this.maximumWidth && height >= this.minimumHeight && height <= this.maximumHeight) {
+    if(this.selectedUnit == 'm'){
+    } else if (this.selectedUnit == 'cm'){
+      width /= 1000;
+      height /= 1000;
+    } else if (this.selectedUnit == 'mm'){
+      width /= 10000;
+      height /= 10000;
+    }
+
+    if (width >= this.minWidth && width <= this.maxWidth && height >= this.minHeight && height <= this.maxHeight) {
       this.widthMeter = width;
       this.heightMeter = height;
       this.stage = new Konva.Stage({
@@ -206,9 +280,12 @@ export class RoomComponent implements OnInit {
     this.widthChair = this.meterInPixel * .4;
     this.heightChair = this.meterInPixel * .3;
     this.positionXDeleteIcon = this.widthSmallDesk * .9;
+    this.positionXDeleteIcon2 = (this.widthSmallDesk * 2) * .95;
     this.positionYDeleteIcon = this.widthSmallDesk * .1;
     this.radiusDeleteIcon = this.widthSmallDesk * .06;
-
+    this.radiusSmallDesk = Math.floor((this.meterInPixel * 1.2) / 2);
+    this.radiusBigDesk = Math.floor((this.meterInPixel * 1.2) / 1.5);
+    this.radiusSmallTriangle = Math.floor(this.meterInPixel / 2) * 1.2;
   }
 
   deleteDesk(): void {
@@ -223,31 +300,23 @@ export class RoomComponent implements OnInit {
 
 
   // Desks Factory
-  deskRoundSmall(id: number, x: number, y: number, rotation: number, firstname1: string, lastname1: string): void {
-    console.log('deskRoundSmall')
-  }
-  deskRoundBig(id: number, x: number, y: number, rotation: number, firstname1: string, lastname1: string): void {
-    console.log('deskRoundBig')
-  }
-  deskSquareSmall(id: number, x: number, y: number, rotation: number, firstname: string, lastname: string): void {
+  deskRoundSmall(id: number, x: number, y: number, rotation: number, firstname: string, lastname: string): void {
     this.stage.add(this.layerDesks);
-    let desktop = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: this.widthSmallDesk,
-      height: this.heightSmallDesk,
+    let desktop = new Konva.Circle({
+      x: this.radiusSmallDesk,
+      y: this.radiusSmallDesk,
+      radius: this.radiusSmallDesk,
       fill: 'white',
-      cornerRadius: 4,
       stroke: '#777',
       strokeWidth: 1
     })
     let chair = new Konva.Rect({
       x: this.meterInPixel * 0.4,
-      y: this.heightSmallDesk,
+      y: this.meterInPixel * 1.25,
       width: this.widthChair,
       height: this.heightChair,
       fill: '#999',
-      cornerRadius: 2,
+      cornerRadius: this.meterInPixel * .05,
       stroke: '#777',
       strokeWidth: 1
     });
@@ -265,9 +334,9 @@ export class RoomComponent implements OnInit {
       shadowOpacity: 0.5,
     });
     let text = new Konva.Text({
-      x: this.meterInPixel * 0.05,
-      y: this.meterInPixel * 0.05,
-      text: `${firstname}\n${lastname}`,
+      x: this.meterInPixel * 0.1,
+      y: this.meterInPixel * 0.35,
+      text: `${id}\n${firstname}\n${lastname}`,
       fill: '#999',
       fontSize: this.meterInPixel * 0.18,
       fontFamily: 'arial',
@@ -312,10 +381,208 @@ export class RoomComponent implements OnInit {
       groupSmallDesk.destroy();
       tr.destroy();
     });
-
   }
+  deskRoundBig(id: number, x: number, y: number, rotation: number, firstname1: string, lastname1: string): void {
+    this.stage.add(this.layerDesks);
+    let desktop = new Konva.Circle({
+      x: this.radiusBigDesk,
+      y: this.radiusBigDesk,
+      radius: this.radiusBigDesk,
+      fill: 'white',
+      stroke: '#777',
+      strokeWidth: 1
+    })
+    let chair1 = new Konva.Rect({
+      x: 0,
+      y: this.meterInPixel * 1.25,
+      width: this.widthChair,
+      height: this.heightChair,
+      fill: '#999',
+      cornerRadius: this.meterInPixel * .05,
+      stroke: '#777',
+      strokeWidth: 1,
+      rotation: 45,
+    });
+    let chair2 = new Konva.Rect({
+      x: this.meterInPixel * 1.5,
+      y: -this.meterInPixel * .2,
+      width: this.widthChair,
+      height: this.heightChair,
+      fill: '#999',
+      cornerRadius: this.meterInPixel * .05,
+      stroke: '#777',
+      strokeWidth: 1,
+      rotation: 45,
+    });
+    let circle = new Konva.Circle({
+      x: this.meterInPixel * 1.68,
+      y: -this.meterInPixel * .1,
+      radius: this.radiusDeleteIcon,
+      fill: 'red',
+      stroke: '#777',
+      strokeWidth: 1,
+      shadowColor: 'black',
+      shadowBlur: 10,
+      shadowOffsetX: 2,
+      shadowOffsetY: 3,
+      shadowOpacity: 0.5,
+    });
+    let text1 = new Konva.Text({
+      x: this.meterInPixel * 0.3,
+      y: this.meterInPixel * 0.2,
+      text: `${this.roomDesks[id].id}\n${this.roomDesks[id].firstname1}\n${this.roomDesks[id].lastname1}`,
+      fill: '#999',
+      fontSize: this.meterInPixel * 0.18,
+      fontFamily: 'arial',
+    });
+    let text2 = new Konva.Text({
+      x: this.meterInPixel * 0.3,
+      y: this.meterInPixel * 0.85,
+      text: `${this.roomDesks[id].id}\n${this.roomDesks[id].firstname2}\n${this.roomDesks[id].lastname2}`,
+      fill: '#999',
+      fontSize: this.meterInPixel * 0.18,
+      fontFamily: 'arial',
+    });
+    let groupSmallDesk = new Konva.Group({
+      x: x + (this.meterInPixel * .23),
+      y: y + (this.meterInPixel * .22),
+      draggable: true,
+      shadowColor: 'black',
+      shadowBlur: 10,
+      shadowOffsetX: 10,
+      shadowOffsetY: 10,
+      rotation: rotation
+    })
+    groupSmallDesk.add(desktop);
+    groupSmallDesk.add(chair1);
+    groupSmallDesk.add(chair2);
+    groupSmallDesk.add(text1);
+    groupSmallDesk.add(text2);
+    groupSmallDesk.add(circle);
+    this.layerDesks.add(groupSmallDesk);
+    let tr = new Konva.Transformer({
+      centeredScaling: true,
+      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
+      resizeEnabled: false,
+    })
+    this.layerDesks.add(tr);
+    tr.nodes([groupSmallDesk]);
+
+    groupSmallDesk.on('transform dragmove', function (data): void {
+      let idElementr = 'elr'+id;
+      let elemr: any = document.getElementById(idElementr);
+      elemr.value = Math.floor(groupSmallDesk.rotation());
+      let idElementx = 'elx'+id;
+      let elemx: any = document.getElementById(idElementx);
+      elemx.value = Math.floor(groupSmallDesk.x());
+      let idElementy = 'ely'+id;
+      let elemy: any = document.getElementById(idElementy);
+      elemy.value = Math.floor(groupSmallDesk.y());
+    });
 
 
+    circle.on('click', function (event) {
+      groupSmallDesk.destroy();
+      tr.destroy();
+    });
+  }
+  deskSquareSmall(id: number, x: number, y: number, rotation: number, firstname: string, lastname: string): void {
+    this.stage.add(this.layerDesks);
+    let desktop = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width: this.widthSmallDesk,
+      height: this.heightSmallDesk,
+      fill: 'white',
+      cornerRadius: this.meterInPixel * .05,
+      stroke: '#777',
+      strokeWidth: 1
+    })
+    let chair = new Konva.Rect({
+      x: this.meterInPixel * 0.4,
+      y: this.meterInPixel * 0.75,
+      width: this.widthChair,
+      height: this.heightChair,
+      fill: '#999',
+      cornerRadius: this.meterInPixel * .05,
+      stroke: '#777',
+      strokeWidth: 1
+    });
+    let circle = new Konva.Circle({
+      x: this.positionXDeleteIcon,
+      y: this.positionYDeleteIcon,
+      radius: this.radiusDeleteIcon,
+      fill: 'red',
+      stroke: '#777',
+      strokeWidth: 1,
+      shadowColor: 'black',
+      shadowBlur: 10,
+      shadowOffsetX: 2,
+      shadowOffsetY: 3,
+      shadowOpacity: 0.5,
+      name: `${id}`,
+    });
+    let text = new Konva.Text({
+      x: this.meterInPixel * 0.05,
+      y: this.meterInPixel * 0.05,
+      text: `${id}\n${firstname}\n${lastname}`,
+      fill: '#999',
+      fontSize: this.meterInPixel * 0.18,
+      fontFamily: 'arial',
+    });
+    let groupSmallDesk = new Konva.Group({
+      x: x,
+      y: y,
+      draggable: true,
+      shadowColor: 'black',
+      shadowBlur: 10,
+      shadowOffsetX: 10,
+      shadowOffsetY: 10,
+      rotation: rotation,
+      name: `${id}`,
+    })
+    groupSmallDesk.add(desktop);
+    groupSmallDesk.add(chair);
+    groupSmallDesk.add(text);
+    groupSmallDesk.add(circle);
+    this.layerDesks.add(groupSmallDesk);
+    let tr = new Konva.Transformer({
+      centeredScaling: true,
+      centeredRotation: true,
+      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
+      resizeEnabled: false,
+    })
+    this.layerDesks.add(tr);
+
+
+
+    groupSmallDesk.on('click', (e) => {
+      tr.nodes([groupSmallDesk]);
+    });
+
+    groupSmallDesk.on('transform dragmove', (data) => {
+      let idElementr = 'elr'+id;
+      let elemr: any = document.getElementById(idElementr);
+      elemr.value = Math.floor(groupSmallDesk.rotation());
+      let idElementx = 'elx'+id;
+      let elemx: any = document.getElementById(idElementx);
+      elemx.value = Math.floor(groupSmallDesk.x());
+      let idElementy = 'ely'+id;
+      let elemy: any = document.getElementById(idElementy);
+      elemy.value = Math.floor(groupSmallDesk.y());
+    });
+
+    groupSmallDesk.on('transformend dragend', (data) => {
+      let iddesk: number = parseInt(data.target.name());
+      this.updateDesks(iddesk);
+    });
+
+    circle.on('click', (event) => {
+      let id: any = event.target.name();
+      this.currentId = id;
+      this.isToDelete = true;
+    });
+  }
 
   deskSquareBig(id: number, x: number, y: number, rotation: number, firstname1: string, lastname1: string): void {
 
@@ -325,7 +592,7 @@ export class RoomComponent implements OnInit {
       width: this.widthBigDesk,
       height: this.heightBigDesk,
       fill: 'white',
-      cornerRadius: 4,
+      cornerRadius: this.meterInPixel * .05,
       stroke: '#777',
       strokeWidth: 1
     })
@@ -335,7 +602,7 @@ export class RoomComponent implements OnInit {
       width: this.widthChair,
       height: this.heightChair,
       fill: '#999',
-      cornerRadius: 2,
+      cornerRadius: this.meterInPixel * .05,
       stroke: '#777',
       strokeWidth: 1
     });
@@ -345,14 +612,14 @@ export class RoomComponent implements OnInit {
       width: this.widthChair,
       height: this.heightChair,
       fill: '#999',
-      cornerRadius: 2,
+      cornerRadius: this.meterInPixel * .05,
       stroke: '#777',
       strokeWidth: 1
     });
     let text1 = new Konva.Text({
       x: this.meterInPixel * 0.05 + (this.meterInPixel * 1.2),
       y: this.meterInPixel * 0.05,
-      text: `${firstname1}\n${lastname1}`,
+      text: `${id}\n${firstname1}\n${lastname1}`,
       fill: '#999',
       fontSize: this.meterInPixel * 0.18,
       fontFamily: 'arial',
@@ -360,10 +627,23 @@ export class RoomComponent implements OnInit {
     let text2 = new Konva.Text({
       x: this.meterInPixel * 0.05,
       y: this.meterInPixel * 0.05,
-      text: `${this.roomDesks[id].firstname2}\n${this.roomDesks[id].lastname2}`,
+      text: `${this.roomDesks[id].id}\n${this.roomDesks[id].firstname2}\n${this.roomDesks[id].lastname2}`,
       fill: '#999',
       fontSize: this.meterInPixel * 0.18,
       fontFamily: 'arial',
+    });
+    let circle = new Konva.Circle({
+      x: this.positionXDeleteIcon2,
+      y: this.positionYDeleteIcon,
+      radius: this.radiusDeleteIcon,
+      fill: 'red',
+      stroke: '#777',
+      strokeWidth: 1,
+      shadowColor: 'black',
+      shadowBlur: 10,
+      shadowOffsetX: 2,
+      shadowOffsetY: 3,
+      shadowOpacity: 0.5,
     });
     let groupSmallDesk = new Konva.Group({
       x: x,
@@ -380,6 +660,7 @@ export class RoomComponent implements OnInit {
     groupSmallDesk.add(chair2);
     groupSmallDesk.add(text1);
     groupSmallDesk.add(text2);
+    groupSmallDesk.add(circle);
     this.layerDesks.add(groupSmallDesk);
     let tr = new Konva.Transformer({
       centeredScaling: true,
@@ -389,7 +670,68 @@ export class RoomComponent implements OnInit {
     this.layerDesks.add(tr);
     tr.nodes([groupSmallDesk]);
 
-
+    groupSmallDesk.on('transform dragmove', function (data): void {
+      let idElementr = 'elr'+id;
+      let elemr: any = document.getElementById(idElementr);
+      elemr.value = Math.floor(groupSmallDesk.rotation());
+      let idElementx = 'elx'+id;
+      let elemx: any = document.getElementById(idElementx);
+      elemx.value = Math.floor(groupSmallDesk.x());
+      let idElementy = 'ely'+id;
+      let elemy: any = document.getElementById(idElementy);
+      elemy.value = Math.floor(groupSmallDesk.y());
+    });
+    circle.on('click', function (event) {
+      groupSmallDesk.destroy();
+      tr.destroy();
+    });
+  }
+  deskTriangleSmall(id: number, x: number, y: number, rotation: number, firstname1: string, lastname1: string): void {
+    this.stage.add(this.layerDesks);
+    let desktop = new Konva.Star({
+      x: 0,
+      y: 0,
+      numPoints: 3,
+      innerRadius: 30,
+      outerRadius: 60,
+      fill: 'white',
+      stroke: '#999',
+      strokeWidth: 2,
+      cornerRadius: 10,
+    });
+    let circle = new Konva.Circle({
+      x: this.positionXDeleteIcon,
+      y: this.positionYDeleteIcon,
+      radius: this.radiusDeleteIcon,
+      fill: 'red',
+      stroke: '#777',
+      strokeWidth: 1,
+      shadowColor: 'black',
+      shadowBlur: 10,
+      shadowOffsetX: 2,
+      shadowOffsetY: 3,
+      shadowOpacity: 0.5,
+    });
+    let groupSmallDesk = new Konva.Group({
+      x: x,
+      y: y,
+      draggable: true,
+      shadowColor: 'black',
+      shadowBlur: 10,
+      shadowOffsetX: 10,
+      shadowOffsetY: 10,
+      rotation: rotation
+    })
+    groupSmallDesk.add(desktop);
+    groupSmallDesk.add(circle);
+    this.layerDesks.add(groupSmallDesk);
+    let tr = new Konva.Transformer({
+      centeredScaling: true,
+      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
+      resizeEnabled: false,
+    })
+    this.layerDesks.add(tr);
+    tr.nodes([groupSmallDesk]);
 
     groupSmallDesk.on('transform dragmove', function (data): void {
       let idElementr = 'elr'+id;
@@ -404,9 +746,10 @@ export class RoomComponent implements OnInit {
     });
 
 
-  }
-  deskTriangleSmall(id: number, x: number, y: number, rotation: number, firstname1: string, lastname1: string): void {
-    console.log('deskTriangleSmall')
+    circle.on('click', function (event) {
+      groupSmallDesk.destroy();
+      tr.destroy();
+    });
   }
   deskTriangleBig(id: number, x: number, y: number, rotation: number, firstname1: string, lastname1: string): void {
     console.log('deskTriangleBig')
@@ -496,7 +839,7 @@ export class RoomComponent implements OnInit {
     windowGroup.add(window3);
     this.layerWindows.add(windowGroup)
     this.stage.add(this.layerWindows);
-    var tr3 = new Konva.Transformer({
+    let tr3 = new Konva.Transformer({
       nodes: [windowGroup],
       centeredScaling: true,
       rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
@@ -505,6 +848,80 @@ export class RoomComponent implements OnInit {
     this.layerWindows.add(tr3);
   }
 
+
+
+
+  savePdf() {
+    let d: any = document.querySelector('#roomvisualiser');
+    html2canvas(d, {
+      allowTaint:true,
+      useCORS: true,
+      scale: 1
+    }).then(canvas => {
+      let img = canvas.toDataURL("image/png");
+      let pdf = new jsPDF();
+      pdf.setFont('Arial');
+      pdf.text('Klasse AC12 | KW 12',30,12);
+      pdf.setFontSize(50);
+      pdf.addImage(img, 'PNG',6,20,200,200);
+      pdf.save('room.pdf');
+    })
+  }
+
+  reset(): void {
+
+  }
+
+  changeUnit(): void {
+
+
+    if(this.selectedUnit == 'cm') {
+      this.minWidth = 500;
+      this.maxWidth = 3000;
+      this.minHeight = 500;
+      this.maxHeight = 3000;
+
+      if(this.vorselectedUnit == 'm'){
+        this.standardRooms[0].width *= 100;
+        this.standardRooms[0].height *= 100;
+      } else if(this.vorselectedUnit == 'mm'){
+        this.standardRooms[0].width /= 10;
+        this.standardRooms[0].height /= 10;
+      }
+
+    }
+    if(this.selectedUnit == 'mm') {
+      this.minWidth = 5000;
+      this.maxWidth = 30000;
+      this.minHeight = 5000;
+      this.maxHeight = 30000;
+
+      if(this.vorselectedUnit == 'cm'){
+        this.standardRooms[0].width *= 10;
+        this.standardRooms[0].height *= 10;
+      } else if(this.vorselectedUnit == 'm'){
+        this.standardRooms[0].width *= 1000;
+        this.standardRooms[0].height *= 1000;
+      }
+    }
+    if(this.selectedUnit == 'm') {
+      this.minWidth = 5;
+      this.maxWidth = 30;
+      this.minHeight = 5;
+      this.maxHeight = 30;
+
+      if(this.vorselectedUnit == 'cm'){
+        this.standardRooms[0].width /= 100;
+        this.standardRooms[0].height /= 100;
+      } else if(this.vorselectedUnit == 'mm'){
+        this.standardRooms[0].width /= 1000;
+        this.standardRooms[0].height /= 1000;
+      }
+    }
+
+    this.vorselectedUnit = this.selectedUnit;
+
+  }
 
 
 }

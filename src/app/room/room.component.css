@@ -23,7 +23,7 @@
   width: 702px;
   height: 702px;
   float: left;
-  margin: 80px 90px;
+  margin: 0px 90px;
 }
 
 * {
@@ -52,7 +52,7 @@ label.label-left-title {
   font-size: 1.3em;
 }
 
-input[type=number] {
+input[type=number],select {
   padding-left: 5px;
   color: #777;
   font-size: 1.1em;
@@ -88,6 +88,16 @@ input[type=number]::-webkit-outer-spin-button {
 .horizontal-width {
   display: flex;
   flex-direction: column;
+}
+
+.horizontal-width input[type=text] {
+  padding-left: 5px;
+  color: #777;
+  font-size: 1.1em;
+  width: 70px;
+  height: 35px;
+  background-color: rgb(248,249,250);
+  border: 1px solid #ddd;
 }
 
 h2 {
@@ -128,7 +138,7 @@ h2 {
   color: #777;
 }
 
-#popupForm {
+.popupForm {
   margin-top: 10%;
   box-shadow: 5px 5px 10px #ccc;
   border-radius: 5px;
@@ -137,7 +147,7 @@ h2 {
   position: absolute;
 }
 
-#headerPopup {
+.headerPopup {
   border-bottom: 1px solid #ddd;
   text-align: center;
   height: 50px;
@@ -149,33 +159,58 @@ h2 {
   padding: 30px;
 }
 
-#contentPopup {
+.contentPopup {
   padding: 30px 0px;
   font-size: 1em;
   padding: 30px;
 }
 
-#popUpActions {
+.popUpActions {
   float: right;
   display: flex;
   gap: 10px;
   padding: 0px 30px 20px 0px;
 }
-#popUpActions button{
+.popUpActions button{
   padding: 3px 10px;
   border: 0;
   height: 30px;
-  width: 70px;
   background-color: #ddd;
   cursor: pointer;
   border-radius: 2px;
 }
 
-#popUpActions button:hover{
+.popUpActions button:hover{
   background-color: #ccc;
 }
 
-#popUpActions button:active{
+.popUpActions button:active{
   background-color: #999;
   color: #fff;
+}
+
+.contentPopup {
+  display: flex;
+  justify-content: space-around;
+}
+
+.contentPopup #right{
+  float: left;
+  width: 100px;
+  border-right: 1px solid #ddd;
+}
+.contentPopup #left{
+  float: left;
+  width:100px;
+}
+
+
+#workspaceHeader {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+}
+
+#linkedicon {
+  margin-top: 35px;
 }
