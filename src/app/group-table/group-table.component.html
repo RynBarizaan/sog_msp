@@ -83,25 +83,25 @@
           </div>
           <div class="row">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="frontOfTheRoom">
+              <input (change)="regulateProperties('frontOfTheRoom')"  class="form-check-input" type="checkbox" value="" id="frontOfTheRoom">
               <label class="form-check-label" for="frontOfTheRoom">
                 Vorne im Raum
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="backOfTheRoom">
+              <input (change)="regulateProperties('backOfTheRoom')" class="form-check-input" type="checkbox" value="" id="backOfTheRoom">
               <label class="form-check-label" for="backOfTheRoom">
                 Hinten im Raum
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="besideWindow">
+              <input (change)="regulateProperties('besideWindow')" class="form-check-input" type="checkbox" value="" id="besideWindow">
               <label class="form-check-label" for="besideWindow">
                 Fensternähe
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="besideDoor" >
+              <input (change)="regulateProperties('besideDoor')" class="form-check-input" type="checkbox" value="" id="besideDoor" >
               <label class="form-check-label" for="besideDoor">
                 Türnähe
               </label>
@@ -113,7 +113,7 @@
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="inFront" >
+              <input (change)="regulateProperties('inFront')" class="form-check-input" type="checkbox" value="" id="inFront" >
               <label class="form-check-label" for="inFront">
                 Frontal
               </label>
