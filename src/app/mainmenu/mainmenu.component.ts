@@ -30,7 +30,7 @@ export class MainmenuComponent implements OnInit {
     this.formModal.show();
   }
 
-////// check if a grupp already created /////
+  ////// check if a grupp already created /////
   isDataExist(): boolean{
     // @ts-ignore
     let dataLength=JSON.parse(sessionStorage.getItem("isDataConfirm"));
@@ -46,13 +46,13 @@ export class MainmenuComponent implements OnInit {
 
   ////////// edit or create a Grupp ////
   editOrCreatGroup(){
-if (this.isDataExist()){
-  sessionStorage.setItem("TheStatus", JSON.stringify(true));
-  this.router.navigate(['/groupTable/edit']);
-}
-else {
-  this.router.navigate(['/group-slider']);
-}
+    if (this.isDataExist()){
+      sessionStorage.setItem("TheStatus", JSON.stringify(true));
+      this.router.navigate(['/groupTable/edit']);
+    }
+    else {
+      this.router.navigate(['/group-slider']);
+    }
   }
 
   ////// delete the Grupp  /////
