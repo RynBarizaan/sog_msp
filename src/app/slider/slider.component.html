@@ -3,7 +3,7 @@
   <ngx-slider class="slider"  [(value)]="value" [options]="options"></ngx-slider>
   <input class="personCount" [(ngModel)]="value">
   <button type="button"  class="nextButton btn btn-outline-dark" (click)="toGruppe()">Weiter</button>
-  <button class="backButton btn btn-outline-dark" routerLink="/mainmenu">Zurück</button>
+  <button class="backButton btn btn-outline-dark" (click)="toMainMenu()">Zurück</button>
 </div>
 
 

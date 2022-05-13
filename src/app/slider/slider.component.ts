@@ -39,8 +39,14 @@ import {Person} from "../model/person";
         sessionStorage.setItem("TheStatus", JSON.stringify(true));
         }
         else {
+          this.formModal = new  window.bootstrap.Modal(
+            document.getElementById("InfoMessage"));
         this.formModal.show();
         }}
+
+      toMainMenu(){
+        this.router.navigate(['/mainmenu']);
+      }
 
         //// set a table with a count ///////
     start(){

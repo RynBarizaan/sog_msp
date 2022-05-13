@@ -57,6 +57,9 @@ else {
 
   ////// delete the Grupp  /////
   removeGruppe(){
+    this.formModalDelete = new window.bootstrap.Modal(
+      document.getElementById("InfoMessage")
+    )
     this.formModalDelete.show();
 
   }

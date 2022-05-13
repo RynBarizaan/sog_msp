@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Person} from "../model/person";
 import {PersonDataService} from "../person-data.service";
 import {Injectable} from '@angular/core';
+import {FormGroup} from "@angular/forms";
 
 
    declare var window: any;
@@ -48,6 +49,9 @@ import {Injectable} from '@angular/core';
       document.getElementById("exampleModalCenter1"));
 
       }
+
+
+
       //Dialog Box for Export Data as CSV
    closeEXP(){
       this.formModal2.hide();
