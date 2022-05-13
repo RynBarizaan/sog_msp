@@ -13,21 +13,51 @@ export class RoomComponent implements OnInit {
   standardRooms: {"id": number, "name": string, "width": number, "height": number}[] = [
     {
       "id": 0,
-      "name": "Standard Room 1",
-      "width": 9,
-      "height": 9
+      "name": "Unterricht",
+      "width": 6,
+      "height": 6
+    },
+    {
+      "id": 1,
+      "name": "Konferenz",
+      "width": 8,
+      "height": 8
+    },
+    {
+      "id": 2,
+      "name": "Workshop",
+      "width": 10,
+      "height": 10
     }
   ]
 
-  roomDesks: {id: number, desktyp: string, place: number, factory: string, x: number, y: number, degRotation: number, firstname1: string, lastname1: string, firstname2?: string, lastname2?: string}[] = [
-    {"id": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 150, "y": 50, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
-    {"id": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 450, "y": 50, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
-    {"id": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-1", "x": 150, "y": 200, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
-    {"id": 3, "desktyp": "eckig", "place": 1, "factory": "s-s-2", "x": 450, "y": 200, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
-    {"id": 4, "desktyp": "eckig", "place": 1, "factory": "s-s-3", "x": 150, "y": 350, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
-    {"id": 5, "desktyp": "eckig", "place": 1, "factory": "s-s-4", "x": 450, "y": 350, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
-    {"id": 6, "desktyp": "eckig", "place": 1, "factory": "s-s-5", "x": 150, "y": 500, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
-    {"id": 7, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 450, "y": 500, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+  roomDesks: {id: number, roomId: number, desktyp: string, place: number, factory: string, x: number, y: number, degRotation: number, firstname1: string, lastname1: string, firstname2?: string, lastname2?: string}[] = [
+    {"id": 0, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-0", "x": 150, "y": 50, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 1, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-1", "x": 450, "y": 50, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 2, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-2", "x": 150, "y": 200, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 3, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-3", "x": 450, "y": 200, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 4, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-4", "x": 150, "y": 350, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 5, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-5", "x": 450, "y": 350, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 6, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 150, "y": 500, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 7, "roomId": 0, "desktyp": "eckig", "place": 1, "factory": "s-s-7", "x": 450, "y": 500, "degRotation": 0, "firstname1": "Vorname", "lastname1": "Nachname"},
+
+    {"id": 8, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-0", "x": 150, "y": 50, "degRotation": 40, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 9, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-1", "x": 450, "y": 50, "degRotation": -40, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 10, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-2", "x": 150, "y": 200, "degRotation": 40, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 11, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-3", "x": 450, "y": 200, "degRotation": -40, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 12, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-4", "x": 150, "y": 350, "degRotation": 40, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 13, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-5", "x": 450, "y": 350, "degRotation": -40, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 14, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 150, "y": 500, "degRotation": 40, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 15, "roomId": 1, "desktyp": "eckig", "place": 1, "factory": "s-s-7", "x": 450, "y": 500, "degRotation": -40, "firstname1": "Vorname", "lastname1": "Nachname"},
+
+    {"id": 16, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-0", "x": 142, "y": 179, "degRotation": 90, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 17, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-1", "x": 522, "y": 250, "degRotation": -90, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 18, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-2", "x": 155, "y": 279, "degRotation": 75, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 19, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-3", "x": 498, "y": 346, "degRotation": -75, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 20, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-4", "x": 185, "y": 369, "degRotation": 50, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 21, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-5", "x": 439, "y": 422, "degRotation": -50, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 22, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-6", "x": 257, "y": 441, "degRotation": 15, "firstname1": "Vorname", "lastname1": "Nachname"},
+    {"id": 23, "roomId": 2, "desktyp": "eckig", "place": 1, "factory": "s-s-7", "x": 358, "y": 453, "degRotation": -15, "firstname1": "Vorname", "lastname1": "Nachname"},
   ]
   roomDoors: { id: number, "factory": string,  x: number, y: number, degRotation: number}[] = [
     {"id": 0, "factory": "l-1", "x": 0, "y": 0, "degRotation": 0},
@@ -44,10 +74,10 @@ export class RoomComponent implements OnInit {
 
 
 
-  visualisedRoom: number = 0;
+  currentRoomId: number = 2;
   widthStage: number = 700;
   heightStage: number = 700;
-  meterInPixel: number = Math.floor(this.widthStage / this.standardRooms[this.visualisedRoom].width);
+  meterInPixel: number = Math.floor(this.widthStage / this.standardRooms[this.currentRoomId].width);
   widthMeter: number = this.standardRooms[0].width;
   heightMeter: number = this.standardRooms[0].height;
   widthSmallDesk?: number;
@@ -95,12 +125,15 @@ export class RoomComponent implements OnInit {
       "degRotation": 0,
     };
 
+
+
   constructor() {
   }
 
   addDesk(desktyp: string, place: number, x: number, y: number, rotation: number): void {
     let desk: any = {
       "id": this.roomDesks.length,
+      "roomId": this.currentRoomId,
       "desktyp": desktyp,
       "place": place,
       "factory": this.factoryCodeConstructor(desktyp, place, this.roomDesks.length),
@@ -160,11 +193,11 @@ export class RoomComponent implements OnInit {
       height: this.heightStage,
     });
 
-    this.calculateMeter(this.standardRooms[0].width,this.standardRooms[0].height);
+    this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
     this.calculateElements();
     let backgroundLayer = new Konva.Layer();
-    for (let i = 0; i < this.standardRooms[0].width; i++) {
-      for (let j = 0; j < this.standardRooms[0].height; j++) {
+    for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
+      for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
         let rect = new Konva.Rect({
           x: i * this.meterInPixel,
           y: j * this.meterInPixel,
@@ -186,6 +219,7 @@ export class RoomComponent implements OnInit {
   drawDesks(): void {
     this.layerDesks = new Konva.Layer();
     for (let i = 0; i < this.roomDesks.length; i++) {
+      if(this.roomDesks[i].roomId == this.currentRoomId) {
       let splittedFactory: any[] = this.roomDesks[i].factory.split("-");
       for (let l = 0; l < 1; l++) {
         switch (splittedFactory[l]) {
@@ -217,22 +251,11 @@ export class RoomComponent implements OnInit {
             break;
         }
       }
+      }
     }
   }
 
-
-
-
   updateVisualisation(width: number, height: number): void {
-
-    if(this.selectedUnit == 'm'){
-    } else if (this.selectedUnit == 'cm'){
-      width /= 1000;
-      height /= 1000;
-    } else if (this.selectedUnit == 'mm'){
-      width /= 10000;
-      height /= 10000;
-    }
 
     if (width >= this.minWidth && width <= this.maxWidth && height >= this.minHeight && height <= this.maxHeight) {
       this.widthMeter = width;
@@ -242,10 +265,10 @@ export class RoomComponent implements OnInit {
         width: this.widthStage,
         height: this.heightStage
       });
-      this.calculateMeter(this.standardRooms[0].width,this.standardRooms[0].height);
+      this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
       let backgroundLayer = new Konva.Layer();
-      for (let i = 0; i < this.standardRooms[0].width; i++) {
-        for (let j = 0; j < this.standardRooms[0].height; j++) {
+      for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
+        for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
           let rect = new Konva.Rect({
             x: i * this.meterInPixel,
             y: j * this.meterInPixel,
@@ -525,7 +548,7 @@ export class RoomComponent implements OnInit {
     let text = new Konva.Text({
       x: this.meterInPixel * 0.05,
       y: this.meterInPixel * 0.05,
-      text: `${id}\n${firstname}\n${lastname}`,
+      text: `${firstname}\n${lastname}`,
       fill: '#999',
       fontSize: this.meterInPixel * 0.18,
       fontFamily: 'arial',
@@ -874,13 +897,11 @@ export class RoomComponent implements OnInit {
 
   changeUnit(): void {
 
-
     if(this.selectedUnit == 'cm') {
       this.minWidth = 500;
       this.maxWidth = 3000;
       this.minHeight = 500;
       this.maxHeight = 3000;
-
       if(this.vorselectedUnit == 'm'){
         this.standardRooms[0].width *= 100;
         this.standardRooms[0].height *= 100;
@@ -888,14 +909,13 @@ export class RoomComponent implements OnInit {
         this.standardRooms[0].width /= 10;
         this.standardRooms[0].height /= 10;
       }
-
     }
+
     if(this.selectedUnit == 'mm') {
       this.minWidth = 5000;
       this.maxWidth = 30000;
       this.minHeight = 5000;
       this.maxHeight = 30000;
-
       if(this.vorselectedUnit == 'cm'){
         this.standardRooms[0].width *= 10;
         this.standardRooms[0].height *= 10;
@@ -904,12 +924,12 @@ export class RoomComponent implements OnInit {
         this.standardRooms[0].height *= 1000;
       }
     }
+
     if(this.selectedUnit == 'm') {
       this.minWidth = 5;
       this.maxWidth = 30;
       this.minHeight = 5;
       this.maxHeight = 30;
-
       if(this.vorselectedUnit == 'cm'){
         this.standardRooms[0].width /= 100;
         this.standardRooms[0].height /= 100;

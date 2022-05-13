@@ -204,11 +204,23 @@ h2 {
   width:100px;
 }
 
-
 #workspaceHeader {
   width: 100%;
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
+}
+
+#workspaceHeader #headerRight {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+#workspaceHeader #headerRight button{
+  width: 90px;
+  height: 30px;
+  background-color: white;
+  border: 2px solid #999;
 }
 
 #linkedicon {
