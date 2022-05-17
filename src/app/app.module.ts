@@ -20,6 +20,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { RoomComponent } from './room/room.component';
 import { ImportCsvComponent } from './import-csv/import-csv.component';
+import { GroupTableConfirmedComponent } from './group-table-confirmed/group-table-confirmed.component';
 
 
 
@@ -33,6 +34,7 @@ import { ImportCsvComponent } from './import-csv/import-csv.component';
     ExportCSVComponent,
     RoomComponent,
     ImportCsvComponent,
+    GroupTableConfirmedComponent,
 
 
   ],

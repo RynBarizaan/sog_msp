@@ -6,6 +6,7 @@ import {SliderComponent} from "./slider/slider.component";
 import {GroupTableComponent} from "./group-table/group-table.component";
 import {ExportCSVComponent} from "./export-csv/export-csv.component";
 import {RoomComponent} from "./room/room.component";
+import {GroupTableConfirmedComponent} from "./group-table-confirmed/group-table-confirmed.component";
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: '', redirectTo:'/mainmenu', pathMatch:'full'},
   { path: 'group-slider', component:SliderComponent },
   { path: 'groupTable/:value', component:GroupTableComponent },
+  { path: 'groupTableConfirmed', component:GroupTableConfirmedComponent },
   { path: 'ExportCSV', component: ExportCSVComponent },
   { path: 'room', component: RoomComponent },
   { path: '**', component: PageNotFoundComponent },

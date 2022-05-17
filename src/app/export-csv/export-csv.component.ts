@@ -13,7 +13,7 @@ import {
 import { Title } from "@angular/platform-browser";
 import { MatPasswordStrengthComponent } from "@angular-material-extensions/password-strength";
 import {encrypt} from "../model/encrypt";
-import {GroupTableComponent} from "../group-table/group-table.component";
+import {GroupTableConfirmedComponent} from "../group-table-confirmed/group-table-confirmed.component";
 
 declare var window: any;
 
@@ -36,9 +36,9 @@ export class ExportCSVComponent {
   inputType = false;
   hide = true;
 
-  constructor(public groupTable: GroupTableComponent,) {};
+  constructor(public groupTableConfirmed: GroupTableConfirmedComponent,) {};
   closeModal() {
-    this.groupTable.closeEXP();
+    this.groupTableConfirmed.closeEXP();
     this.password='';
     this.confirmPassword='';
   }
