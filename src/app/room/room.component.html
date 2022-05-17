@@ -9,31 +9,32 @@
     </div>
     <div class="popUpActions">
       <button (click)="isToDelete = false">Nein</button>
-      <button (click)="deleteDesk(); isToDelete = false">Ja</button>
+      <button (click)="deleteElem(); isToDelete = false">Ja</button>
     </div>
   </div>
-  <div *ngIf="isToAdd" class="popupForm">
 
+
+  <div *ngIf="isToAddDesk" class="popupForm">
     <div class="headerPopup">
-      Neuer Schreibtisch gestalten
+      Neuer Schreibtisch hinzufügen
     </div>
     <div class="contentPopup">
-      <div id="right">
+      <div class="right">
         <label class="">Type</label><br>
-        <select name="desktyp" id="desktyp" [(ngModel)]="deskToAdd.desktyp">
-          <option value="eckig">Eckig</option>
+        <select [(ngModel)]="deskToAdd.elementtyp">
+          <option value="eckig" selected>Eckig</option>
           <option value="dreieckig">Dreieckig</option>
           <option value="rund">Rund</option>
         </select>
         <br>
         <label class="">Plätze</label><br>
-        <select name="place" id="place" [(ngModel)]="deskToAdd.place">
+        <select [(ngModel)]="deskToAdd.place">
           <option value="1">1</option>
           <option value="2">2</option>
         </select>
       </div>
 
-      <div id="left">
+      <div class="left">
         <label class="">X</label><br>
         <input type="number" min="0" max="{{widthStage}}" [(ngModel)]="deskToAdd.x">
         <br>
@@ -46,11 +47,81 @@
 
     </div>
     <div class="popUpActions">
-      <button (click)="isToAdd = false">Abbrechen</button>
-      <button (click)="addDesk(deskToAdd.desktyp,deskToAdd.place,deskToAdd.x,deskToAdd.y,deskToAdd.degRotation); isToAdd = false">Hinzufügen</button>
+      <button (click)="isToAddDesk = false">Abbrechen</button>
+      <button (click)="addDesk(deskToAdd.elementtyp,deskToAdd.place,deskToAdd.x,deskToAdd.y,deskToAdd.degRotation); isToAddDesk = false">Hinzufügen</button>
     </div>
-
   </div>
+
+
+  <div *ngIf="isToAddDoor" class="popupForm">
+    <div class="headerPopup">
+      Neue Tür hinzufügen
+    </div>
+    <div class="contentPopup">
+      <div class="right">
+        <label>Type</label><br>
+        <select [(ngModel)]="doorToAdd.elementtyp">
+          <option value="Linksöffnend" selected>Linksöffnend</option>
+          <option value="Rechtsöffnend">Rechtsöffnend</option>
+          <option value="Mittelöffnend">Mittelöffnend</option>
+        </select>
+        <br>
+        <label class="">Rotation</label><br>
+        <input type="number" [(ngModel)]="doorToAdd.degRotation">
+      </div>
+
+      <div class="left">
+        <label class="">X</label><br>
+        <input type="number" min="0" max="{{widthStage}}" [(ngModel)]="doorToAdd.x">
+        <br>
+        <label class="">Y</label><br>
+        <input type="number" min="0" max="{{heightStage}}" [(ngModel)]="doorToAdd.y">
+
+      </div>
+
+    </div>
+    <div class="popUpActions">
+      <button (click)="isToAddDoor = false">Abbrechen</button>
+      <button (click)="addDoor(doorToAdd.elementtyp,doorToAdd.x,doorToAdd.y,doorToAdd.degRotation); isToAddDoor = false">Hinzufügen</button>
+    </div>
+  </div>
+
+
+  <div *ngIf="isToAddWindow" class="popupForm">
+    <div class="headerPopup">
+      Neuer Fenster hinzufügen
+    </div>
+    <div class="contentPopup">
+      <div class="right">
+        <label>Type</label><br>
+        <select [(ngModel)]="windowToAdd.elementtyp">
+          <option value="Linksöffnend" selected>Linksöffnend</option>
+          <option value="Rechtsöffnend">Rechtsöffnend</option>
+          <option value="Mittelöffnend">Mittelöffnend</option>
+        </select>
+        <br>
+        <label class="">Rotation</label><br>
+        <input type="number" [(ngModel)]="windowToAdd.degRotation">
+      </div>
+
+      <div class="left">
+        <label class="">X</label><br>
+        <input type="number" min="0" max="{{widthStage}}" [(ngModel)]="windowToAdd.x">
+        <br>
+        <label class="">Y</label><br>
+        <input type="number" min="0" max="{{heightStage}}" [(ngModel)]="windowToAdd.y">
+
+      </div>
+
+    </div>
+    <div class="popUpActions">
+      <button (click)="isToAddWindow = false">Abbrechen</button>
+      <button (click)="addWindow(windowToAdd.elementtyp,windowToAdd.x,windowToAdd.y,windowToAdd.degRotation); isToAddWindow = false">Hinzufügen</button>
+    </div>
+  </div>
+
+
+
 </div>
 
 <div id="container">
@@ -65,22 +136,26 @@
           <input type="number" min="{{minWidth}}" max="{{maxWidth}}" [(ngModel)]="standardRooms[currentRoomId].width" (change)="updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">
         </div>
 
+        <!--
         <div class="horizontal-width" id="linkedicon">
           <span class="material-icons" *ngIf="islinked" (click)="islinked = false;">link</span>
           <span class="material-icons" *ngIf="!islinked" (click)="islinked = true;">link_off</span>
         </div>
+        -->
 
         <div class="horizontal-width">
           <div><label class="label-left-dark">Breite</label></div>
           <input type="number" min="{{minHeight}}" max="{{maxHeight}}" [(ngModel)]="standardRooms[currentRoomId].height" (change)="updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">
         </div>
 
+        <!--
         <div class="horizontal-width">
           <div><label class="label-left-dark">Einheit</label></div>
           <select (change)="changeUnit()" name="unit" class="selectelement" [(ngModel)]="selectedUnit">
             <option *ngFor="let unit of units">{{unit}}</option>
           </select>
         </div>
+        -->
 
       </div>
 
@@ -90,54 +165,141 @@
 
       <div><label class="label-left-dark label-left-title">Schreibtische</label></div>
 
-      <div  *ngFor="let desk of roomDesks">
-        <div class="horizontal-left-side-element" *ngIf="desk.roomId === currentRoomId" style="height: 80px;">
+      <div  *ngFor="let elem of allElements">
+
+        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'desk'"  style="height: 80px; margin-bottom: 10px; border-bottom: 1px solid #ddd">
           <div class="horizontal-width">
             <div><label class="label-left-dark">Typ</label></div>
-            <label  style="color: #999; font-family: 'Segoe UI';">{{desk.desktyp}}</label>
+            <label  style="color: #999; font-family: 'Segoe UI';">{{elem.elementtyp}}</label>
           </div>
           <div class="horizontal-width">
             <div><label class="label-left-dark">Plätze</label></div>
-            <label  style="color: #999; font-family: 'Segoe UI';">{{desk.place}}</label>
+            <label  style="color: #999; font-family: 'Segoe UI';">{{elem.place}}</label>
           </div>
           <div class="horizontal-width">
             <div><label class="label-left-dark">X</label></div>
-            <input type="number" value="{{desk.x}}" id="elx{{desk.id}}" (change)="updateDesks(desk.id)" [(ngModel)]="desk.x"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width">
             <div><label class="label-left-dark">Y</label></div>
-            <input type="number" value="{{desk.y}}" id="ely{{desk.id}}" (change)="updateDesks(desk.id)" [(ngModel)]="desk.y"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width">
             <div><label class="label-left-dark">Rotation</label></div>
-            <input type="number" value="{{desk.degRotation}}" id="elr{{desk.id}}" (change)="updateDesks(desk.id)" [(ngModel)]="desk.degRotation"  style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" value="{{elem.degRotation}}" id="elr{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.degRotation"  style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width" style="line-height: 110px;">
-            <label (click)="isToDelete = true; currentId = desk.id;"><span class="material-icons">delete_sweep</span></label>
+            <label (click)="isToDelete = true; currentId = elem.id;"><span class="material-icons">delete_sweep</span></label>
           </div>
         </div>
+
       </div>
 
-      <div style="width: 100%; height: 50px;">
-        <label (click)="isToAdd = true;" style="float: right"><span class="material-icons">add</span></label>
+      <div style="width: 100%; height: 0px;">
+        <label (click)="isToAddDesk = true;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
+      </div>
+
+
+    </div>
+
+
+
+    <div class="left-container-child" >
+
+      <div><label class="label-left-dark label-left-title">Türe</label></div>
+
+      <div  *ngFor="let elem of allElements">
+
+        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'door'"  style="height: 80px; margin-bottom: 10px; border-bottom: 1px solid #ddd">
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">Typ</label></div>
+            <label  style="color: #999; font-family: 'Segoe UI';">{{elem.elementtyp}}</label>
+          </div>
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">X</label></div>
+            <input type="number" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
+          </div>
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">Y</label></div>
+            <input type="number" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
+          </div>
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">Rotation</label></div>
+            <input type="number" value="{{elem.degRotation}}" id="elr{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.degRotation"  style="color: #999; font-family: 'Segoe UI';">
+          </div>
+          <div class="horizontal-width" style="line-height: 110px;">
+            <label (click)="isToDelete = true; currentId = elem.id;"><span class="material-icons">delete_sweep</span></label>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="width: 100%; height: 0px;">
+        <label (click)="isToAddDoor = true;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
+      </div>
+
+
+    </div>
+
+
+    <div class="left-container-child" >
+
+      <div><label class="label-left-dark label-left-title">Fenster</label></div>
+
+      <div  *ngFor="let elem of allElements">
+
+        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'window'"  style="height: 80px; margin-bottom: 10px; border-bottom: 1px solid #ddd">
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">Typ</label></div>
+            <label  style="color: #999; font-family: 'Segoe UI';">{{elem.elementtyp}}</label>
+          </div>
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">X</label></div>
+            <input type="number" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
+          </div>
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">Y</label></div>
+            <input type="number" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
+          </div>
+          <div class="horizontal-width">
+            <div><label class="label-left-dark">Rotation</label></div>
+            <input type="number" value="{{elem.degRotation}}" id="elr{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.degRotation"  style="color: #999; font-family: 'Segoe UI';">
+          </div>
+          <div class="horizontal-width" style="line-height: 110px;">
+            <label (click)="isToDelete = true; currentId = elem.id;"><span class="material-icons">delete_sweep</span></label>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="width: 100%; height: 0px;">
+        <label (click)="isToAddWindow = true;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
       </div>
 
 
     </div>
 
   </div>
-  <div id="visualiser">
+  <div id="container-visualiser">
+    <div id="visualiser">
     <div id="workspaceHeader">
       <div id="headerRight">
-        <button class="btn" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
-        <button class="btn" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
-        <button class="btn" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
+        <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
+        <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
+        <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
+        <button class="btn" id="btn3" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
       </div>
       <div id="headerLeft">
         <span (click)="savePdf()" class="material-icons p-3">picture_as_pdf</span>
-        <span class="material-icons p-3">restart_alt</span>
+        <span (click)="reset()" class="material-icons p-3">restart_alt</span>
       </div>
     </div>
     <div id="roomvisualiser"></div>
+    </div>
+
+    <div id="zoomRange">
+      <input type="range" id="zoom" orient="vertical" (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
+    </div>
   </div>
+
 </div>
