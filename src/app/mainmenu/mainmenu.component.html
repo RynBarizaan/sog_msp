@@ -2,7 +2,7 @@
   <div class="d-grid gap-2 justify-content-center mt-3">
     <div class="btn-group">
       <button type="button" (click)="editOrCreatGroup()" class="w-75 btn mb-3 btn-lg btn-block" [ngClass]="{'btn-success':this.isDataExist(), 'btn-primary': !this.isDataExist()}">{{gruppeStatus}}</button>
-      <button type="button" (click)="ImportBox()" class="material-icons md-48 btn btn-secondary mb-3 btn-lg btn-block" [ngClass]="{'rounded-end':!this.isDataExist()}" title="Import">file_open</button>
+      <button type="button" (click)="ImportBox()"  class="material-icons md-48 btn btn-secondary mb-3 btn-lg btn-block" [ngClass]="{'disabled':this.isDataExist()}" title="Import">file_open</button>
       <button type="button" (click)="removeGruppe()" class="btn btn-danger bg-danger btn-sm btn-block material-icons mb-3" [ngClass]="{'visually-hidden':!this.isDataExist()}" title="Delete">delete</button>
     </div>
     <div class="btn-group">
