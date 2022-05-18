@@ -18,6 +18,7 @@ interface Object {
   firstname2?: string | "Vorname2";
   lastname2?: string | "Nachname2";
 }
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-room',
@@ -26,7 +27,7 @@ interface Object {
 })
 export class RoomComponent implements OnInit {
 
-  constructor() {
+  constructor(private route: Router) {
   }
 
   standardRooms: {"id": number, "name": string, "width": number, "height": number}[] = [
@@ -56,9 +57,23 @@ export class RoomComponent implements OnInit {
     }
   ]
 
+   elementsNumber: any = [{
+        'typ': 'desk',
+        'number': 0,
+      },
+     {
+       'typ': 'door',
+       'number': 0,
+     },{
+       'typ': 'window',
+       'number': 0,
+     }];
+
+
   // Elements for all standard rooms
-  allElementsKopie: Object[] = JSON.parse(JSON.stringify(objectsData));
-  allElements: Object[] = JSON.parse(JSON.stringify(objectsData));
+  allElementsKopie: any[] = JSON.parse(JSON.stringify(objectsData));
+
+  allElements: any[] = JSON.parse(JSON.stringify(objectsData));
 
   // Stage
   currentRoomId: number = 0;
@@ -88,6 +103,7 @@ export class RoomComponent implements OnInit {
   isToAddDesk: boolean = false;
   isToAddDoor: boolean = false;
   isToAddWindow: boolean = false;
+  isToSaveRoom: boolean = false;
   // Delete Element
   isToDelete: boolean = false;
   currentId?: any;
@@ -130,7 +146,9 @@ export class RoomComponent implements OnInit {
 
   // zooming stage
   zoomValue: number = 5;
-
+  // saving room
+  roomElements: any = [];
+  roomToSaveInfos: any = [];
 
   addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number): void {
     let desk: any = {
@@ -264,7 +282,7 @@ export class RoomComponent implements OnInit {
     this.stage.add(backgroundLayer);
     this.drawElements();
     this.zoomStage();
-
+    this.makeRoomDetailsReady();
 
 
   }
@@ -1651,6 +1669,37 @@ export class RoomComponent implements OnInit {
 
   }
 
+  makeRoomDetailsReady() {
+    this.roomElements = [];
+    let roomId: number = this.currentRoomId;
+    this.elementsNumber[0].number = 0;
+    this.elementsNumber[1].number = 0;
+    this.elementsNumber[2].number = 0;
+
+    for(let elem of this.allElements) {
+      if(elem.roomId === roomId) {
+        let x = new Object();
+        x = elem;
+        this.roomElements.push(x);
+        if(elem.element == 'desk'){
+          this.elementsNumber[0].number++;
+        }
+        if(elem.element == 'door'){
+          this.elementsNumber[1].number++;
+        }
+        if(elem.element == 'window'){
+          this.elementsNumber[2].number++;
+        }
+      }
+    }
+  }
+
+  saveRoom() {
+
+    this.route.navigate(['mainmenu']);
+    sessionStorage.setItem("room", JSON.stringify(this.roomElements));
+
+  }
 
 
 

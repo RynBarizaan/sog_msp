@@ -22,6 +22,7 @@ export class MainmenuComponent implements OnInit {
     this.formModalDelete = new window.bootstrap.Modal(
       document.getElementById("InfoMessage")
     )
+    this.isRoomAvailable();
   }
   closeModal() {
     this.formModal.hide();
@@ -35,7 +36,7 @@ export class MainmenuComponent implements OnInit {
     // @ts-ignore
     let dataLength=JSON.parse(sessionStorage.getItem("isDataConfirm"));
     if (dataLength){
-      this.gruppeStatus = 'Gruppe bearbeiten'
+      this.gruppeStatus = 'Gruppe bearbeiten';
       return true;
     }
     else  {
@@ -43,6 +44,20 @@ export class MainmenuComponent implements OnInit {
       return false;
     }
   }
+
+  isRoomAvailable(): void {
+    let room: any;
+    room = sessionStorage.getItem("room");
+    room = JSON.parse(room);
+    let el: any = document.getElementById('roomBtn');
+    if(room !== null){
+      el.style.backgroundColor = 'green';
+    } else {
+      el.style.backgroundColor = 'blue';
+    }
+  }
+
+
 
   ////////// edit or create a Grupp ////
   editOrCreatGroup(){
