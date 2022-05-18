@@ -3,7 +3,7 @@ import {MainmenuComponent} from "../mainmenu/mainmenu.component";
 import {FormControl, Validators} from "@angular/forms";
 import * as CryptoJS from 'crypto-js'
 import {Person} from "../model/person";
-import {decrypt} from "../model/decrypt";
+import {csvRecord} from "../model/csv-record";
 
 @Component({
   selector: 'app-import-csv',
@@ -12,13 +12,17 @@ import {decrypt} from "../model/decrypt";
 })
 
 export class ImportCsvComponent implements OnInit {
+  // @ts-ignore
+  listOfContacts: Array<any> = JSON.parse(sessionStorage.getItem("person"));
+  Decrypt: Array<any> = [];
   textToConvert!: string;
   password: any;
   hide = true;
-  Decrypt: Array<any> = [];
 
   public records: any[] = [];
   @ViewChild('csvReader') csvReader: any;
+
+  // Import CSV File in Array
 
   uploadListener($event: any): void {
 
@@ -33,6 +37,7 @@ export class ImportCsvComponent implements OnInit {
       reader.onload = () => {
         let csvData = reader.result;
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
+
         this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray);
       };
 
@@ -47,42 +52,23 @@ export class ImportCsvComponent implements OnInit {
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any) {
-    let csvArr = [];
-    let decArr =[];
+    let csvRecArr = [];
 
-    for (let i = 1; i < csvRecordsArray.length; i++) {
-      let curruntRecord = (<string>csvRecordsArray[i]).split(',');
-        // @ts-ignore
-        let person: Person = new Person();
-        person.Vorname = curruntRecord[0].trim();
-        //csvRecord.firstName = curruntRecord[1].trim();
-        //csvRecord.lastName = curruntRecord[2].trim();
-        csvArr.push(person);
-    }
-    var data = csvArr.map(t=>t.Vorname);
-    var string = data.join('');
-    console.log(string);
+    for (let i = 1; i < csvRecordsArray.length-1; i++) {
 
-    this.Decrypt.push(new decrypt(CryptoJS.AES.decrypt(string.trim(), this.password.trim()).toString(CryptoJS.enc.Utf8)))
-    var data2= this.Decrypt.map(z=>z.code);
-    var string2 = data2.join();
-    var splited =string2.split(',')
-
-    //let person: Person = new Person();
-
-    for (let p=1; p < splited.length; p++){
-      let rec = (<string>splited[p]).split(',');
+      let curruntRecord = (<string>csvRecordsArray[i]).split(/\r\n|\n/);
+      let encrypt: csvRecord = new csvRecord();
+      csvRecArr.push(encrypt);
+      this.listOfContacts.push((CryptoJS.AES.decrypt(curruntRecord.toString(), this.password.trim()).toString(CryptoJS.enc.Utf8)))
 
     }
-    console.log();
-    return  csvArr;
+    console.log(csvRecArr)
+    return  csvRecArr;
   }
 
   isValidCSVFile(file: any) {
     return file.name.endsWith(".csv");
   }
-
-
   fileReset() {
     this.csvReader.nativeElement.value = "";
     this.records = [];
@@ -100,8 +86,15 @@ export class ImportCsvComponent implements OnInit {
 
   }
   test(){
-    this.myInput.nativeElement.focus();
-    console.log(CryptoJS.AES.decrypt(this.textToConvert.trim(), this.password.trim()).toString(CryptoJS.enc.Utf8))
+    if (this.password !="" && this.password != null){
+      sessionStorage.setItem("person", JSON.stringify(this.listOfContacts));
+      sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
+      this.closeModal()
+    }
+    else{
+      this.myInput.nativeElement.focus();
+      console.log("Bitte Passwort eingeben")
+    }
   }
 
   closeModal() {

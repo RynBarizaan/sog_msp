@@ -80,9 +80,12 @@ export class ExportCSVComponent {
       for (let i = 0; i < this.listOfContacts.length; i++) {
         arr.push(this.listOfContacts[i]['Vorname']+","+this.listOfContacts[i]['Nachname']+","+this.listOfContacts[i]['Türnähe']+","+this.listOfContacts[i]['Tafelnähe']+','+this.listOfContacts[i]['Frontal']+','+this.listOfContacts[i]['Fensternähe']+','+this.listOfContacts[i]['HintenImRaum']+','+this.listOfContacts[i]['VorneImRaum']+',')
 
-
         for (let x=0; x<this.listOfContacts[i]['AusnahmenVonNachbern'].length; x++){
           arr[i]+=(this.listOfContacts[i]['AusnahmenVonNachbern'][x]+",");
+
+        }
+        for (let x=0; x<this.listOfContacts[i]['AusnahmenVonNachbernAsBoolean'].length; x++){
+          arr[i]+=(this.listOfContacts[i]['AusnahmenVonNachbernAsBoolean'][x]+",");
         }
         this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
 

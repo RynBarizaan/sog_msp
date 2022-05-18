@@ -8,7 +8,7 @@
     </div>
       <div class="modal-body "style="width: 100%;">
         <span class="material-icons md-48">file_open</span>
-        <input type="file" #csvReader class="form-control form-control-lg btn-file" style="width: 80%; left:22px" name="Upload CSV" id="txtFileUpload" accept=".csv"/>
+        <input type="file" #csvReader name="Upload CSV" id="txtFileUpload"  accept=".csv"  class="form-control form-control-lg btn-file" style="width: 80%; left:22px"/>
         <small id="FileTypHelp" class="form-text text-muted" style="margin-left: 70px">eine gültige CSV Datei Auswählen</small> <br>
         <span class="material-icons md-48 mt-2">lock</span>
 
@@ -33,7 +33,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Schlißen</button>
-        <button type="button" class="btn btn-outline-dark" (click)="test()">Beschtätigen und Importieren</button>
+        <button type="button" class="btn btn-outline-dark" (change)="uploadListener($event)" (click)="test()">Beschtätigen und Importieren</button>
       </div>
     </div>
   </div>
