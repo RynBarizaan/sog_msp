@@ -13,6 +13,7 @@ export class MainmenuComponent implements OnInit {
   formModalDelete: any;
 
   gruppeStatus:string = 'Gruppe erstellen';
+  raumStatus:string = 'Raum erstellen';
   constructor(private router: Router) { }
 
   // Modal Box for Import-CSV
@@ -53,9 +54,11 @@ export class MainmenuComponent implements OnInit {
     if(room !== null){
       el.classList.remove('btn-primary');
       el.classList.add('btn-success');
+      this.raumStatus = 'Raum bearbeiten';
     } else {
       el.classList.remove('btn-success');
       el.classList.add('btn-primary');
+      this.raumStatus = 'Raum erstellen';
     }
   }
 
