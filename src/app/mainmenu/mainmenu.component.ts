@@ -51,9 +51,11 @@ export class MainmenuComponent implements OnInit {
     room = JSON.parse(room);
     let el: any = document.getElementById('roomBtn');
     if(room !== null){
-      el.style.backgroundColor = 'green';
+      el.classList.remove('btn-primary');
+      el.classList.add('btn-success');
     } else {
-      el.style.backgroundColor = 'blue';
+      el.classList.remove('btn-success');
+      el.classList.add('btn-primary');
     }
   }
 
