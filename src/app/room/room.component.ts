@@ -105,6 +105,8 @@ export class RoomComponent implements OnInit {
   primaryColor = '#777777';
   showPicker: boolean = false;
 
+  // room saved then switch elements in visualisation
+  isRoomSaved: boolean = false;
 
 
   // Add Element
@@ -157,6 +159,66 @@ export class RoomComponent implements OnInit {
   // saving room
   roomElements: any = [];
   roomToSaveInfos: any = [];
+
+  ngOnInit() {
+
+    let room = JSON.parse(<string>sessionStorage.getItem("room"));
+    let roomDimension = JSON.parse(<string>sessionStorage.getItem("roomDimension"));
+    if(room != null) {
+      this.allElements = room;
+      this.isRoomSaved = true;
+      this.standardRooms[0].width = roomDimension.width;
+      this.standardRooms[0].height = roomDimension.height;
+    } else {
+      this.isRoomSaved = false;
+      let c: any = document.getElementById('standardRoomsChanger');
+      c.style.display = 'flex';
+      c.style.alignItems = 'center';
+      c.style.gap = '20px';
+      c.style.visibility = 'visible';
+    }
+
+
+    this.isToDelete = true;
+    this.isToDelete = false;
+    this.setButtons();
+
+    this.stage = new Konva.Stage({
+      container: 'roomvisualiser',
+      width: this.widthStage,
+      height: this.heightStage,
+      draggable: false,
+    });
+    this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
+    this.calculateElements();
+    let backgroundLayer = new Konva.Layer();
+    for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
+      for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
+        let rect = new Konva.Rect({
+          x: i * this.meterInPixel,
+          y: j * this.meterInPixel,
+          width: this.meterInPixel,
+          height: this.meterInPixel,
+          fill: '#dedede',
+          stroke: '#fff',
+          strokeWidth: 1
+        });
+        backgroundLayer.add(rect);
+      }
+    }
+    this.stage.add(backgroundLayer);
+
+
+
+    this.drawElements();
+    this.zoomStage();
+    this.makeRoomDetailsReady();
+
+//this.makeColorPickerDraggable();
+
+
+
+  }
 
   addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number): void {
     let desk: any = {
@@ -256,46 +318,6 @@ export class RoomComponent implements OnInit {
         ele.style.color = 'white';
       }
     }
-  }
-
-  ngOnInit() {
-
-    this.isToDelete = true;
-    this.isToDelete = false;
-    this.setButtons();
-
-    this.stage = new Konva.Stage({
-      container: 'roomvisualiser',
-      width: this.widthStage,
-      height: this.heightStage,
-      draggable: false,
-    });
-    this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
-    this.calculateElements();
-    let backgroundLayer = new Konva.Layer();
-    for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
-      for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
-        let rect = new Konva.Rect({
-          x: i * this.meterInPixel,
-          y: j * this.meterInPixel,
-          width: this.meterInPixel,
-          height: this.meterInPixel,
-          fill: '#dedede',
-          stroke: '#fff',
-          strokeWidth: 1
-        });
-        backgroundLayer.add(rect);
-      }
-    }
-    this.stage.add(backgroundLayer);
-    this.drawElements();
-    this.zoomStage();
-    this.makeRoomDetailsReady();
-
-//this.makeColorPickerDraggable();
-
-
-
   }
 
   zoomStage(): void {
@@ -1719,6 +1741,11 @@ export class RoomComponent implements OnInit {
   saveRoom() {
 
     this.route.navigate(['mainmenu']);
+
+    for(let element of this.roomElements) {
+      element.roomId = 0;
+    }
+
     sessionStorage.setItem("room", JSON.stringify(this.roomElements));
     let roomStage: any = {
       "width": this.standardRooms[this.currentRoomId].width,
@@ -1728,8 +1755,7 @@ export class RoomComponent implements OnInit {
 
   }
 
-
-  changeComplete($event: ColorEvent): void {
+  changeColor($event: ColorEvent): void {
     this.primaryColor = $event.color.hex;
     let element: any = document.getElementById('colorPickerTrigger');
     element.style.backgroundColor = this.primaryColor;

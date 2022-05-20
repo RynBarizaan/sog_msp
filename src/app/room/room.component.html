@@ -322,10 +322,13 @@
 
     <div id="workspaceHeader">
       <div id="headerRight">
-        <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
-        <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
-        <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
-        <button class="btn" id="btn3" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
+        <div id="standardRoomsChanger" style="visibility: hidden;">
+          <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
+          <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
+          <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
+          <button class="btn" id="btn3" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
+        </div>
+        <div style="position: absolute"><label *ngIf="isRoomSaved">My Room</label></div>
       </div>
       <div id="headerLeft">
         <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
@@ -333,7 +336,7 @@
         <span (click)="isToSaveRoom = true; makeRoomDetailsReady();" class="material-icons p-1">save</span>
       </div>
     </div>
-      <color-photoshop *ngIf="showPicker" style="z-index: 1000; position: absolute; margin-top: -50px; margin-left: -20px;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeComplete($event)">
+      <color-photoshop *ngIf="showPicker" style="z-index: 1000; position: absolute; margin-top: -50px; margin-left: -20px;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
       </color-photoshop>
     <div id="roomvisualiser">
 
