@@ -129,29 +129,32 @@ export class RoomComponent implements OnInit {
   minHeight: number = 5;
   maxHeight: number = 30;
   // Pre elements to add
-  deskToAdd: {elementtyp: string, place: number, x:number, y: number, degRotation: number} =
+  deskToAdd: {elementtyp: string, place: number, x:number, y: number, degRotation: number, bgClr: string} =
     {
       "elementtyp": "eckig",
       "place": 1,
       "x": 0,
       "y": 0,
       "degRotation": 0,
+      "bgClr": '#777777'
     };
 
-  doorToAdd: {elementtyp: string, x:number, y: number, degRotation: number} =
+  doorToAdd: {elementtyp: string, x:number, y: number, degRotation: number, bgClr: string} =
     {
       "elementtyp": "linksöffnend",
       "x": 0,
       "y": 0,
       "degRotation": 0,
+      "bgClr": '#777777'
     };
 
-  windowToAdd: {elementtyp: string, x:number, y: number, degRotation: number} =
+  windowToAdd: {elementtyp: string, x:number, y: number, degRotation: number, bgClr: string} =
     {
       "elementtyp": "middle",
       "x": 0,
       "y": 0,
       "degRotation": 0,
+      "bgClr": '#777777'
     };
 
   // zooming stage
@@ -220,7 +223,7 @@ export class RoomComponent implements OnInit {
 
   }
 
-  addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number): void {
+  addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number, bgClr: string): void {
     let desk: any = {
       "id": this.allElements.length,
       "roomId": this.currentRoomId,
@@ -231,6 +234,7 @@ export class RoomComponent implements OnInit {
       "x": x,
       "y": y,
       "degRotation": rotation,
+      "bgClr": bgClr,
       "firstname1": 'Vorname',
       "lastname1": 'Nachname',
       "firstname2": 'Vorname-2',
@@ -241,7 +245,7 @@ export class RoomComponent implements OnInit {
     this.layerElements.destroy();
     this.drawElements();
   }
-  addDoor(elementtyp: string, x: number, y: number, rotation: number): void {
+  addDoor(elementtyp: string, x: number, y: number, rotation: number, bgClr: string): void {
     let desk: any = {
       "id": this.allElements.length,
       "roomId": this.currentRoomId,
@@ -251,13 +255,14 @@ export class RoomComponent implements OnInit {
       "x": x,
       "y": y,
       "degRotation": rotation,
+      "bgClr": bgClr,
     }
 
     this.allElements.push(desk);
     this.layerElements.destroy();
     this.drawElements();
   }
-  addWindow(elementtyp: string, x: number, y: number, rotation: number): void {
+  addWindow(elementtyp: string, x: number, y: number, rotation: number, bgClr: string): void {
     let desk: any = {
       "id": this.allElements.length,
       "roomId": this.currentRoomId,
@@ -267,6 +272,7 @@ export class RoomComponent implements OnInit {
       "x": x,
       "y": y,
       "degRotation": rotation,
+      "bgClr": bgClr,
     }
 
     this.allElements.push(desk);

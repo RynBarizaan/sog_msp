@@ -24,11 +24,15 @@
   justify-content: left;
 }
 
+#roomvisualiser {
+  /*border: 3px solid blue;*/
+}
+
 
 #visualiser {
   position: relative;
-  width: 702px;
-  height: 702px;
+  width: 700px;
+  height: 700px;
   margin-left: 40px;
   margin-top: 10px;
 }
