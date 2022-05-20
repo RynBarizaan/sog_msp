@@ -21,6 +21,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { RoomComponent } from './room/room.component';
 import { ImportCsvComponent } from './import-csv/import-csv.component';
 import { GroupTableConfirmedComponent } from './group-table-confirmed/group-table-confirmed.component';
+import { ColorPhotoshopModule } from 'ngx-color/photoshop';
 
 
 
@@ -53,7 +54,8 @@ import { GroupTableConfirmedComponent } from './group-table-confirmed/group-tabl
     MatPasswordStrengthModule.forRoot(),
     MatPasswordStrengthModule,
     MatIconModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    ColorPhotoshopModule
   ],
   providers: [],
   bootstrap: [AppComponent]

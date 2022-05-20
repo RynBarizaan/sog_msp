@@ -168,7 +168,7 @@
       <div class="horizontal-left-side-element">
         <div class="horizontal-width">
           <div><label class="label-left-dark">Länge</label></div>
-          <input type="number" min="{{minWidth}}" max="{{maxWidth}}" [(ngModel)]="standardRooms[currentRoomId].width" (change)="updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">
+          <input type="number" min="{{minHeight}}" max="{{maxHeight}}" [(ngModel)]="standardRooms[currentRoomId].height" (change)="updateVisualisation(standardRooms[currentRoomId].height,standardRooms[currentRoomId].height)">
         </div>
 
         <!--
@@ -180,7 +180,7 @@
 
         <div class="horizontal-width">
           <div><label class="label-left-dark">Breite</label></div>
-          <input type="number" min="{{minHeight}}" max="{{maxHeight}}" [(ngModel)]="standardRooms[currentRoomId].height" (change)="updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">
+          <input type="number" min="{{minWidth}}" max="{{maxWidth}}" [(ngModel)]="standardRooms[currentRoomId].width" (change)="updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].width)">
         </div>
 
         <!--
@@ -316,7 +316,10 @@
 
   </div>
   <div id="container-visualiser">
+
     <div id="visualiser">
+
+
     <div id="workspaceHeader">
       <div id="headerRight">
         <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
@@ -330,15 +333,29 @@
         <span (click)="isToSaveRoom = true; makeRoomDetailsReady();" class="material-icons p-1">save</span>
       </div>
     </div>
-    <div id="roomvisualiser"></div>
+      <color-photoshop *ngIf="showPicker" style="z-index: 1000; position: absolute; margin-top: -50px; margin-left: -20px;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeComplete($event)">
+      </color-photoshop>
+    <div id="roomvisualiser">
+
     </div>
 
-    <div id="zoomRange">
-      <span class="material-symbols-outlined">zoom_in</span>
-      <input type="range" id="zoom" orient="vertical" (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
-      <span class="material-symbols-outlined">zoom_out</span>
+    </div>
+
+    <div id="rightBar">
+
+      <div id="colorPickerTrigger" (click)="showPicker = true;">
+
+      </div>
+      <div id="zoomRange">
+        <span class="material-symbols-outlined">zoom_in</span>
+        <input type="range" id="zoom" orient="vertical" (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
+        <span class="material-symbols-outlined">zoom_out</span>
+      </div>
     </div>
 
   </div>
 
+
 </div>
+
+
