@@ -1,4 +1,5 @@
 <div id="popupContainer" >
+
   <div *ngIf="isToDelete" class="popupForm">
     <div class="headerPopup">
       Bestätigung der Löschung
@@ -12,7 +13,6 @@
       <button (click)="deleteElem(); isToDelete = false">Ja</button>
     </div>
   </div>
-
 
   <div *ngIf="isToAddDesk" class="popupForm">
     <div class="headerPopup">
@@ -52,7 +52,6 @@
     </div>
   </div>
 
-
   <div *ngIf="isToAddDoor" class="popupForm">
     <div class="headerPopup">
       Neue Tür hinzufügen
@@ -61,9 +60,9 @@
       <div class="right">
         <label>Type</label><br>
         <select [(ngModel)]="doorToAdd.elementtyp">
-          <option value="Linksöffnend" selected>Linksöffnend</option>
-          <option value="Rechtsöffnend">Rechtsöffnend</option>
-          <option value="Mittelöffnend">Mittelöffnend</option>
+          <option value="left" selected>Linksöffnend</option>
+          <option value="right">Rechtsöffnend</option>
+          <option value="middle">Mittelöffnend</option>
         </select>
         <br>
         <label class="">Rotation</label><br>
@@ -86,7 +85,6 @@
     </div>
   </div>
 
-
   <div *ngIf="isToAddWindow" class="popupForm">
     <div class="headerPopup">
       Neues Fenster hinzufügen
@@ -95,9 +93,9 @@
       <div class="right">
         <label>Type</label><br>
         <select [(ngModel)]="windowToAdd.elementtyp">
-          <option value="Linksöffnend" selected>Linksöffnend</option>
-          <option value="Rechtsöffnend">Rechtsöffnend</option>
-          <option value="Mittelöffnend">Mittelöffnend</option>
+          <option value="left" selected>Linksöffnend</option>
+          <option value="right">Rechtsöffnend</option>
+          <option value="middle">Mittelöffnend</option>
         </select>
         <br>
         <label class="">Rotation</label><br>
@@ -120,7 +118,6 @@
     </div>
   </div>
 
-
   <div *ngIf="isToSaveRoom" class="popupForm">
     <div class="headerPopup">
       Hier sind Details Ihres Raums
@@ -129,7 +126,7 @@
 
 
         <div *ngFor="let i of elementsNumber">
-          <label>{{i.typ}}:&nbsp;</label><label>{{i.number}}&nbsp;</label>
+          <label>{{i.typ}}({{i.number}})&nbsp;&nbsp;</label>
         </div>
       <hr>
       &nbsp;&nbsp;&nbsp;
@@ -155,14 +152,14 @@
     </div>
   </div>
 
-
-
 </div>
 
 <div id="container">
+
   <div id="toolbar">
 
     <div class="left-container-child" >
+
       <div><label class="label-left-dark label-left-title">Raumfläche</label></div>
 
       <div class="horizontal-left-side-element">
@@ -171,26 +168,10 @@
           <input type="number" min="{{minHeight}}" max="{{maxHeight}}" [(ngModel)]="standardRooms[currentRoomId].height" (change)="updateVisualisation(standardRooms[currentRoomId].height,standardRooms[currentRoomId].height)">
         </div>
 
-        <!--
-        <div class="horizontal-width" id="linkedicon">
-          <span class="material-icons" *ngIf="islinked" (click)="islinked = false;">link</span>
-          <span class="material-icons" *ngIf="!islinked" (click)="islinked = true;">link_off</span>
-        </div>
-        -->
-
         <div class="horizontal-width">
           <div><label class="label-left-dark">Breite</label></div>
           <input type="number" min="{{minWidth}}" max="{{maxWidth}}" [(ngModel)]="standardRooms[currentRoomId].width" (change)="updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].width)">
         </div>
-
-        <!--
-        <div class="horizontal-width">
-          <div><label class="label-left-dark">Einheit</label></div>
-          <select (change)="changeUnit()" name="unit" class="selectelement" [(ngModel)]="selectedUnit">
-            <option *ngFor="let unit of units">{{unit}}</option>
-          </select>
-        </div>
-        -->
 
       </div>
 
@@ -237,8 +218,6 @@
 
     </div>
 
-
-
     <div class="left-container-child" >
 
       <div><label class="label-left-dark label-left-title">Türe</label></div>
@@ -275,7 +254,6 @@
 
 
     </div>
-
 
     <div class="left-container-child" >
 
@@ -315,10 +293,10 @@
     </div>
 
   </div>
+
   <div id="container-visualiser">
 
     <div id="visualiser">
-
 
     <div id="workspaceHeader">
       <div id="headerRight">
@@ -331,15 +309,16 @@
         <div style="position: absolute"><label *ngIf="isRoomSaved">My Room</label></div>
       </div>
       <div id="headerLeft">
-        <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
         <span (click)="reset()" class="material-icons p-1">restart_alt</span>
+        <span (click)="downloadAsImage()" class="material-icons p-1">image</span>
+        <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
         <span (click)="isToSaveRoom = true; makeRoomDetailsReady();" class="material-icons p-1">save</span>
       </div>
     </div>
-      <color-photoshop *ngIf="showPicker" style="z-index: 1000; position: absolute; margin-top: -50px; margin-left: -20px;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
+
+      <color-photoshop id="color-photoshop" *ngIf="showPicker" style="z-index: 1000; position: absolute; margin-top: -50px; margin-left: -20px;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
       </color-photoshop>
     <div id="roomvisualiser">
-
     </div>
 
     </div>
@@ -357,7 +336,6 @@
     </div>
 
   </div>
-
 
 </div>
 
