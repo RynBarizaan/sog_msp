@@ -1,17 +1,11 @@
 import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup, FormControl, Validators,} from '@angular/forms';
-import {Person} from "../model/person";
-import {PersonDataService} from "../person-data.service";
 import { ngxCsv } from 'ngx-csv/ngx-csv';
 import * as CryptoJS from 'crypto-js';
 import {
   ChangeDetectionStrategy,
   ViewEncapsulation,
 } from "@angular/core";
-import { Title } from "@angular/platform-browser";
-import { MatPasswordStrengthComponent } from "@angular-material-extensions/password-strength";
 import {encrypt} from "../model/encrypt";
 import {GroupTableConfirmedComponent} from "../group-table-confirmed/group-table-confirmed.component";
 
@@ -58,9 +52,6 @@ export class ExportCSVComponent {
 
     } else {
       return this.inputType = false;
-      //this.message ="Bitte wiederholen sie ihre password";
-      console.log("Bitte pas eingeben")
-
     }
   }
 
@@ -90,7 +81,6 @@ export class ExportCSVComponent {
         this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
 
       }
-
 
       var options = {
         fieldSeparator: ',',
