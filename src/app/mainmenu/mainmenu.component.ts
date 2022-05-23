@@ -11,7 +11,7 @@ declare var window:any;
 export class MainmenuComponent implements OnInit {
   formModal:any;
   formModalDelete: any;
-
+  elementOfDelete!:string;
   gruppeStatus:string = 'Gruppe erstellen';
   raumStatus:string = 'Raum erstellen';
   constructor(private router: Router) { }
@@ -87,25 +87,50 @@ export class MainmenuComponent implements OnInit {
     }
   }
 
-  ////// delete the Grupp  /////
-  removeGruppe(){
-    this.formModalDelete = new window.bootstrap.Modal(
-      document.getElementById("InfoMessage")
-    )
-    this.formModalDelete.show();
+  ////// delete the Grupp or Room  /////
+  removeGruppe(el:string){
+    if (el === "grupp"){
+      this.elementOfDelete="grupp";
+      this.formModalDelete = new window.bootstrap.Modal(
+        document.getElementById("InfoMessage")
+      )
+      this.formModalDelete.show();
+    }
+    else if(el === "room"){
+      this.elementOfDelete="room";
+      this.formModalDelete = new window.bootstrap.Modal(
+        document.getElementById("InfoMessage")
+      )
+      this.formModalDelete.show();
+    }
+    else {
+      console.log("fehlermeldung");
+    }
 
   }
 
+  //// reject delete of Grupp table or Room /////
   closeInfoMessageModal() {
     this.formModalDelete.hide();
   }
 
   confirmModalText() {
-    sessionStorage.setItem("isDataConfirm", JSON.stringify(false));
-    sessionStorage.setItem("TheStatus", JSON.stringify(true));
-    sessionStorage.removeItem('person');
-    this.gruppeStatus = 'Gruppe erstellen';
-    this.formModalDelete.hide();
+    if (this.elementOfDelete === "room"){
+      sessionStorage.removeItem("room");
+      this.isRoomAvailable();
+      this.formModalDelete.hide();
+    }
+    else if(this.elementOfDelete === "grupp" ){
+      sessionStorage.setItem("isDataConfirm", JSON.stringify(false));
+      sessionStorage.setItem("TheStatus", JSON.stringify(true));
+      sessionStorage.removeItem('person');
+      this.gruppeStatus = 'Gruppe erstellen';
+      this.formModalDelete.hide();
+    }
+    else{
+      console.log("Fehlermeldung");
+    }
+
   }
 
 
