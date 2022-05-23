@@ -21,7 +21,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { RoomComponent } from './room/room.component';
 import { ImportCsvComponent } from './import-csv/import-csv.component';
 import { GroupTableConfirmedComponent } from './group-table-confirmed/group-table-confirmed.component';
-import { ColorPhotoshopModule } from 'ngx-color/photoshop';
+import { PersonPropertiesComponent } from './person-properties/person-properties.component';
+import {ColorPhotoshopModule} from "ngx-color/photoshop";
 
 
 
@@ -36,6 +37,7 @@ import { ColorPhotoshopModule } from 'ngx-color/photoshop';
     RoomComponent,
     ImportCsvComponent,
     GroupTableConfirmedComponent,
+    PersonPropertiesComponent,
 
 
   ],
