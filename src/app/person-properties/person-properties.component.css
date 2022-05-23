@@ -1,0 +1,34 @@
+.nextButton{
+  float: right;
+  position: relative;
+  right: 11%;
+  font-size: 15px;
+  background-color: #11b0e7;
+  color: white;
+  border: none;
+  padding: 0.5%;
+  cursor: pointer;
+
+}
+.backButton{
+  float: left;
+  position: relative;
+  left: 11%;
+  font-size: 15px;
+  background-color: #11b0e7;
+  color: white;
+  border: none;
+  padding: 0.5%;
+  cursor: pointer;
+
+}
+.info-container{
+  display: inline-block;
+  width: 50%;
+  vertical-align:middle;
+}
+.containerProperties {
+  border:2px solid #ccc;
+  width:300px; height: 100px;
+  overflow-y: scroll;
+}

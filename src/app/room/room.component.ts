@@ -20,7 +20,7 @@ interface Object {
   firstname2?: string | "Vorname2";
   lastname2?: string | "Nachname2";
 }
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-room',
@@ -28,59 +28,58 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./room.component.css']
 })
 export class RoomComponent implements OnInit {
-
   constructor(private route: Router) {
   }
-
   standardRooms: {"id": number, "name": string, "width": number, "height": number}[] = [
     {
       "id": 0,
       "name": "Unterricht",
-      "width": 6,
-      "height": 6
+      "width": 8,
+      "height": 8
     },
     {
       "id": 1,
       "name": "Konferenz",
-      "width": 12,
-      "height": 12
+      "width": 8,
+      "height": 8
     },
     {
       "id": 2,
       "name": "Workshop",
-      "width": 15,
-      "height": 15
+      "width": 8,
+      "height": 8
     },
     {
       "id": 3,
       "name": "Customised Room",
-      "width": 6,
-      "height": 6
+      "width": 8,
+      "height": 8
     }
   ]
-
-   elementsNumber: any = [{
+   elementsNumber: any = [
+     {
         'typ': 'desk',
         'number': 0,
-      },
+     },
      {
        'typ': 'door',
        'number': 0,
      },{
        'typ': 'window',
        'number': 0,
-     }];
-
-
+     }
+     ];
   // Elements for all standard rooms
-  allElementsKopie: any[] = JSON.parse(JSON.stringify(objectsData));
-
   allElements: any[] = JSON.parse(JSON.stringify(objectsData));
-
   // Stage
   currentRoomId: number = 0;
   widthStage: number = 700;
   heightStage: number = 700;
+  // Min and max stage in meter
+  minWidth: number = 5;
+  maxWidth: number = 30;
+  minHeight: number = 5;
+  maxHeight: number = 30;
   meterInPixel: number = Math.floor(this.widthStage / this.standardRooms[this.currentRoomId].width);
   widthMeter: number = this.standardRooms[this.currentRoomId].width;
   heightMeter: number = this.standardRooms[this.currentRoomId].height;
@@ -100,15 +99,11 @@ export class RoomComponent implements OnInit {
   positionYDeleteIcon?: number;
   radiusDeleteIcon?: number;
   radiusSmallTriangle?: number;
-
   // initial color and change color
   primaryColor = '#777777';
   showPicker: boolean = false;
-
   // room saved then switch elements in visualisation
   isRoomSaved: boolean = false;
-
-
   // Add Element
   isToAddDesk: boolean = false;
   isToAddDoor: boolean = false;
@@ -117,17 +112,8 @@ export class RoomComponent implements OnInit {
   // Delete Element
   isToDelete: boolean = false;
   currentId?: any;
-  // Units
-  units: string[] = ['m', 'cm', 'mm'];
-  vorselectedUnit: string = 'm';
-  selectedUnit: string = 'm';
   // Link dimension
   islinked: boolean = false;
-  // Min and max stage in meter
-  minWidth: number = 5;
-  maxWidth: number = 30;
-  minHeight: number = 5;
-  maxHeight: number = 30;
   // Pre elements to add
   deskToAdd: {elementtyp: string, place: number, x:number, y: number, degRotation: number, bgClr: string} =
     {
@@ -141,7 +127,7 @@ export class RoomComponent implements OnInit {
 
   doorToAdd: {elementtyp: string, x:number, y: number, degRotation: number, bgClr: string} =
     {
-      "elementtyp": "linksöffnend",
+      "elementtyp": "left",
       "x": 0,
       "y": 0,
       "degRotation": 0,
@@ -179,12 +165,8 @@ export class RoomComponent implements OnInit {
       c.style.alignItems = 'center';
       c.style.gap = '20px';
       c.style.visibility = 'visible';
+      this.setButtons();
     }
-
-
-    this.isToDelete = true;
-    this.isToDelete = false;
-    this.setButtons();
 
     this.stage = new Konva.Stage({
       container: 'roomvisualiser',
@@ -202,25 +184,19 @@ export class RoomComponent implements OnInit {
           y: j * this.meterInPixel,
           width: this.meterInPixel,
           height: this.meterInPixel,
-          fill: '#dedede',
-          stroke: '#fff',
-          strokeWidth: 1
+          fill: '#e2e2e2',
+          stroke: '#000',
+          strokeWidth: .2
         });
         backgroundLayer.add(rect);
       }
     }
     this.stage.add(backgroundLayer);
 
-
-
     this.drawElements();
     this.zoomStage();
+    this.changeStageScale();
     this.makeRoomDetailsReady();
-
-//this.makeColorPickerDraggable();
-
-
-
   }
 
   addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number, bgClr: string): void {
@@ -308,7 +284,6 @@ export class RoomComponent implements OnInit {
     let idr = 'elr'+id;
     let r : any = document.getElementById(idr);
     this.allElements[id].degRotation = r.valueAsNumber;
-
     this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height)
   }
 
@@ -420,90 +395,13 @@ export class RoomComponent implements OnInit {
 
   drawElements(): void {
     for (let i = 0; i < this.allElements.length; i++) {
-      if(this.allElements[i].element == "desk"){
-        if(this.allElements[i].roomId == this.currentRoomId) {
-          let splittedFactory: any[] = this.allElements[i].factory.split("-");
-          for (let l = 0; l < 1; l++) {
-            switch (splittedFactory[l]) {
-              case ('s'): {
-                if(splittedFactory[l+1] === 's') {
-                  this.deskSquareSmall(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr, this.allElements[i].firstname1, this.allElements[i].lastname1);
-                } else {
-                  this.deskSquareBig(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr, this.allElements[i].firstname1, this.allElements[i].lastname1, this.allElements[i].firstname2, this.allElements[i].lastname2);
-                }
-                break;
-              }
-              case ('r'): {
-                if(splittedFactory[l+1] === 's') {
-                  this.deskRoundSmall(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr, this.allElements[i].firstname1, this.allElements[i].lastname1);
-                } else {
-                  this.deskRoundBig(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr, this.allElements[i].firstname1, this.allElements[i].lastname1, this.allElements[i].firstname2, this.allElements[i].lastname2);
-                }
-                break;
-              }
-              case ('t'): {
-                if(splittedFactory[l+1] === 's') {
-                  this.deskTriangleSmall(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr, this.allElements[i].firstname1, this.allElements[i].lastname1);
-                } else {
-                  this.deskTriangleBig(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr, this.allElements[i].firstname1, this.allElements[i].lastname1, this.allElements[i].firstname2, this.allElements[i].lastname2);
-                }
-                break;
-              }
-              default:
-                break;
-            }
-          }
-        }
-      } else if (this.allElements[i].element == "door") {
-        if(this.allElements[i].roomId == this.currentRoomId) {
-          for (let l = 0; l < 1; l++) {
-            switch (this.allElements[i].factory) {
-              case ('l'): {
-                this.doorLeft(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr,);
-                break;
-              }
-              case ('r'): {
-                this.doorRight(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr,);
-                break;
-              }
-              case ('m'): {
-                this.doorMiddle(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr,);
-                break;
-              }
-              default:
-                break;
-            }
-          }
-        }
-      } else if (this.allElements[i].element == "window") {
-        if(this.allElements[i].roomId == this.currentRoomId) {
-          for (let l = 0; l < 1; l++) {
-            switch (this.allElements[i].factory) {
-              case ('l'): {
-                this.windowLeft(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation,  this.allElements[i].bgClr,);
-                break;
-              }
-              case ('r'): {
-                this.windowRight(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation,  this.allElements[i].bgClr,);
-                break;
-              }
-              case ('m'): {
-                this.windowMiddle(this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation,  this.allElements[i].bgClr,);
-                break;
-              }
-              default:
-                break;
-            }
-          }
-        }
+      if(this.allElements[i].roomId == this.currentRoomId){
+        this.drawElement(this.allElements[i].element, this.allElements[i].elementtyp, this.allElements[i].place, this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr)
       }
     }
   }
 
   updateVisualisation(width: number, height: number): void {
-
-    this.isToDelete = true;
-    this.isToDelete = false;
 
     this.setButtons();
 
@@ -513,7 +411,7 @@ export class RoomComponent implements OnInit {
       this.stage = new Konva.Stage({
         container: 'roomvisualiser',   // id of container <div>
         width: this.widthStage,
-        height: this.heightStage
+        height: this.heightStage,
       });
       this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
       let backgroundLayer = new Konva.Layer();
@@ -524,9 +422,9 @@ export class RoomComponent implements OnInit {
             y: j * this.meterInPixel,
             width: this.meterInPixel,
             height: this.meterInPixel,
-            fill: '#ddd',
-            stroke: '#fff',
-            strokeWidth: 1
+            fill: '#e2e2e2',
+            stroke: '#000',
+            strokeWidth: .2
           });
           backgroundLayer.add(rect);
         }
@@ -574,1077 +472,314 @@ export class RoomComponent implements OnInit {
     this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height)
   }
 
-  // Desks Factory
-  deskRoundSmall(id: number, x: number, y: number, rotation: number, bgClr: string, firstname1?: string, lastname1?: string): void {
+  drawElement(element: string, elementtyp: string, place: number, id: number, x: number, y: number, rotation: number, bgClr: string): void {
+
+    //Step 1
     this.stage.add(this.layerElements);
-    let desktop = new Konva.Circle({
-      x: this.radiusSmallDesk,
-      y: this.radiusSmallDesk,
-      radius: this.radiusSmallDesk,
-      fill: bgClr,
-      stroke: '#777',
-      strokeWidth: 1
-    })
-    let chair = new Konva.Rect({
-      x: this.meterInPixel * 0.4,
-      y: this.meterInPixel * 1.25,
-      width: this.widthChair,
-      height: this.heightChair,
-      fill: '#999',
-      cornerRadius: this.meterInPixel * .05,
-      stroke: bgClr,
-      strokeWidth: 1
-    });
+
+    //Step 2
+    let elemente: any[] = [];
+
+    // If the object is a small square desk
+    if(element == 'desk' && elementtyp == 'eckig' && place == 1){
+      let desktop = new Konva.Rect({
+        width: this.widthSmallDesk,
+        height: this.heightSmallDesk,
+        fill: bgClr,
+      })
+      let chair = new Konva.Rect({
+        x: this.meterInPixel * 0.4,
+        y: this.meterInPixel * 0.75,
+        width: this.widthChair,
+        height: this.heightChair,
+        fill: bgClr,
+      });
+      elemente.push(desktop)
+      elemente.push(chair)
+    }
+    // If the object is a big square desk
+    else if(element == 'desk' && elementtyp == 'eckig' && place == 2) {
+      let desk = new Konva.Rect({
+        width: this.widthBigDesk,
+        height: this.heightBigDesk,
+        fill: bgClr,
+      })
+      let chair1 = new Konva.Rect({
+        x: this.meterInPixel * .4,
+        y: this.meterInPixel * 0.75,
+        width: this.widthChair,
+        height: this.heightChair,
+        fill: bgClr,
+      });
+      let chair2 = new Konva.Rect({
+        x: (this.meterInPixel * .4) + (this.meterInPixel * 1.2),
+        y: this.meterInPixel * 0.75,
+        width: this.widthChair,
+        height: this.heightChair,
+        fill: bgClr,
+      });
+      elemente.push(desk)
+      elemente.push(chair1)
+      elemente.push(chair2)
+    }
+    // If the object is a small round desk
+    else if(element == 'desk' && elementtyp == 'rund' && place == 1) {
+      let desk = new Konva.Circle({
+        x: this.radiusSmallDesk,
+        y: this.radiusSmallDesk,
+        radius: this.radiusSmallDesk,
+        fill: bgClr,
+      })
+      let chair = new Konva.Rect({
+        x: this.meterInPixel * 0.4,
+        y: this.meterInPixel * 1.25,
+        width: this.widthChair,
+        height: this.heightChair,
+        fill: bgClr,
+      });
+      elemente.push(desk)
+      elemente.push(chair)
+    }
+    // If the object is a big round desk
+    else if(element == 'desk' && elementtyp == 'rund' && place == 2) {
+      let desk = new Konva.Circle({
+        x: this.radiusBigDesk,
+        y: this.radiusBigDesk,
+        radius: this.radiusBigDesk,
+        fill: bgClr,
+      })
+      let chair1 = new Konva.Rect({
+        x: 0,
+        y: this.meterInPixel * 1.25,
+        width: this.widthChair,
+        height: this.heightChair,
+        fill: bgClr,
+        rotation: 45,
+      });
+      let chair2 = new Konva.Rect({
+        x: this.meterInPixel * 1.5,
+        y: -this.meterInPixel * .2,
+        width: this.widthChair,
+        height: this.heightChair,
+        fill: bgClr,
+        rotation: 45,
+      });
+      elemente.push(desk)
+      elemente.push(chair1)
+      elemente.push(chair2)
+    }
+    // If the object is a left oriented door
+    else if(element == 'door' && elementtyp == 'left') {
+      let door1 = new Konva.Rect({
+        width: this.meterInPixel * 0.06,
+        height: this.meterInPixel,
+        fill: bgClr,
+      })
+      let door2 = new Konva.Rect({
+        width: this.meterInPixel * 0.03,
+        height: this.meterInPixel,
+        fill: bgClr,
+        rotation:-this.meterInPixel * 0.1,
+      })
+      elemente.push(door1)
+      elemente.push(door2)
+    }
+    // If the object is a right oriented door
+    else if(element == 'door' && elementtyp == 'right') {
+      let door1 = new Konva.Rect({
+        width: this.meterInPixel * 0.06,
+        height: this.meterInPixel,
+        fill: bgClr,
+      })
+      let door2 = new Konva.Rect({
+        x:this.meterInPixel * 0.22,
+        width: this.meterInPixel * 0.03,
+        height: this.meterInPixel,
+        fill: bgClr,
+        rotation:this.meterInPixel * 0.1,
+      })
+      elemente.push(door1)
+      elemente.push(door2)
+    }
+    // If the object is a middle oriented door
+    else if(element == 'door' && elementtyp == 'middle') {
+      let door = new Konva.Rect({
+        width: this.meterInPixel * 0.06,
+        height: this.meterInPixel,
+        fill: bgClr,
+      })
+      let door1 = new Konva.Rect({
+        x:this.meterInPixel * 0.02,
+        width: this.meterInPixel * 0.03,
+        height: this.meterInPixel*.5,
+        fill: bgClr,
+        rotation:-this.meterInPixel * 0.1,
+      })
+      let door2 = new Konva.Rect({
+        x:this.meterInPixel * 0.12,
+        y:this.meterInPixel*.5,
+        width: this.meterInPixel * 0.03,
+        height: this.meterInPixel*.5,
+        fill: bgClr,
+        rotation:this.meterInPixel * 0.1,
+      })
+      elemente.push(door)
+      elemente.push(door1)
+      elemente.push(door2)
+    }
+    // If the object is a left window
+    else if(element == 'window' && elementtyp == 'left') {
+      let window1 = new Konva.Rect({
+        x: 0,
+        y: 0,
+        width: this.meterInPixel * .1,
+        height: this.meterInPixel * 2,
+        fill: bgClr,
+        cornerRadius: this.meterInPixel * .01,
+        stroke: '#777',
+        strokeWidth: 1,
+      });
+      let window2 = new Konva.Rect({
+        x: -this.meterInPixel * .15,
+        y: this.meterInPixel * .05,
+        width: this.meterInPixel * .05,
+        height: this.meterInPixel * 1.9,
+        fill: bgClr,
+        cornerRadius: this.meterInPixel * .01,
+        stroke: '#777',
+        strokeWidth: 1,
+        rotation: -6
+      });
+      elemente.push(window1)
+      elemente.push(window2)
+    }
+    // If the object is a right window
+    else if(element == 'window' && elementtyp == 'right') {
+      let window1 = new Konva.Rect({
+        x: 0,
+        y: 0,
+        width: this.meterInPixel * .1,
+        height: this.meterInPixel * 2,
+        fill: bgClr,
+      });
+      let window2 = new Konva.Rect({
+        x: this.meterInPixel * .05,
+        y: this.meterInPixel * .05,
+        width: this.meterInPixel * .05,
+        height: this.meterInPixel * 1.9,
+        fill: bgClr,
+        rotation: 6
+      });
+      elemente.push(window1)
+      elemente.push(window2)
+    }
+    // If the object is a middle window
+    else if(element == 'window' && elementtyp == 'middle') {
+      let window1 = new Konva.Rect({
+        x: 0,
+        y: 0,
+        width: this.meterInPixel * .1,
+        height: this.meterInPixel * 2,
+        fill: bgClr,
+      });
+      let window2 = new Konva.Rect({
+        x: 0,
+        y: this.meterInPixel * .05,
+        width: this.meterInPixel * .05,
+        height: this.meterInPixel * .9,
+        fill: bgClr,
+        rotation: 10
+      });
+      let window3 = new Konva.Rect({
+        x: - this.meterInPixel * .15,
+        y: this.meterInPixel * 1.05,
+        width: this.meterInPixel * .05,
+        height: this.meterInPixel * .9,
+        fill: bgClr,
+        rotation: 350
+      });
+      elemente.push(window1)
+      elemente.push(window2)
+      elemente.push(window3)
+    }
     let circle = new Konva.Circle({
-      x: this.positionXDeleteIcon,
-      y: this.positionYDeleteIcon,
-      radius: this.radiusDeleteIcon,
+      radius: this.meterInPixel * 0.1,
       fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-    });
-    let text = new Konva.Text({
-      x: this.meterInPixel * 0.1,
-      y: this.meterInPixel * 0.35,
-      //text: `${id}\n${firstname1}\n${lastname1}`,
-      fill: '#999',
-      fontSize: this.meterInPixel * 0.18,
-      fontFamily: 'arial',
-    });
-    let groupSmallDesk = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 10,
-      shadowOffsetY: 10,
-      rotation: rotation
-    })
-    groupSmallDesk.add(desktop);
-    groupSmallDesk.add(chair);
-    groupSmallDesk.add(text);
-    this.layerElements.add(groupSmallDesk);
-    let tr = new Konva.Transformer({
-      centeredScaling: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    groupSmallDesk.on('click', (e) => {
-      tr.nodes([groupSmallDesk]);
-      tr.add(circle);
-      this.currentId = id;
     });
 
-    groupSmallDesk.on('mouseenter', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    groupSmallDesk.on('mouseout', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-    groupSmallDesk.on('transform dragmove', function (data): void {
-      groupSmallDesk.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(groupSmallDesk.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(groupSmallDesk.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(groupSmallDesk.y());
-    });
-
-    circle.on('click', function (event) {
-      groupSmallDesk.destroy();
-      tr.destroy();
-    });
-  }
-  deskRoundBig(id: number, x: number, y: number, rotation: number, bgClr: string, firstname1?: string, lastname1?: string, firstname2?: string, lastname2?: string): void {
-    this.stage.add(this.layerElements);
-    let desktop = new Konva.Circle({
-      x: this.radiusBigDesk,
-      y: this.radiusBigDesk,
-      radius: this.radiusBigDesk,
-      fill: bgClr,
-      stroke: '#777',
-      strokeWidth: 1
-    })
-    let chair1 = new Konva.Rect({
-      x: 0,
-      y: this.meterInPixel * 1.25,
-      width: this.widthChair,
-      height: this.heightChair,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .05,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation: 45,
-    });
-    let chair2 = new Konva.Rect({
-      x: this.meterInPixel * 1.5,
-      y: -this.meterInPixel * .2,
-      width: this.widthChair,
-      height: this.heightChair,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .05,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation: 45,
-    });
-    let circle = new Konva.Circle({
-      x: this.meterInPixel * 1.68,
-      y: -this.meterInPixel * .1,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-    });
-    let text1 = new Konva.Text({
-      x: this.meterInPixel * 0.3,
-      y: this.meterInPixel * 0.2,
-      //text: `${this.allElements[id].id}\n${this.allElements[id].firstname1}\n${this.allElements[id].lastname1}`,
-      fill: '#999',
-      fontSize: this.meterInPixel * 0.18,
-      fontFamily: 'arial',
-    });
-    let text2 = new Konva.Text({
-      x: this.meterInPixel * 0.3,
-      y: this.meterInPixel * 0.85,
-      //text: `${this.allElements[id].id}\n${this.allElements[id].firstname2}\n${this.allElements[id].lastname2}`,
-      fill: '#999',
-      fontSize: this.meterInPixel * 0.18,
-      fontFamily: 'arial',
-    });
-    let groupSmallDesk = new Konva.Group({
-      x: x + (this.meterInPixel * .23),
-      y: y + (this.meterInPixel * .22),
-      draggable: true,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 10,
-      shadowOffsetY: 10,
-      rotation: rotation
-    })
-    groupSmallDesk.add(desktop);
-    groupSmallDesk.add(chair1);
-    groupSmallDesk.add(chair2);
-    groupSmallDesk.add(text1);
-    groupSmallDesk.add(text2);
-    this.layerElements.add(groupSmallDesk);
-    let tr = new Konva.Transformer({
-      centeredScaling: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    groupSmallDesk.on('click', (e) => {
-      tr.nodes([groupSmallDesk]);
-      tr.add(circle);
-      this.currentId = id;
-    });
-
-    groupSmallDesk.on('mouseenter', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    groupSmallDesk.on('mouseout', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-    groupSmallDesk.on('transform dragmove', function (data): void {
-      groupSmallDesk.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(groupSmallDesk.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(groupSmallDesk.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(groupSmallDesk.y());
-    });
-
-
-    circle.on('click', function (event) {
-      groupSmallDesk.destroy();
-      tr.destroy();
-    });
-  }
-  deskSquareSmall(id: number, x: number, y: number, rotation: number, bgClr: string, firstname1?: string, lastname1?: string): void {
-    this.stage.add(this.layerElements);
-    let desktop = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: this.widthSmallDesk,
-      height: this.heightSmallDesk,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .05,
-      stroke: '#777',
-      strokeWidth: 1
-    })
-    let chair = new Konva.Rect({
-      x: this.meterInPixel * 0.4,
-      y: this.meterInPixel * 0.75,
-      width: this.widthChair,
-      height: this.heightChair,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .05,
-      stroke: '#777',
-      strokeWidth: 1
-    });
-    let circle = new Konva.Circle({
-      x: this.positionXDeleteIcon,
-      y: -20,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-      name: `${id}`,
-    });
-    let text = new Konva.Text({
-      x: this.meterInPixel * 0.05,
-      y: this.meterInPixel * 0.05,
-      //text: `${firstname1}\n${lastname1}`,
-      fill: '#999',
-      fontSize: this.meterInPixel * 0.18,
-      fontFamily: 'arial',
-    });
-    let groupSmallDesk = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 10,
-      shadowOffsetY: 10,
-      rotation: rotation,
-      name: `${id}`,
-    })
-    groupSmallDesk.add(desktop);
-    groupSmallDesk.add(chair);
-    groupSmallDesk.add(text);
-
-    this.layerElements.add(groupSmallDesk);
-    let tr = new Konva.Transformer({
-      centeredRotation: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    groupSmallDesk.on('mouseenter', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    groupSmallDesk.on('mouseout', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-
-    groupSmallDesk.on('click', (e) => {
-      tr.nodes([groupSmallDesk]);
-      tr.add(circle);
-      this.currentId = id;
-    });
-
-    groupSmallDesk.on('mouseenter', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    groupSmallDesk.on('mouseout', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-    groupSmallDesk.on('transform dragmove', (data) => {
-      groupSmallDesk.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(groupSmallDesk.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(groupSmallDesk.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(groupSmallDesk.y());
-    });
-
-    groupSmallDesk.on('transformend dragend', (data) => {
-      let iddesk: number = parseInt(data.target.name());
-      this.updateElements(iddesk);
-    });
-
-    circle.on('click', (event) => {
-      let id: any = event.target.name();
-      this.currentId = id;
-      this.isToDelete = true;
-    });
-  }
-  deskSquareBig(id: number, x: number, y: number, rotation: number, bgClr: string, firstname1?: string, lastname1?: string, firstname2?: string, lastname2?: string): void {
-    this.stage.add(this.layerElements);
-    let desk = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: this.widthBigDesk,
-      height: this.heightBigDesk,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .05,
-      stroke: '#777',
-      strokeWidth: 1
-    })
-    let chair1 = new Konva.Rect({
-      x: this.meterInPixel * .4,
-      y: this.meterInPixel * 0.75,
-      width: this.widthChair,
-      height: this.heightChair,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .05,
-      stroke: '#777',
-      strokeWidth: 1
-    });
-    let chair2 = new Konva.Rect({
-      x: (this.meterInPixel * .4) + (this.meterInPixel * 1.2),
-      y: this.meterInPixel * 0.75,
-      width: this.widthChair,
-      height: this.heightChair,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .05,
-      stroke: '#777',
-      strokeWidth: 1
-    });
-    let text1 = new Konva.Text({
-      x: this.meterInPixel * 0.05 + (this.meterInPixel * 1.2),
-      y: this.meterInPixel * 0.05,
-      //text: `${id}\n${firstname1}\n${lastname1}`,
-      fill: '#999',
-      fontSize: this.meterInPixel * 0.18,
-      fontFamily: 'arial',
-    });
-    let text2 = new Konva.Text({
-      x: this.meterInPixel * 0.05,
-      y: this.meterInPixel * 0.05,
-      //text: `${this.allElements[id].id}\n${this.allElements[id].firstname2}\n${this.allElements[id].lastname2}`,
-      fill: '#999',
-      fontSize: this.meterInPixel * 0.18,
-      fontFamily: 'arial',
-    });
-    let circle = new Konva.Circle({
-      x: this.positionXDeleteIcon2,
-      y: this.positionYDeleteIcon,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-    });
-    let groupSmallDesk = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 10,
-      shadowOffsetY: 10,
-      rotation: rotation
-    })
-    groupSmallDesk.add(desk);
-    groupSmallDesk.add(chair1);
-    groupSmallDesk.add(chair2);
-    groupSmallDesk.add(text1);
-    groupSmallDesk.add(text2);
-    this.layerElements.add(groupSmallDesk);
-    let tr = new Konva.Transformer({
-      centeredScaling: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    groupSmallDesk.on('click', (e) => {
-      tr.nodes([groupSmallDesk]);
-      tr.add(circle);
-      this.currentId = id;
-    });
-
-    groupSmallDesk.on('mouseenter', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    groupSmallDesk.on('mouseout', function () {
-      let x: any = groupSmallDesk.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-    groupSmallDesk.on('transform dragmove', function (data): void {
-      groupSmallDesk.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(groupSmallDesk.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(groupSmallDesk.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(groupSmallDesk.y());
-    });
-    circle.on('click', function (event) {
-      groupSmallDesk.destroy();
-      tr.destroy();
-    });
-  }
-  deskTriangleSmall(id: number, x: number, y: number, rotation: number, bgClr: string, firstname1?: string, lastname1?: string): void {
-    console.log('deskTriangleSmall')
-  }
-  deskTriangleBig(id: number, x: number, y: number, rotation: number, bgClr: string, firstname1?: string, lastname1?: string, firstname2?: string, lastname2?: string): void {
-    console.log('deskTriangleBig')
-  }
-  // Doors Factory
-  doorLeft(id: number, x: number, y: number, rotation: number, bgClr: string,): void {
-    this.stage.add(this.layerElements);
-    let door = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: 10,
-      height: 100,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1
-    })
-    let door1 = new Konva.Rect({
-      x: 2,
-      y: 5,
-      width: 5,
-      height: 90,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation:-10,
-    })
-
-    let circle = new Konva.Circle({
-      x: 30,
-      y: 0,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-      name: `${id}`,
-    });
-
-    let groupDoor = new Konva.Group({
+    //Step 3
+    let groupElements = new Konva.Group({
       x: x,
       y: y,
       draggable: true,
       rotation: rotation,
-      name: `${id}`,
     })
 
-    groupDoor.add(door1);
-    groupDoor.add(door);
-    this.layerElements.add(groupDoor);
+    //Step 4
+    for(let e of elemente) {
+      groupElements.add(e)
+    }
+
+    //Step 5
+    this.layerElements.add(groupElements);
+
+    //Step 6
     let tr = new Konva.Transformer({
-      centeredRotation: true,
       rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
       resizeEnabled: false,
     })
+
+    //Step 7
     this.layerElements.add(tr);
 
-    groupDoor.on('click', (e) => {
-      tr.nodes([groupDoor]);
-        tr.add(circle);
-      this.currentId = id;
-    });
-
-    groupDoor.on('transform dragmove', (data) => {
-      groupDoor.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(groupDoor.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(groupDoor.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(groupDoor.y());
-    });
-
-
-    groupDoor.on('transformend dragend', (data) => {
-      let iddesk: number = parseInt(data.target.name());
-      this.updateElements(iddesk);
-    });
-
-    groupDoor.on('mouseenter', function () {
-      let x: any = groupDoor.getStage();
+    //Step 8
+    groupElements.on('mouseenter', function () {
+      let x: any = groupElements.getStage();
       x.container().style.cursor = 'move';
     });
 
-    groupDoor.on('mouseout', function () {
-      let x: any = groupDoor.getStage();
+    groupElements.on('mouseout', function () {
+      let x: any = groupElements.getStage();
       x.container().style.cursor = 'default';
     });
 
-
-    circle.on('click', (event) => {
-      let id: any = event.target.name();
+    groupElements.on('click', (e) => {
+      tr.nodes([groupElements]);
       this.currentId = id;
-      this.isToDelete = true;
-    });
-
-
-
-
-  }
-  doorRight(id: number, x: number, y: number, rotation: number, bgClr: string,): void {
-    this.stage.add(this.layerElements);
-    let door = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: 10,
-      height: 100,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1
-    })
-    let door1 = new Konva.Rect({
-      x: 18,
-      y: 5,
-      width: 5,
-      height: 90,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation:10,
-    })
-
-    let circle = new Konva.Circle({
-      x: 30,
-      y: 0,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-      name: `${id}`,
-    });
-
-    let groupDoor = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      rotation: rotation,
-      name: `${id}`,
-    })
-
-    groupDoor.add(door1);
-    groupDoor.add(door);
-    this.layerElements.add(groupDoor);
-    let tr = new Konva.Transformer({
-      centeredRotation: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    groupDoor.on('click', (e) => {
-      tr.nodes([groupDoor]);
       tr.add(circle);
-      this.currentId = id;
     });
 
-    groupDoor.on('mouseenter', function () {
-      let x: any = groupDoor.getStage();
+    groupElements.on('mouseenter', function () {
+      let x: any = groupElements.getStage();
       x.container().style.cursor = 'move';
     });
 
-    groupDoor.on('mouseout', function () {
-      let x: any = groupDoor.getStage();
+    groupElements.on('mouseout', function () {
+      let x: any = groupElements.getStage();
       x.container().style.cursor = 'default';
     });
 
-    groupDoor.on('transform dragmove', (data) => {
-      groupDoor.add(circle);
+    groupElements.on('transform dragmove', (data) => {
+      groupElements.add(circle);
       let idElementr = 'elr'+id;
       let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(groupDoor.rotation());
+      elemr.value = Math.floor(groupElements.rotation());
       let idElementx = 'elx'+id;
       let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(groupDoor.x());
+      elemx.value = Math.floor(groupElements.x());
       let idElementy = 'ely'+id;
       let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(groupDoor.y());
+      elemy.value = Math.floor(groupElements.y());
     });
 
-
-    groupDoor.on('transformend dragend', (data) => {
-      let iddesk: number = parseInt(data.target.name());
-      this.updateElements(iddesk);
+    groupElements.on('transformend dragend', (data) => {
+      this.updateElements(id);
+      console.log(id)
     });
-
 
     circle.on('click', (event) => {
-      let id: any = event.target.name();
-      this.currentId = id;
       this.isToDelete = true;
-    });
-  }
-  doorMiddle(id: number, x: number, y: number, rotation: number, bgClr: string,): void {
-    this.stage.add(this.layerElements);
-    let door = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: 10,
-      height: 100,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1
-    })
-    let door1 = new Konva.Rect({
-      x: 5,
-      y: 5,
-      width: 5,
-      height: 45,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation:-25,
-    })
-    let door2 = new Konva.Rect({
-      x: 24,
-      y: 54,
-      width: 5,
-      height: 45,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation:25,
-    })
-
-    let circle = new Konva.Circle({
-      x: 30,
-      y: 0,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-      name: `${id}`,
-    });
-
-    let groupDoor = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      rotation: rotation,
-      name: `${id}`,
-    })
-
-    groupDoor.add(door1);
-    groupDoor.add(door2);
-    groupDoor.add(door);
-    this.layerElements.add(groupDoor);
-    let tr = new Konva.Transformer({
-      centeredRotation: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    groupDoor.on('click', (e) => {
-      tr.nodes([groupDoor]);
-      tr.add(circle);
       this.currentId = id;
-    });
-
-    groupDoor.on('mouseenter', function () {
-      let x: any = groupDoor.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    groupDoor.on('mouseout', function () {
-      let x: any = groupDoor.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-    groupDoor.on('transform dragmove', (data) => {
-      groupDoor.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(groupDoor.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(groupDoor.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(groupDoor.y());
-    });
-
-
-    groupDoor.on('transformend dragend', (data) => {
-      let iddesk: number = parseInt(data.target.name());
-      this.updateElements(iddesk);
-    });
-
-
-    circle.on('click', (event) => {
-      let id: any = event.target.name();
-      this.currentId = id;
-      this.isToDelete = true;
-    });
-  }
-  // Windows Factory
-  windowLeft(id: number, x: number, y: number, rotation: number, bgClr: string,): void {
-    this.stage.add(this.layerElements);
-    let window1 = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: this.meterInPixel * .1,
-      height: this.meterInPixel * 2,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-    });
-    let window2 = new Konva.Rect({
-      x: -this.meterInPixel*.15,
-      y: this.meterInPixel * .05,
-      width: this.meterInPixel * .05,
-      height: this.meterInPixel * 1.9,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation: -6
-    });
-
-
-    let circle = new Konva.Circle({
-      x: -30,
-      y: 0,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-      name: `${id}`,
-    });
-    let windowGroup = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      rotation: rotation,
-      name: `${id}`,
-    })
-
-    windowGroup.add(window2);
-    windowGroup.add(window1);
-
-    this.layerElements.add(windowGroup)
-    let tr = new Konva.Transformer({
-      centeredScaling: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    windowGroup.on('click', (e) => {
-      tr.nodes([windowGroup]);
-      tr.add(circle);
-      this.currentId = id;
-    });
-
-    windowGroup.on('mouseenter', function () {
-      let x: any = windowGroup.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    windowGroup.on('mouseout', function () {
-      let x: any = windowGroup.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-    windowGroup.on('transform dragmove', (data) => {
-      windowGroup.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(windowGroup.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(windowGroup.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(windowGroup.y());
-    });
-
-
-    windowGroup.on('transformend dragend', (data) => {
-      let idwindow: number = parseInt(data.target.name());
-      this.updateElements(idwindow);
-    });
-
-
-    circle.on('click', (event) => {
-      let id: any = event.target.name();
-      this.currentId = id;
-      this.isToDelete = true;
-    });
-  }
-  windowRight(id: number, x: number, y: number, rotation: number, bgClr: string,): void {
-    this.stage.add(this.layerElements);
-    let window1 = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: this.meterInPixel * .1,
-      height: this.meterInPixel * 2,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-    });
-    let window2 = new Konva.Rect({
-      x: this.meterInPixel * .05,
-      y: this.meterInPixel * .05,
-      width: this.meterInPixel * .05,
-      height: this.meterInPixel * 1.9,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation: 6
-    });
-
-
-    let circle = new Konva.Circle({
-      x: -30,
-      y: 0,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-      name: `${id}`,
-    });
-    let windowGroup = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      rotation: rotation,
-      name: `${id}`,
-    })
-
-    windowGroup.add(window2);
-    windowGroup.add(window1);
-
-    this.layerElements.add(windowGroup)
-    let tr = new Konva.Transformer({
-      centeredScaling: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-
-    windowGroup.on('click', (e) => {
-      tr.nodes([windowGroup]);
-      tr.add(circle);
-      this.currentId = id;
-    });
-
-    windowGroup.on('mouseenter', function () {
-      let x: any = windowGroup.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    windowGroup.on('mouseout', function () {
-      let x: any = windowGroup.getStage();
-      x.container().style.cursor = 'default';
-    });
-
-    windowGroup.on('transform dragmove', (data) => {
-      windowGroup.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(windowGroup.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(windowGroup.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(windowGroup.y());
-    });
-
-
-    windowGroup.on('transformend dragend', (data) => {
-      let idwindow: number = parseInt(data.target.name());
-      this.updateElements(idwindow);
-    });
-
-
-    circle.on('click', (event) => {
-      let id: any = event.target.name();
-      this.currentId = id;
-      this.isToDelete = true;
-    });
-  }
-  windowMiddle(id: number, x: number, y: number, rotation: number, bgClr: string,): void {
-    this.stage.add(this.layerElements);
-    let window1 = new Konva.Rect({
-      x: 0,
-      y: 0,
-      width: this.meterInPixel * .1,
-      height: this.meterInPixel * 2,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-    });
-    let window2 = new Konva.Rect({
-      x: 0,
-      y: this.meterInPixel * .05,
-      width: this.meterInPixel * .05,
-      height: this.meterInPixel * .9,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation: 10
-    });
-    let window3 = new Konva.Rect({
-      x: - this.meterInPixel * .15,
-      y: this.meterInPixel * 1.05,
-      width: this.meterInPixel * .05,
-      height: this.meterInPixel * .9,
-      fill: bgClr,
-      cornerRadius: this.meterInPixel * .01,
-      stroke: '#777',
-      strokeWidth: 1,
-      rotation: 350
-    });
-    let circle = new Konva.Circle({
-      x: -30,
-      y: 0,
-      radius: this.radiusDeleteIcon,
-      fill: 'red',
-      stroke: '#777',
-      strokeWidth: 1,
-      shadowColor: 'black',
-      shadowBlur: 10,
-      shadowOffsetX: 2,
-      shadowOffsetY: 3,
-      shadowOpacity: 0.5,
-      name: `${id}`,
-    });
-    let windowGroup = new Konva.Group({
-      x: x,
-      y: y,
-      draggable: true,
-      rotation: rotation,
-      name: `${id}`,
-    })
-    windowGroup.add(window3);
-    windowGroup.add(window2);
-    windowGroup.add(window1);
-    this.layerElements.add(windowGroup)
-    let tr = new Konva.Transformer({
-      centeredScaling: true,
-      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-      resizeEnabled: false,
-    })
-    this.layerElements.add(tr);
-    windowGroup.on('click', (e) => {
-      tr.nodes([windowGroup]);
-      tr.add(circle);
-      this.currentId = id;
-    });
-    windowGroup.on('mouseenter', function () {
-      let x: any = windowGroup.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    windowGroup.on('mouseout', function () {
-      let x: any = windowGroup.getStage();
-      x.container().style.cursor = 'default';
-    });
-    windowGroup.on('transform dragmove', (data) => {
-      windowGroup.add(circle);
-      let idElementr = 'elr'+id;
-      let elemr: any = document.getElementById(idElementr);
-      elemr.value = Math.floor(windowGroup.rotation());
-      let idElementx = 'elx'+id;
-      let elemx: any = document.getElementById(idElementx);
-      elemx.value = Math.floor(windowGroup.x());
-      let idElementy = 'ely'+id;
-      let elemy: any = document.getElementById(idElementy);
-      elemy.value = Math.floor(windowGroup.y());
-    });
-    windowGroup.on('transformend dragend', (data) => {
-      let idwindow: number = parseInt(data.target.name());
-      this.updateElements(idwindow);
-    });
-    circle.on('click', (event) => {
-      let id: any = event.target.name();
-      this.currentId = id;
-      this.isToDelete = true;
     });
   }
 
@@ -1665,58 +800,29 @@ export class RoomComponent implements OnInit {
     })
   }
 
-  reset(): void {
-    this.currentRoomId = 0;
-    this.allElements = this.allElementsKopie;
-    this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
+  downloadAsImage() {
+    let dataURL = this.stage.toDataURL({ pixelRatio: 3 });
+    let link: any = document.createElement('a');
+    link.download = 'myroom';
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    link.download;
   }
 
-  changeUnit(): void {
-
-    if(this.selectedUnit == 'cm') {
-      this.minWidth = 500;
-      this.maxWidth = 3000;
-      this.minHeight = 500;
-      this.maxHeight = 3000;
-      if(this.vorselectedUnit == 'm'){
-        this.standardRooms[0].width *= 100;
-        this.standardRooms[0].height *= 100;
-      } else if(this.vorselectedUnit == 'mm'){
-        this.standardRooms[0].width /= 10;
-        this.standardRooms[0].height /= 10;
-      }
-    }
-
-    if(this.selectedUnit == 'mm') {
-      this.minWidth = 5000;
-      this.maxWidth = 30000;
-      this.minHeight = 5000;
-      this.maxHeight = 30000;
-      if(this.vorselectedUnit == 'cm'){
-        this.standardRooms[0].width *= 10;
-        this.standardRooms[0].height *= 10;
-      } else if(this.vorselectedUnit == 'm'){
-        this.standardRooms[0].width *= 1000;
-        this.standardRooms[0].height *= 1000;
-      }
-    }
-
-    if(this.selectedUnit == 'm') {
-      this.minWidth = 5;
-      this.maxWidth = 30;
-      this.minHeight = 5;
-      this.maxHeight = 30;
-      if(this.vorselectedUnit == 'cm'){
-        this.standardRooms[0].width /= 100;
-        this.standardRooms[0].height /= 100;
-      } else if(this.vorselectedUnit == 'mm'){
-        this.standardRooms[0].width /= 1000;
-        this.standardRooms[0].height /= 1000;
-      }
-    }
-
-    this.vorselectedUnit = this.selectedUnit;
-
+  reset(): void {
+    this.allElements = JSON.parse(JSON.stringify(objectsData));
+    this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
+    this.isRoomSaved = false;
+    let c: any = document.getElementById('standardRoomsChanger');
+    c.style.display = 'flex';
+    c.style.alignItems = 'center';
+    c.style.gap = '20px';
+    c.style.visibility = 'visible';
+    this.setButtons();
+    sessionStorage.removeItem('room');
+    sessionStorage.removeItem('roomDimension');
   }
 
   makeRoomDetailsReady() {
@@ -1781,55 +887,5 @@ export class RoomComponent implements OnInit {
     this.showPicker = false;
     //
   }
-
-  /*
-  makeColorPickerDraggable(){
-    //let picker = document.getElementById('colorPickerContainer');
-
-    let picker = document.querySelector('color-photoshop');
-
-    // @ts-ignore
-    picker.onmousedown = function(event) {
-      // @ts-ignore
-      let shiftX = event.clientX - picker.getBoundingClientRect().left;
-      // @ts-ignore
-      let shiftY = event.clientY - picker.getBoundingClientRect().top;
-
-      // @ts-ignore
-      picker.style.position = 'absolute';
-      // @ts-ignore
-
-      // @ts-ignore
-      document.body.append(picker);
-
-      moveAt(event.pageX, event.pageY);
-      // moves the ball at (pageX, pageY) coordinates
-      // taking initial shifts into account
-      function moveAt(pageX: any, pageY: any) {
-        // @ts-ignore
-        picker.style.left = pageX - shiftX + 'px';
-        // @ts-ignore
-        picker.style.top = pageY - shiftY + 'px';
-      }
-      function onMouseMove(event: any) {
-        moveAt(event.pageX, event.pageY);
-      }
-      // move the ball on mousemove
-      document.addEventListener('mousemove', onMouseMove);
-
-      // drop the ball, remove unneeded handlers
-      // @ts-ignore
-      picker.onmouseup = function() {
-        document.removeEventListener('mousemove', onMouseMove);
-        // @ts-ignore
-        picker.onmouseup = null;
-      };
-    };
-    // @ts-ignore
-    picker.ondragstart = function() {
-      return false;
-    }
-  }
-  */
 
 }

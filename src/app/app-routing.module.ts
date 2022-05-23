@@ -10,6 +10,7 @@ import {GroupTableConfirmedComponent} from "./group-table-confirmed/group-table-
 import {SitzordnungComponent} from "./sitzordnung/sitzordnung.component";
 
 
+
 const routes: Routes = [
   { path: 'mainmenu', component:MainmenuComponent },
   { path: '', redirectTo:'/mainmenu', pathMatch:'full'},

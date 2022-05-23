@@ -21,7 +21,7 @@
   {"id": 17, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
 
   {"id": 18, "roomId": 0, "element": "door", "elementtyp": "right", "place": 1, "factory": "r", "x": 0, "y": 100, "degRotation": 0, "bgClr": "#777777"},
-  {"id": 19, "roomId": 0, "element": "door", "elementtyp": "left", "place": 1, "factory": "l", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 19, "roomId": 0, "element": "door", "elementtyp": "middle", "place": 1, "factory": "l", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
 
   {"id": 20, "roomId": 1, "element": "door", "elementtyp": "left", "place": 1, "factory": "m", "x": 0, "y": 200, "degRotation": 0, "bgClr": "#777777"},
   {"id": 21, "roomId": 1, "element": "door", "elementtyp": "left", "place": 1, "factory": "m", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
