@@ -53,6 +53,7 @@ export class GroupTableConfirmedComponent implements OnInit {
 
   ////// show Popup of Person Properties with details //////
   openModal(index:number, firstName:string, lastName:string){
+    console.log(this.listOfContacts);
 
     this.index = index;
     this.firstName = firstName;
