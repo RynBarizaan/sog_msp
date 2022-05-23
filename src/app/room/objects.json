@@ -6,35 +6,39 @@
   {"id": 4, "roomId": 0, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 200, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
   {"id": 5, "roomId": 0, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
 
-  {"id": 6, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 200, "y": 100, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 7, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 100, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 8, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 200, "y": 300, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 9, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 300, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 10, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 200, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 11, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 6, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 212, "y": 105, "degRotation": 90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 7, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 437, "y": 205, "degRotation": -90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 8, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 213, "y": 227, "degRotation": 90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 9, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 438, "y": 329, "degRotation": -90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 10, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 213, "y": 347, "degRotation": 90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 11, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 439, "y": 449, "degRotation": -90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 12, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 396, "y": 460, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 13, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 280, "y": 460, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 14, "roomId": 1, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 156, "y": 461, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
 
-  {"id": 12, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 200, "y": 100, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 13, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 100, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 14, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 200, "y": 300, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 15, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 300, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 16, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 200, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
-  {"id": 17, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 400, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 15, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 173, "y": 142, "degRotation": 90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 16, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 519, "y": 375, "degRotation": -75, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 17, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 173, "y": 275, "degRotation": 80, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 18, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 446, "y": 492, "degRotation": -45, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 19, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 219, "y": 410, "degRotation": 55, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 20, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 312, "y": 500, "degRotation": 0, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
+  {"id": 21, "roomId": 2, "element": "desk", "elementtyp": "eckig", "place": 1, "factory": "s-s", "x": 541, "y": 240, "degRotation": -90, "bgClr": "#777777", "firstname1": "Vorname", "lastname1": "Nachname"},
 
-  {"id": 18, "roomId": 0, "element": "door", "elementtyp": "right", "place": 1, "factory": "r", "x": 0, "y": 100, "degRotation": 0, "bgClr": "#777777"},
-  {"id": 19, "roomId": 0, "element": "door", "elementtyp": "middle", "place": 1, "factory": "l", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 22, "roomId": 0, "element": "door", "elementtyp": "right", "place": 1, "factory": "r", "x": 0, "y": 100, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 23, "roomId": 0, "element": "door", "elementtyp": "middle", "place": 1, "factory": "l", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
 
-  {"id": 20, "roomId": 1, "element": "door", "elementtyp": "left", "place": 1, "factory": "m", "x": 0, "y": 200, "degRotation": 0, "bgClr": "#777777"},
-  {"id": 21, "roomId": 1, "element": "door", "elementtyp": "left", "place": 1, "factory": "m", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 24, "roomId": 1, "element": "door", "elementtyp": "left", "place": 1, "factory": "m", "x": 0, "y": 200, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 25, "roomId": 1, "element": "door", "elementtyp": "left", "place": 1, "factory": "m", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
 
-  {"id": 22, "roomId": 2, "element": "door", "elementtyp": "left", "place": 1, "factory": "r", "x": 0, "y": 200, "degRotation": 0, "bgClr": "#777777"},
-  {"id": 23, "roomId": 2, "element": "door", "elementtyp": "left", "place": 1, "factory": "r", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 26, "roomId": 2, "element": "door", "elementtyp": "left", "place": 1, "factory": "r", "x": 0, "y": 200, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 27, "roomId": 2, "element": "door", "elementtyp": "left", "place": 1, "factory": "r", "x": 0, "y": 400, "degRotation": 0, "bgClr": "#777777"},
 
-  {"id": 24, "roomId": 0, "element": "window", "elementtyp": "middle", "place": 1, "factory": "r", "x": 686, "y": 90, "degRotation": 0, "bgClr": "#777777"},
-  {"id": 25, "roomId": 0, "element": "window", "elementtyp": "middle", "place": 1, "factory": "l", "x": 686, "y": 400, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 28, "roomId": 0, "element": "window", "elementtyp": "middle", "place": 1, "factory": "r", "x": 686, "y": 90, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 29, "roomId": 0, "element": "window", "elementtyp": "middle", "place": 1, "factory": "l", "x": 686, "y": 400, "degRotation": 0, "bgClr": "#777777"},
 
-  {"id": 26, "roomId": 1, "element": "window", "elementtyp": "middle", "place": 1, "factory": "m", "x": 686, "y": 90, "degRotation": 0, "bgClr": "#777777"},
-  {"id": 27, "roomId": 1, "element": "window", "elementtyp": "middle", "place": 1, "factory": "m", "x": 686, "y": 400, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 30, "roomId": 1, "element": "window", "elementtyp": "middle", "place": 1, "factory": "m", "x": 686, "y": 90, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 31, "roomId": 1, "element": "window", "elementtyp": "middle", "place": 1, "factory": "m", "x": 686, "y": 400, "degRotation": 0, "bgClr": "#777777"},
 
-  {"id": 28, "roomId": 2, "element": "window", "elementtyp": "middle", "place": 1, "factory": "l", "x": 686, "y": 90, "degRotation": 0, "bgClr": "#777777"},
-  {"id": 29, "roomId": 2, "element": "window", "elementtyp": "middle", "place": 1, "factory": "r", "x": 686, "y": 400, "degRotation": 0, "bgClr": "#777777"}
+  {"id": 32, "roomId": 2, "element": "window", "elementtyp": "middle", "place": 1, "factory": "l", "x": 686, "y": 90, "degRotation": 0, "bgClr": "#777777"},
+  {"id": 33, "roomId": 2, "element": "window", "elementtyp": "middle", "place": 1, "factory": "r", "x": 686, "y": 400, "degRotation": 0, "bgClr": "#777777"}
 ]
