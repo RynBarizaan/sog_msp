@@ -61,9 +61,7 @@ export class GroupTableComponent {
 
   //// back to Silder Component  /////
   toSlider(){
-
       this.router.navigate(['/group-slider']);
-
   }
 
   ////// check if the there are a empty Input //////

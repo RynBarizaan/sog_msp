@@ -46,7 +46,8 @@ export class MainmenuComponent implements OnInit {
     }
   }
 
-  isRoomAvailable(): void {
+
+  isRoomAvailable(): boolean {
     let room: any;
     room = sessionStorage.getItem("room");
     room = JSON.parse(room);
@@ -55,13 +56,24 @@ export class MainmenuComponent implements OnInit {
       el.classList.remove('btn-primary');
       el.classList.add('btn-success');
       this.raumStatus = 'Raum bearbeiten';
+      return true;
     } else {
       el.classList.remove('btn-success');
       el.classList.add('btn-primary');
       this.raumStatus = 'Raum erstellen';
+      return false;
     }
   }
 
+  ////// check if a grupp and room already created /////
+  isDataAndRoomExist(): boolean{
+    if (this.isDataExist() && this.isRoomAvailable()){
+      return true;
+    }
+    else  {
+      return false;
+    }
+  }
 
 
   ////////// edit or create a Grupp ////
@@ -95,4 +107,11 @@ export class MainmenuComponent implements OnInit {
     this.gruppeStatus = 'Gruppe erstellen';
     this.formModalDelete.hide();
   }
+
+
+  //////// send on Sitzordnung Component ////////
+  toCreatRandomSeat(){
+    this.router.navigate(['/sitzordnung']);
+  }
+
 }
