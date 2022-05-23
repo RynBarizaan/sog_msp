@@ -59,8 +59,8 @@ export class GroupTableComponent {
     console.log(this.listOfContacts);
   }
 
-  //// back to Silder Component  /////
-  toCancle(){
+  //// back to mainmenu  /////
+  Cancle(){
     // @ts-ignore
     let data=JSON.parse(sessionStorage.getItem("isDataConfirm"));
     if (!data){
