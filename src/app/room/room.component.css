@@ -4,7 +4,7 @@
   height: 850px;
   background-color: rgb(248,249,250);
   margin-top: 20px;
-  border-radius: 10px;
+  border-radius: 4px;
   border: 1px #ddd solid;
 }
 
@@ -17,7 +17,6 @@
   border-radius: 10px 0px 0px 10px;
   border-right: 1px #ddd solid;
 }
-
 
 #container-visualiser {
   display: flex;
