@@ -60,8 +60,17 @@ export class GroupTableComponent {
   }
 
   //// back to Silder Component  /////
-  toSlider(){
-      this.router.navigate(['/group-slider']);
+  toCancle(){
+    // @ts-ignore
+    let data=JSON.parse(sessionStorage.getItem("isDataConfirm"));
+    if (!data){
+      sessionStorage.removeItem("person");
+      this.router.navigate(['/mainmenu']);
+    }
+    else {
+      this.router.navigate(['/mainmenu']);
+    }
+
   }
 
   ////// check if the there are a empty Input //////
