@@ -17,11 +17,13 @@ export class ImportCsvComponent implements OnInit {
 
   listOfContacts: Array<any> =[];
   listOfContactsASObject: Array<any> =[];
-  private newAttribute: any = new Person("", "",false,false,false,false,false,false,[],[]);
   Decrypt: Array<any> = [];
   textToConvert!: string;
   password: any;
   hide = true;
+  messageIfNoFile!: string;
+  messageIfWrongPass!: string;
+
 
   public records: any[] = [];
   @ViewChild('csvReader') csvReader: any;
@@ -31,7 +33,7 @@ export class ImportCsvComponent implements OnInit {
 
   uploadListener($event: any): void {
 
-    let files = $event.srcElement.files;
+   let files = $event.srcElement.files;
 
    if (this.isValidCSVFile(files[0])) {
 
@@ -62,12 +64,11 @@ export class ImportCsvComponent implements OnInit {
 
     console.log("is works 2")
     let csvArr = [];
-    let test:any;
-    let test1:any;
-    let test2=[];
+    let row:any;
+    let listOfNeighborsBol:any;
+    let listOfNeighborsStr=[];
 
     for (let i = 1; i < csvRecordsArray.length-1; i++) {
-
       let curruntRecord = (<string>csvRecordsArray[i]).split(/\r\n|\n/);
       let encrypt: csvRecord = new csvRecord();
       csvArr.push(encrypt);
@@ -76,23 +77,18 @@ export class ImportCsvComponent implements OnInit {
     }
 
     for (var x=0; x<this.listOfContacts.length; x++){
-      test2=[];
-      test = (<string>this.listOfContacts[x]).split(",");
-      test1 = (<string>this.listOfContacts[x]).split("/");
-   for (var y=1; y<test1.length-1; y++){
-      test2.push(test1[y]);
+      listOfNeighborsStr=[];
+      row = (<string>this.listOfContacts[x]).split(",");
+      listOfNeighborsStr = (<string>this.listOfContacts[x]).split("/");
+   for (var y=1; y<listOfNeighborsStr.length-1; y++){
+     listOfNeighborsStr.push(listOfNeighborsStr[y]);
     }
 
-      this.listOfContactsASObject.push(new Person(test[0],test[1],JSON.parse(test[2]),JSON.parse(test[3]),JSON.parse(test[4]),JSON.parse(test[5]),JSON.parse(test[6]),JSON.parse(test[7]),test2,[]));
+      this.listOfContactsASObject.push(new Person(row[0],row[1],JSON.parse(row[2]),JSON.parse(row[3]),JSON.parse(row[4]),JSON.parse(row[5]),JSON.parse(row[6]),JSON.parse(row[7]),listOfNeighborsStr,[]));
     }
-
-      console.log(this.listOfContactsASObject);
-
     sessionStorage.removeItem("person");
     sessionStorage.setItem("person", JSON.stringify(this.listOfContactsASObject));
     // @ts-ignore
-    console.log(JSON.parse(sessionStorage.getItem("person")));
-    //console.log(csvArr)
      return csvArr;
   }
 
@@ -101,9 +97,10 @@ export class ImportCsvComponent implements OnInit {
   }
   fileReset() {
     this.csvReader.nativeElement.value = "";
+    this.messageIfNoFile =""
   }
 
-//html view functions for import
+//Error Message if password feld empty
   passFormControl = new FormControl('', [
     Validators.required,
   ]);
@@ -115,11 +112,21 @@ export class ImportCsvComponent implements OnInit {
 
   }
   test(){
-    if (this.password !="" && this.password != null){
+    //Error if you didn't upload any file
+    if (this.csvReader.nativeElement.value == ""){
+    this.messageIfNoFile="Bitte eine CSV Datei Auswählen"
+    this.myInput.nativeElement.focus();
+  }
+    else if (this.listOfContactsASObject.length == 0 && this.listOfContacts.length == 0){
+      console.log("bite richtige password eingeben")
+    }
+    else if (this.password !="" && this.password != null){
+      //
       sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
       this.closeModal()
-
+      console.log(this.listOfContacts)
     }
+
 
     else{
       this.myInput.nativeElement.focus();

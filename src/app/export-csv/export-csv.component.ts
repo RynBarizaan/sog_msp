@@ -68,6 +68,7 @@ export class ExportCSVComponent {
     this.myInput.nativeElement.focus();
 
     var arr = [];
+    this.Encrypt=[];
       for (let i = 0; i < this.listOfContacts.length; i++) {
         arr.push(this.listOfContacts[i]['Vorname']+","+this.listOfContacts[i]['Nachname']+","+this.listOfContacts[i]['Türnähe']+","+this.listOfContacts[i]['Tafelnähe']+','+this.listOfContacts[i]['Frontal']+','+this.listOfContacts[i]['Fensternähe']+','+this.listOfContacts[i]['HintenImRaum']+','+this.listOfContacts[i]['VorneImRaum']+','+"/")
 
