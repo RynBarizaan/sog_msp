@@ -3,8 +3,7 @@ import {MainmenuComponent} from "../mainmenu/mainmenu.component";
 import {FormControl, Validators} from "@angular/forms";
 import * as CryptoJS from 'crypto-js'
 import {csvRecord} from "../model/csv-record";
-import {Person} from "../model/person";
-import {angle} from "html2canvas/dist/types/css/types/angle";
+
 
 @Component({
   selector: 'app-import-csv',
@@ -102,10 +101,13 @@ export class ImportCsvComponent implements OnInit {
     //Error if you didn't upload any file
     if (this.csvReader.nativeElement.value == ""){
     this.messageIfNoFile="Bitte eine CSV Datei Auswählen";
-  }
+    this.messageIfWrongPass=""
+
+    }
     else {
       this.messageIfNoFile="";
     }
+    //Error if you enter wrong password or wrong csv file
     if (this.listOfContacts.length == 0 || this.listOfContacts==null || this.listOfContacts ==[] || this.listOfContacts==['']) {
       this.messageIfWrongPass = "Passwort ist falsch oder Falsche CSV Datei Ausgewählt";
       this.fileReset()
@@ -114,10 +116,12 @@ export class ImportCsvComponent implements OnInit {
     else {
       sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
       this.closeModal()
-      console.log(this.listOfContacts)
     }
+    //Error if you didn't enter any password
     if(this.password =="" || this.password == null){
        this.myInput.nativeElement.focus();
+      this.messageIfWrongPass=""
+
     }
   }
 
