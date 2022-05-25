@@ -68,20 +68,33 @@ export class ExportCSVComponent {
     this.myInput.nativeElement.focus();
 
     var arr = [];
-    this.Encrypt=[];
-      for (let i = 0; i < this.listOfContacts.length; i++) {
-        arr.push(this.listOfContacts[i]['Vorname']+","+this.listOfContacts[i]['Nachname']+","+this.listOfContacts[i]['Türnähe']+","+this.listOfContacts[i]['Tafelnähe']+','+this.listOfContacts[i]['Frontal']+','+this.listOfContacts[i]['Fensternähe']+','+this.listOfContacts[i]['HintenImRaum']+','+this.listOfContacts[i]['VorneImRaum']+','+"/")
-
-        for (let x=0; x<this.listOfContacts[i]['AusnahmenVonNachbern'].length; x++){
-          arr[i]+=(this.listOfContacts[i]['AusnahmenVonNachbern'][x]+"/");
-
+    var listOFNighbore:any=[];
+    var komma;
+    for (let i = 0; i < this.listOfContacts.length; i++) {
+      listOFNighbore =[];
+      for (var y=0; y< this.listOfContacts[i]['AusnahmenVonNachbern'].length; y++){
+        if (this.listOfContacts[i]['AusnahmenVonNachbern'].length ==1 || y == this.listOfContacts[i]['AusnahmenVonNachbern'].length-1){
+          komma =""
         }
-        for (let x=0; x<this.listOfContacts[i]['AusnahmenVonNachbernAsBoolean'].length; x++){
-          arr[i]+=(","+this.listOfContacts[i]['AusnahmenVonNachbernAsBoolean'][x]+",");
+        else {
+          komma=","
         }
-        this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
-
+        listOFNighbore += '"'+this.listOfContacts[i]['AusnahmenVonNachbern'][y]+'"'+komma;
       }
+
+      console.log(listOFNighbore);
+      arr.push("{"+'"Vorname":'+'"'+this.listOfContacts[i]['Vorname']+'"'+","
+        +'"Nachname":'+'"'+this.listOfContacts[i]['Nachname']+'"'+","
+        +'"Türnähe":'+this.listOfContacts[i]['Türnähe']+","
+        +'"Tafelnähe":'+this.listOfContacts[i]['Tafelnähe']+","
+        +'"Frontal":'+this.listOfContacts[i]['Frontal']+","
+        +'"Fensternähe":'+this.listOfContacts[i]['Fensternähe']+","
+        +'"HintenImRaum":'+this.listOfContacts[i]['HintenImRaum']+","
+        +'"VorneImRaum":'+this.listOfContacts[i]['VorneImRaum']+","
+        +'"AusnahmenVonNachbern":['+listOFNighbore+']'
+        +","+'"AusnahmenVonNachbernAsBoolean":['+this.listOfContacts[i]['AusnahmenVonNachbernAsBoolean']+"]"+"}");
+      this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
+    }
 
       var options = {
         fieldSeparator: ',',

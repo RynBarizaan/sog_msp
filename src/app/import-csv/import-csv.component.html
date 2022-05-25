@@ -27,12 +27,13 @@
             Bitte password eingeben
           </mat-error>
         </mat-form-field>
+        <small id="WrongFile" class="form-text text-danger" style="margin-left: 70px">{{messageIfWrongPass}}</small> <br>
 
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"    (click)="closeModal()">Schlißen</button>
-        <input type="button" class="btn btn-outline-dark"  (click)="test()" value="Beschtätigen und Importieren">
+        <input type="button" class="btn btn-outline-dark"(click)="test()" value="Beschtätigen und Importieren">
       </div>
     </div>
   </div>
