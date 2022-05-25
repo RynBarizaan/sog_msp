@@ -773,8 +773,35 @@ export class RoomComponent implements OnInit {
     });
 
     groupElements.on('transformend dragend', (data) => {
+
+      let idX = 'elx'+id;
+      let elemtX: any = document.getElementById(idX);
+      //elemtX.value = 0;
+
+
+
+      let stageWidth = this.widthStage
+      let objWidth: number = Math.floor(groupElements.getClientRect().width);
+      let xPos: number = Math.floor(groupElements.getClientRect().x);
+      let objectEnd: number = xPos + objWidth;
+      let xEndController: number = stageWidth - objectEnd;
+
+      if(xEndController < 0){
+        xEndController *= -1;
+
+        elemtX.value = (stageWidth - (objWidth))
+
+      } else {
+
+      }
+
+
+
+
+
       this.updateElements(id);
-      console.log(id)
+
+      //console.log(groupElements.getClientRect().x)
     });
 
     circle.on('click', (event) => {
@@ -859,10 +886,12 @@ export class RoomComponent implements OnInit {
     }
 
     sessionStorage.setItem("room", JSON.stringify(this.roomElements));
+    console.log(this.roomElements)
     let roomStage: any = {
       "width": this.standardRooms[this.currentRoomId].width,
       "height":  this.standardRooms[this.currentRoomId].height,
     }
+    console.log(roomStage)
     sessionStorage.setItem("roomDimension", JSON.stringify(roomStage));
 
   }

@@ -194,11 +194,11 @@
           </div>
           <div class="horizontal-width">
             <div><label class="label-left-dark">X</label></div>
-            <input type="number" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="0" max="700" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width">
             <div><label class="label-left-dark">Y</label></div>
-            <input type="number" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="0" max="700" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElements(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width">
             <div><label class="label-left-dark">Rotation</label></div>
@@ -316,7 +316,7 @@
       </div>
     </div>
 
-      <color-photoshop id="color-photoshop" *ngIf="showPicker" style="z-index: 1000; position: absolute; margin-top: -50px; margin-left: -20px;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
+      <color-photoshop id="color-photoshop" *ngIf="showPicker" style="z-index: 1000; position: absolute;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
       </color-photoshop>
     <div id="roomvisualiser">
     </div>
