@@ -42,7 +42,6 @@ export class ExportCSVComponent {
       document.getElementById("exampleModalCenter1"));
   }
 //Password page
-
   confirmFormControl = new FormControl('', [
     Validators.required,
   ]);
@@ -68,31 +67,10 @@ export class ExportCSVComponent {
     this.myInput.nativeElement.focus();
 
     var arr = [];
-    var listOFNighbore:any=[];
-    var komma;
+    arr =[];
+    this.Encrypt =[];
     for (let i = 0; i < this.listOfContacts.length; i++) {
-      listOFNighbore =[];
-      for (var y=0; y< this.listOfContacts[i]['AusnahmenVonNachbern'].length; y++){
-        if (this.listOfContacts[i]['AusnahmenVonNachbern'].length ==1 || y == this.listOfContacts[i]['AusnahmenVonNachbern'].length-1){
-          komma =""
-        }
-        else {
-          komma=","
-        }
-        listOFNighbore += '"'+this.listOfContacts[i]['AusnahmenVonNachbern'][y]+'"'+komma;
-      }
-
-      console.log(listOFNighbore);
-      arr.push("{"+'"Vorname":'+'"'+this.listOfContacts[i]['Vorname']+'"'+","
-        +'"Nachname":'+'"'+this.listOfContacts[i]['Nachname']+'"'+","
-        +'"Türnähe":'+this.listOfContacts[i]['Türnähe']+","
-        +'"Tafelnähe":'+this.listOfContacts[i]['Tafelnähe']+","
-        +'"Frontal":'+this.listOfContacts[i]['Frontal']+","
-        +'"Fensternähe":'+this.listOfContacts[i]['Fensternähe']+","
-        +'"HintenImRaum":'+this.listOfContacts[i]['HintenImRaum']+","
-        +'"VorneImRaum":'+this.listOfContacts[i]['VorneImRaum']+","
-        +'"AusnahmenVonNachbern":['+listOFNighbore+']'
-        +","+'"AusnahmenVonNachbernAsBoolean":['+this.listOfContacts[i]['AusnahmenVonNachbernAsBoolean']+"]"+"}");
+      arr.push(JSON.stringify(this.listOfContacts[i]));
       this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
     }
 

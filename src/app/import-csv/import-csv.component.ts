@@ -97,7 +97,6 @@ export class ImportCsvComponent implements OnInit {
   ngOnInit(): void {}
 
   test(){
-
     //Error if you didn't upload any file
     if (this.csvReader.nativeElement.value == ""){
     this.messageIfNoFile="Bitte eine CSV Datei Auswählen";
@@ -121,7 +120,6 @@ export class ImportCsvComponent implements OnInit {
     if(this.password =="" || this.password == null){
        this.myInput.nativeElement.focus();
       this.messageIfWrongPass=""
-
     }
   }
 
