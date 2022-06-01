@@ -4,6 +4,9 @@ import { jsPDF } from "jspdf"
 import html2canvas from "html2canvas";
 import { ColorEvent } from 'ngx-color';
 import objectsData from './objects.json';
+import { ngxCsv } from 'ngx-csv/ngx-csv';
+import {roomInfo} from "../model/roomInfo";
+
 interface Object {
   id: number;
   roomId: number;
@@ -114,6 +117,7 @@ export class RoomComponent implements OnInit {
   currentId?: any;
   // Link dimension
   islinked: boolean = false;
+
   // Pre elements to add
   deskToAdd: {elementtyp: string, place: number, x:number, y: number, degRotation: number, bgClr: string} =
     {
@@ -916,5 +920,32 @@ export class RoomComponent implements OnInit {
     this.showPicker = false;
     //
   }
+
+  //Export room as CSV File
+
+  ExportAsCsv(){
+
+    for(let element of this.roomElements) {
+      element.roomId = 0;
+    }
+    let roomStage: any = {
+      "width": this.standardRooms[this.currentRoomId].width,
+      "height":  this.standardRooms[this.currentRoomId].height,
+    }
+
+     this.roomElements.push(roomStage)
+     console.log(this.roomElements)
+
+      var options = {
+        fieldSeparator: ',',
+        quoteStrings: '',
+        decimalseparator: '.',
+        showLabels: true,
+        showTitle: false,
+        useBom: false,
+        headers: ["RoomInfos"]
+    };
+       new ngxCsv(this.roomElements, "Room", options);
+    }
 
 }

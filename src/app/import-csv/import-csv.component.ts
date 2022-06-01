@@ -20,9 +20,10 @@ export class ImportCsvComponent implements OnInit {
   textToConvert!: string;
   password: any;
   hide = true;
-  onChange!:true;
+  onChange!:boolean;
   messageIfNoFile!: string;
   messageIfWrongPass!: string;
+  isTrue = false;
 
 
   public records: any[] = [];
@@ -33,7 +34,7 @@ export class ImportCsvComponent implements OnInit {
 
     let files = $event.srcElement.files;
 
-    if (this.isValidCSVFile(files[0])) {
+    if (this.isValidCSVFile(files[0]) ) {
 
       let input = $event.target;
       let reader = new FileReader();
@@ -54,27 +55,34 @@ export class ImportCsvComponent implements OnInit {
       alert("Please import valid .csv file.");
       this.fileReset();
     }
+
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any) {
 
     console.log("is works 2")
-
-    let csvArr = [];
-    this.listOfContacts=[];
-    for (let i = 1; i < csvRecordsArray.length-1; i++) {
-      let curruntRecord = (<string>csvRecordsArray[i]).split(/\r\n|\n/);
-      let encrypt: csvRecord = new csvRecord();
-      csvArr.push(encrypt);
-      this.listOfContacts.push((CryptoJS.AES.decrypt(curruntRecord.toString(), this.password.trim()).toString(CryptoJS.enc.Utf8)));
-      this.listOfContactsASObject=[];
+      let csvArr = [];
+      this.listOfContacts = [];
+      for (let i = 1; i < csvRecordsArray.length - 1; i++) {
+        let curruntRecord = (<string>csvRecordsArray[i]).split(/\r\n|\n/);
+        let encrypt: csvRecord = new csvRecord();
+        csvArr.push(encrypt);
+        this.listOfContacts.push((CryptoJS.AES.decrypt(curruntRecord.toString(), this.password.trim()).toString(CryptoJS.enc.Utf8)));
+        this.listOfContactsASObject = [];
+      }
+    if (this.listOfContacts.length==0 || this.listOfContacts==[] || this.listOfContacts==null ){
+      this.messageIfWrongPass = "Passwort ist falsch oder Falsche CSV Datei Ausgewählt";
+      this.isTrue=false;
     }
+    else {
 
     for (var x=0 ; x<this.listOfContacts.length; x++){
       this.listOfContactsASObject[x] =JSON.parse(this.listOfContacts[x]);
     }
     console.log(this.listOfContacts[0]);
     sessionStorage.setItem("person", JSON.stringify(this.listOfContactsASObject));
+    this.isTrue=true;
+    }
     return csvArr;
    }
 
@@ -96,12 +104,13 @@ export class ImportCsvComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  test(){
+  Import(){
+
     //Error if you didn't upload any file
+    this.onChange = true;
     if (this.csvReader.nativeElement.value == ""){
     this.messageIfNoFile="Bitte eine CSV Datei Auswählen";
     this.messageIfWrongPass=""
-
     }
     else {
       this.messageIfNoFile="";
@@ -112,10 +121,13 @@ export class ImportCsvComponent implements OnInit {
       this.fileReset()
       console.log("bite richtige password eingeben")
     }
-    else {
-      sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
-      this.closeModal()
-    }
+   if (this.isTrue){
+     sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
+     this.closeModal()
+   }
+   else {
+     this.messageIfWrongPass = "Passwort ist falsch oder Falsche CSV Datei Ausgewählt";
+   }
     //Error if you didn't enter any password
     if(this.password =="" || this.password == null){
        this.myInput.nativeElement.focus();
@@ -130,6 +142,5 @@ export class ImportCsvComponent implements OnInit {
     this.messageIfWrongPass=""
     this.mainmenuComponent.closeModal()
   }
-
 
 }

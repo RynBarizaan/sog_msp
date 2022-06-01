@@ -60,12 +60,11 @@ export class ExportCSVComponent {
 
   //Export Data as Encrypt/CSV
 
-  ExportCSV() {
+  ExportGroupCSV() {
     // @ts-ignore
     this.listOfContacts= JSON.parse(sessionStorage.getItem("person"));
     this.myInput2.nativeElement.focus();
     this.myInput.nativeElement.focus();
-
     var arr = [];
     arr =[];
     this.Encrypt =[];
@@ -73,8 +72,7 @@ export class ExportCSVComponent {
       arr.push(JSON.stringify(this.listOfContacts[i]));
       this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
     }
-
-      var options = {
+        var options = {
         fieldSeparator: ',',
         quoteStrings: '',
         decimalseparator: '.',
@@ -89,6 +87,8 @@ export class ExportCSVComponent {
       this.closeModal();
       }
     }
+
+
 
 }
 
