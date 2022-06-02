@@ -924,6 +924,7 @@ export class RoomComponent implements OnInit {
   //Export room as CSV File
 
   ExportAsCsv(){
+    this.makeRoomDetailsReady();
 
     for(let element of this.roomElements) {
       element.roomId = 0;
