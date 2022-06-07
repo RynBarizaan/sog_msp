@@ -169,7 +169,7 @@ h2 {
   background-color: #fff;
   z-index: 10;
   position: absolute;
-  width: 650px;
+
 }
 
 .headerPopup {
@@ -327,4 +327,16 @@ position: absolute;
 .icons {
   height: 26px;
   fill: #777;
+}
+
+.orientation-text {
+  font-family: Arial;
+  font-size: 1em;
+  font-weight: bold;
+  color: #777;
+  margin: auto;
+  padding: 10px;
+  border-radius: 30px;
+  border: 1px solid black;
+  text-align: center;
 }

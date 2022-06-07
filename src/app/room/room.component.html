@@ -94,7 +94,7 @@
     </div>
     <div class="popUpActions">
       <button (click)="isToAddDoor = false">Abbrechen</button>
-      <button (click)="addDoor(doorToAdd.elementtyp,doorToAdd.x,doorToAdd.y,doorToAdd.degRotation, '#777777', doorToAdd.platzierung); isToAddDoor = false">Hinzufügen</button>
+      <button (click)="addDoor(doorToAdd.elementtyp,'#777777', doorToAdd.platzierung, doorToAdd.x, doorToAdd.y); isToAddDoor = false">Hinzufügen</button>
     </div>
   </div>
 
@@ -126,7 +126,7 @@
     </div>
     <div class="popUpActions">
       <button (click)="isToAddWindow = false">Abbrechen</button>
-      <button (click)="addWindow(windowToAdd.elementtyp,windowToAdd.x,windowToAdd.y,windowToAdd.degRotation, '#777777', windowToAdd.platzierung); isToAddWindow = false">Hinzufügen</button>
+      <button (click)="addWindow(windowToAdd.elementtyp,'#777777', windowToAdd.platzierung, windowToAdd.x, windowToAdd.y); isToAddWindow = false">Hinzufügen</button>
     </div>
   </div>
 
@@ -158,7 +158,7 @@
     </div>
     <div class="popUpActions">
       <button (click)="isToAddBoard = false">Abbrechen</button>
-      <button (click)="addBoard(boardToAdd.elementtyp,boardToAdd.x,boardToAdd.y,boardToAdd.degRotation, '#777777', boardToAdd.platzierung); isToAddBoard = false">Hinzufügen</button>
+      <button (click)="addBoard(boardToAdd.elementtyp,'#777777', boardToAdd.platzierung, boardToAdd.x, boardToAdd.y); isToAddBoard = false">Hinzufügen</button>
     </div>
   </div>
 
@@ -176,11 +176,22 @@
       &nbsp;&nbsp;&nbsp;
       <div class="">
         <div *ngFor="let el of roomElements">
-          <label>Object:&nbsp;</label><label><strong>{{el.element}}&nbsp;</strong></label>
-          <label>Typ:&nbsp;</label><label><strong>{{el.elementtyp}}&nbsp;</strong></label>
-          <label>X:&nbsp;</label><label><strong>{{el.x}}&nbsp;</strong></label>
-          <label>Y:&nbsp;</label><label><strong>{{el.y}}&nbsp;</strong></label>
-          <label>Rotation:&nbsp;</label><label><strong>{{el.degRotation}}&nbsp;</strong></label>
+
+          <div *ngIf="el.element == 'desk'">
+            <label>Object:&nbsp;</label><label><strong>{{el.element}}&nbsp;</strong></label>
+            <label>, Typ:&nbsp;</label><label><strong>{{el.elementtyp}}&nbsp;</strong></label>
+            <label>, X:&nbsp;</label><label><strong>{{el.x}}&nbsp;</strong></label>
+            <label>, Y:&nbsp;</label><label><strong>{{el.y}}&nbsp;</strong></label>
+            <label>, Rotation:&nbsp;</label><label><strong>{{el.degRotation}}&nbsp;</strong></label>
+          </div>
+
+          <div *ngIf="el.element != 'desk'">
+            <label>Object:&nbsp;</label><label><strong>{{el.element}}&nbsp;</strong></label>
+            <label *ngIf="el.platzierung == 'vorne' || el.platzierung == 'hinten'">, X:&nbsp;</label><label *ngIf="el.platzierung == 'vorne' || el.platzierung == 'hinten'"><strong>{{el.x}}&nbsp;</strong></label>
+            <label *ngIf="el.platzierung == 'links' || el.platzierung == 'rechts'">, Y:&nbsp;</label><label *ngIf="el.platzierung == 'links' || el.platzierung == 'rechts'"><strong>{{el.y}}&nbsp;</strong></label>
+            <label>, Platzierung:&nbsp;</label><label><strong>{{el.platzierung}}&nbsp;</strong></label>
+          </div>
+
 
         </div>
       </div>
@@ -428,11 +439,16 @@
 
   </div>
 
+
+
   <div id="container-visualiser">
+
+    <div class="orientation-text">W</div>
 
     <div id="visualiser">
 
-    <div id="workspaceHeader">
+    <div style="display: flex; align-items: center; flex-direction: column;">
+      <div id="workspaceHeader">
       <div id="headerRight">
         <div id="standardRoomsChanger" style="visibility: hidden;">
           <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
@@ -449,19 +465,27 @@
         <span (click)="isToSaveRoom = true; makeRoomDetailsReady();" class="material-icons p-1">save</span>
         <mat-icon title="Download as CSV File" (click)="ExportAsCsv()">download</mat-icon>
       </div>
+      </div>
+      <div>
+      <div class="orientation-text">N</div>
+      </div>
     </div>
 
       <color-photoshop id="color-photoshop" *ngIf="showPicker" style="z-index: 1000; position: absolute;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
       </color-photoshop>
+
+
     <div id="roomvisualiser">
     </div>
 
+      <div class="orientation-text" style="margin-top: 100%; margin-left: 50%; position: absolute;">S</div>
+
     </div>
 
+    <div class="orientation-text">O</div>
+
     <div id="rightBar">
-
       <div id="colorPickerTrigger" (click)="showPicker = true;">
-
       </div>
       <div id="zoomRange">
         <span class="material-symbols-outlined">zoom_in</span>
@@ -471,6 +495,8 @@
     </div>
 
   </div>
+
+
 
 </div>
 

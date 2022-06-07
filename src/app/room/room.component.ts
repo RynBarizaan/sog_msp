@@ -13,9 +13,9 @@ interface Object {
   element: string;
   elementtyp?: string;
   place?: number;
-  x: number;
-  y: number;
-  degRotation: number;
+  x?: number;
+  y?: number;
+  degRotation?: number;
   bgClr: string,
   firstname1?: string;
   lastname1?: string;
@@ -23,6 +23,8 @@ interface Object {
   lastname2?: string | "Nachname2";
   platzierung?: string;
   elementid: number;
+  objectWidth?: number;
+  objectHeight?: number;
 }
 import {Router} from "@angular/router";
 import {toNumbers} from "@angular/compiler-cli/src/diagnostics/typescript_version";
@@ -134,30 +136,27 @@ export class RoomComponent implements OnInit {
       "degRotation": 0,
       "bgClr": '#777777'
     };
-  doorToAdd: {elementtyp: string, x:number, y: number, degRotation: number, bgClr: string, platzierung: string} =
+  doorToAdd: {elementtyp: string, bgClr: string, platzierung: string, x?:number, y?: number} =
     {
       "elementtyp": "door",
       "x": 0,
       "y": 0,
-      "degRotation": 0,
       "bgClr": '#777777',
       "platzierung": 'links'
     };
-  windowToAdd: {elementtyp: string, x:number, y: number, degRotation: number, bgClr: string, platzierung: string} =
+  windowToAdd: {elementtyp: string, bgClr: string, platzierung: string, x?:number, y?: number} =
     {
       "elementtyp": "window",
       "x": 0,
       "y": 0,
-      "degRotation": 0,
       "bgClr": '#777777',
       "platzierung": 'rechts'
     };
-  boardToAdd: {elementtyp: string, x:number, y: number, degRotation: number, bgClr: string, platzierung: string} =
+  boardToAdd: {elementtyp: string, bgClr: string, platzierung: string, x?:number, y?: number} =
     {
       "elementtyp": "board",
       "x": 0,
       "y": 0,
-      "degRotation": 0,
       "bgClr": '#777777',
       "platzierung": 'vorne'
     };
@@ -274,60 +273,93 @@ export class RoomComponent implements OnInit {
     this.layerElements.destroy();
     this.drawElements();
   }
-  addDoor(elementtyp: string, x: number, y: number, rotation: number, bgClr: string, platzierung: string): void {
-    let desk: any = {
-      "id": this.allElements.length,
-      "roomId": this.currentRoomId,
-      "element": 'door',
-      "elementtyp": elementtyp,
-      "factory": elementtyp.split(/[a-z]/,1).toString().toLowerCase(),
-      "x": x,
-      "y": y,
-      "degRotation": rotation,
-      "bgClr": bgClr,
-      "elementid": this.assignId('door'),
-      "platzierung": platzierung
+  addDoor(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
+
+    let door: any
+    if(platzierung == 'links' || platzierung == 'rechts') {
+      door = {
+        "id": this.allElements.length,
+        "roomId": this.currentRoomId,
+        "element": 'door',
+        "elementtyp": elementtyp,
+        "y": y,
+        "bgClr": bgClr,
+        "elementid": this.assignId('door'),
+        "platzierung": platzierung
+      }
+    } else if(platzierung == 'vorne' || platzierung == 'hinten') {
+      door = {
+        "id": this.allElements.length,
+        "roomId": this.currentRoomId,
+        "element": 'door',
+        "elementtyp": elementtyp,
+        "x": x,
+        "bgClr": bgClr,
+        "elementid": this.assignId('door'),
+        "platzierung": platzierung
+      }
     }
 
-    this.allElements.push(desk);
+    this.allElements.push(door);
     this.layerElements.destroy();
     this.drawElements();
   }
-  addWindow(elementtyp: string, x: number, y: number, rotation: number, bgClr: string, platzierung: string): void {
-    let desk: any = {
-      "id": this.allElements.length,
-      "roomId": this.currentRoomId,
-      "element": 'window',
-      "elementtyp": elementtyp,
-      "factory": elementtyp.split(/[a-z]/,1).toString().toLowerCase(),
-      "x": x,
-      "y": y,
-      "degRotation": rotation,
-      "bgClr": bgClr,
-      "elementid": this.assignId('window'),
-      "platzierung": platzierung
+  addWindow(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
+    let window: any
+    if(platzierung == 'links' || platzierung == 'rechts') {
+      window = {
+        "id": this.allElements.length,
+        "roomId": this.currentRoomId,
+        "element": 'door',
+        "elementtyp": elementtyp,
+        "y": y,
+        "bgClr": bgClr,
+        "elementid": this.assignId('door'),
+        "platzierung": platzierung
+      }
+    } else if(platzierung == 'vorne' || platzierung == 'hinten') {
+      window = {
+        "id": this.allElements.length,
+        "roomId": this.currentRoomId,
+        "element": 'door',
+        "elementtyp": elementtyp,
+        "x": x,
+        "bgClr": bgClr,
+        "elementid": this.assignId('door'),
+        "platzierung": platzierung
+      }
     }
-
-    this.allElements.push(desk);
+    this.allElements.push(window);
     this.layerElements.destroy();
     this.drawElements();
   }
-  addBoard(elementtyp: string, x: number, y: number, rotation: number, bgClr: string, platzierung: string): void {
-    let desk: any = {
-      "id": this.allElements.length,
-      "roomId": this.currentRoomId,
-      "element": 'board',
-      "elementtyp": elementtyp,
-      "factory": elementtyp.split(/[a-z]/,1).toString().toLowerCase(),
-      "x": x,
-      "y": y,
-      "degRotation": rotation,
-      "bgClr": bgClr,
-      "elementid": this.assignId('board'),
-      "platzierung": platzierung
+  addBoard(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
+    let board: any
+    if(platzierung == 'links' || platzierung == 'rechts') {
+      board = {
+        "id": this.allElements.length,
+        "roomId": this.currentRoomId,
+        "element": 'door',
+        "elementtyp": elementtyp,
+        "y": y,
+        "bgClr": bgClr,
+        "elementid": this.assignId('door'),
+        "platzierung": platzierung
+      }
+    } else if(platzierung == 'vorne' || platzierung == 'hinten') {
+      board = {
+        "id": this.allElements.length,
+        "roomId": this.currentRoomId,
+        "element": 'door',
+        "elementtyp": elementtyp,
+        "x": x,
+        "bgClr": bgClr,
+        "elementid": this.assignId('door'),
+        "platzierung": platzierung
+      }
     }
 
-    this.allElements.push(desk);
+    this.allElements.push(board);
     this.layerElements.destroy();
     this.drawElements();
   }
@@ -795,6 +827,12 @@ export class RoomComponent implements OnInit {
     //Step 7
     this.layerElements.add(tr);
 
+    this.allElements[id].objectWidth = groupElements.getClientRect().width;
+    this.allElements[id].objectHeight = groupElements.getClientRect().height;
+
+    console.log(this.allElements[id].objectWidth)
+    console.log(this.allElements[id].objectHeight)
+
     //Step 8
     groupElements.on('mouseenter', function () {
       let x: any = groupElements.getStage();
@@ -1111,6 +1149,7 @@ export class RoomComponent implements OnInit {
         }
       }
     }
+    console.log(this.roomElements)
   }
   saveRoom() {
     this.route.navigate(['mainmenu']);
@@ -1156,12 +1195,6 @@ export class RoomComponent implements OnInit {
       "width": this.standardRooms[this.currentRoomId].width,
       "height":  this.standardRooms[this.currentRoomId].height,
     }
-    if (this.roomElements.length == 0 || this.roomElements ==[]){
-
-    }
-    else {
-      this.roomElements.push(roomStage)
-    }
 
       var options = {
         fieldSeparator: ',',
@@ -1177,6 +1210,7 @@ export class RoomComponent implements OnInit {
       this.isRoomEmpty = true;
     }
     else {
+      this.roomElements.push(roomStage)
       new ngxCsv(this.roomElements, "Room", options);
     }
     }
