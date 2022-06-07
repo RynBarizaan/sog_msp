@@ -120,6 +120,7 @@ export class RoomComponent implements OnInit {
   isToAddWindow: boolean = false;
   isToAddBoard: boolean = false;
   isToSaveRoom: boolean = false;
+  isRoomEmpty: boolean = false;
   // Delete Element
   isToDelete: boolean = false;
   currentId?: any;
@@ -1143,6 +1144,8 @@ export class RoomComponent implements OnInit {
     this.showPicker = false;
     //
   }
+
+  //Export room as CSV File
   ExportAsCsv(){
     this.makeRoomDetailsReady();
 
@@ -1153,8 +1156,13 @@ export class RoomComponent implements OnInit {
       "width": this.standardRooms[this.currentRoomId].width,
       "height":  this.standardRooms[this.currentRoomId].height,
     }
+    if (this.roomElements.length == 0 || this.roomElements ==[]){
 
-     this.roomElements.push(roomStage)
+    }
+    else {
+      this.roomElements.push(roomStage)
+    }
+
       var options = {
         fieldSeparator: ',',
         quoteStrings: '',
@@ -1164,6 +1172,12 @@ export class RoomComponent implements OnInit {
         useBom: false,
         headers: ["RoomInfos"]
     };
-       new ngxCsv(this.roomElements, "Room", options);
+    //Error message for if room is empty
+    if (this.roomElements.length == 0 || this.roomElements ==[]){
+      this.isRoomEmpty = true;
+    }
+    else {
+      new ngxCsv(this.roomElements, "Room", options);
+    }
     }
 }

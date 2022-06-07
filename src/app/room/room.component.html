@@ -1,5 +1,18 @@
 <div id="popupContainer" >
 
+  <div *ngIf="isRoomEmpty" class="popupForm">
+    <div class="headerPopup">
+      Alert messages
+    </div>
+    <div class="contentPopup">
+      Das Raum ist aktuell leer!<br>
+      <br>
+    </div>
+    <div class="popUpActions">
+      <button (click)="isRoomEmpty = false">Schließen</button>
+    </div>
+  </div>
+
   <div *ngIf="isToDelete" class="popupForm">
     <div class="headerPopup">
       Bestätigung der Löschung
