@@ -67,12 +67,13 @@ export class MainmenuComponent implements OnInit {
 
   ////// check if a grupp and room already created /////
   isDataAndRoomExist(): boolean{
-    if (this.isDataExist() && this.isRoomAvailable()){
+    /*if (this.isDataExist() && this.isRoomAvailable()){
       return true;
     }
     else  {
       return false;
-    }
+    }*/
+    return true;
   }
 
 
@@ -133,10 +134,13 @@ export class MainmenuComponent implements OnInit {
 
   }
 
-
+  myroom:Array<any>=[];
   //////// send on Sitzordnung Component ////////
   toCreatRandomSeat(){
-    this.router.navigate(['/sitzordnung']);
+     // @ts-ignore
+ //alert(JSON.parse(sessionStorage.getItem("room")).length+","+JSON.parse(sessionStorage.getItem("person")).length);
+    this.router.navigate(['/sitting-places-generator']);
+
   }
 
 }

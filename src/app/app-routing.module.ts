@@ -7,7 +7,7 @@ import {GroupTableComponent} from "./group-table/group-table.component";
 import {ExportCSVComponent} from "./export-csv/export-csv.component";
 import {RoomComponent} from "./room/room.component";
 import {GroupTableConfirmedComponent} from "./group-table-confirmed/group-table-confirmed.component";
-import {SitzordnungComponent} from "./sitzordnung/sitzordnung.component";
+import {SittingPlacesGenerator} from "./sitting-places-generator/sitting-places-generator";
 
 
 
@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'groupTableConfirmed', component:GroupTableConfirmedComponent },
   { path: 'ExportCSV', component: ExportCSVComponent },
   { path: 'room', component: RoomComponent },
-  { path: 'sitzordnung', component: SitzordnungComponent },
+  { path: 'sitting-places-generator', component: SittingPlacesGenerator },
   { path: '**', component: PageNotFoundComponent },
 ];
 

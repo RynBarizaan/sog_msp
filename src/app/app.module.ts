@@ -23,7 +23,7 @@ import { ImportCsvComponent } from './import-csv/import-csv.component';
 import { GroupTableConfirmedComponent } from './group-table-confirmed/group-table-confirmed.component';
 import { PersonPropertiesComponent } from './person-properties/person-properties.component';
 import {ColorPhotoshopModule} from "ngx-color/photoshop";
-
+import {SittingPlacesGenerator} from "./sitting-places-generator/sitting-places-generator";
 
 
 @NgModule({
@@ -38,6 +38,7 @@ import {ColorPhotoshopModule} from "ngx-color/photoshop";
     ImportCsvComponent,
     GroupTableConfirmedComponent,
     PersonPropertiesComponent,
+    SittingPlacesGenerator
 
 
   ],
