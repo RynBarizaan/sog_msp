@@ -11,6 +11,7 @@ declare var window:any;
 export class MainmenuComponent implements OnInit {
   formModal:any;
   formModalDelete: any;
+  textOFModal:any;
   elementOfDelete!:string;
   gruppeStatus:string = 'Gruppe erstellen';
   raumStatus:string = 'Raum erstellen';
@@ -90,7 +91,9 @@ export class MainmenuComponent implements OnInit {
 
   ////// delete the Grupp or Room  /////
   removeGruppe(el:string){
+
     if (el === "grupp"){
+      this.textOFModal = "Möchten Sie Ihre aktuelle Daten löschen ?";
       this.elementOfDelete="grupp";
       this.formModalDelete = new window.bootstrap.Modal(
         document.getElementById("InfoMessage")
@@ -98,11 +101,37 @@ export class MainmenuComponent implements OnInit {
       this.formModalDelete.show();
     }
     else if(el === "room"){
+      this.textOFModal = "Möchten Sie Ihre aktuelle Daten löschen ?";
       this.elementOfDelete="room";
       this.formModalDelete = new window.bootstrap.Modal(
         document.getElementById("InfoMessage")
       )
       this.formModalDelete.show();
+    }
+    else if(el === "generator"){
+      this.elementOfDelete = "generator";
+      this.textOFModal = "Die Personen sind mehr als Sitzplätze, würden Sie trotzdem fortfahren ?";
+      var countOfTable:number=0;
+      // @ts-ignore
+      var countOfPerson:number=JSON.parse(sessionStorage.getItem("person")).length;
+      // @ts-ignore
+      var myroom:Array<any>= JSON.parse(sessionStorage.getItem("room"));
+      for (var x=0; x<myroom.length ; x++){
+        switch (myroom[x].element) {
+          case "desk": countOfTable++;
+            break;
+        }
+      }
+      if (countOfTable < countOfPerson){
+        this.formModalDelete = new window.bootstrap.Modal(
+          document.getElementById("InfoMessage")
+        )
+        this.formModalDelete.show();
+      }
+      else {
+        this.router.navigate(['/sitting-places-generator']);
+      }
+
     }
     else {
       console.log("fehlermeldung");
@@ -128,18 +157,19 @@ export class MainmenuComponent implements OnInit {
       this.gruppeStatus = 'Gruppe erstellen';
       this.formModalDelete.hide();
     }
+    else if (this.elementOfDelete == "generator"){
+      this.router.navigate(['/sitting-places-generator']);
+      this.formModalDelete.hide();
+    }
     else{
       console.log("Fehlermeldung");
     }
 
   }
 
-  myroom:Array<any>=[];
+
   //////// send on Sitzordnung Component ////////
   toCreatRandomSeat(){
-     // @ts-ignore
- //alert(JSON.parse(sessionStorage.getItem("room")).length+","+JSON.parse(sessionStorage.getItem("person")).length);
-    this.router.navigate(['/sitting-places-generator']);
 
   }
 
