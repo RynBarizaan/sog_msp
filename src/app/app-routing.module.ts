@@ -14,7 +14,9 @@ import {SittingPlacesGenerator} from "./sitting-places-generator/sitting-places-
 const routes: Routes = [
   { path: 'mainmenu', component:MainmenuComponent },
   { path: '', redirectTo:'/mainmenu', pathMatch:'full'},
+  { path: 'home', redirectTo:'/mainmenu', pathMatch:'full'},
   { path: 'group-slider', component:SliderComponent },
+  { path: 'groupTable', component:GroupTableComponent },
   { path: 'groupTable/:value', component:GroupTableComponent },
   { path: 'groupTableConfirmed', component:GroupTableConfirmedComponent },
   { path: 'ExportCSV', component: ExportCSVComponent },

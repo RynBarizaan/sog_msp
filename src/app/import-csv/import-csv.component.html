@@ -1,7 +1,7 @@
 <div class="modal fade" id="ModalBoxImport" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content"><div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLongTitle">Passende Verschlüsselte datei auswählen und eine gültige passwort eingeben!</h5>
+      <h5 class="modal-title" id="exampleModalLongTitle">Passende verschlüsselte Datei auswählen und ein gültiges Passwort eingeben!</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -16,7 +16,7 @@
           <mat-label>Passwort</mat-label>
 
           <input #myInput matInput
-                 placeholder="passwort eingeben"
+                 placeholder="Passwort eingeben"
                  [type]="hide ? 'password': 'text'"
                  required
                  [formControl]="passFormControl"
@@ -24,7 +24,7 @@
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' :
             'visibility'}}</mat-icon>
           <mat-error *ngIf="passFormControl.hasError('required')">
-            Bitte password eingeben
+            Bitte Passwort eingeben
           </mat-error>
         </mat-form-field>
         <small id="WrongFile" class="form-text text-danger" style="margin-left: 70px">{{messageIfWrongPass}}</small> <br>
@@ -32,7 +32,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"    (click)="closeModal()">Schlißen</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"    (click)="closeModal()">Schließen</button>
         <input type="button" class="btn btn-outline-dark"(click)="Import()" value="Beschtätigen und Importieren">
       </div>
     </div>

@@ -89,12 +89,11 @@ export class MainmenuComponent implements OnInit {
     }
   }
 
-  ////// delete the Grupp or Room  /////
-  removeGruppe(el:string){
-
-    if (el === "grupp"){
-      this.textOFModal = "Möchten Sie Ihre aktuelle Daten löschen ?";
-      this.elementOfDelete="grupp";
+  ////// delete the Group or Room  /////
+  deleteData(el:string){
+    if (el === "group"){
+      this.textOFModal = "Möchten Sie Ihre aktuellen Daten löschen?";
+      this.elementOfDelete="group";
       this.formModalDelete = new window.bootstrap.Modal(
         document.getElementById("InfoMessage")
       )
@@ -110,7 +109,7 @@ export class MainmenuComponent implements OnInit {
     }
     else if(el === "generator"){
       this.elementOfDelete = "generator";
-      this.textOFModal = "Die Personen sind mehr als Sitzplätze, würden Sie trotzdem fortfahren ?";
+      this.textOFModal = "Die Personen sind mehr als Sitzplätze, würden Sie trotzdem fortfahren?";
       var countOfTable:number=0;
       // @ts-ignore
       var countOfPerson:number=JSON.parse(sessionStorage.getItem("person")).length;
@@ -134,12 +133,12 @@ export class MainmenuComponent implements OnInit {
 
     }
     else {
-      console.log("fehlermeldung");
+      console.log("Fehlermeldung");
     }
 
   }
 
-  //// reject delete of Grupp table or Room /////
+  //// reject delete of Group table or Room /////
   closeInfoMessageModal() {
     this.formModalDelete.hide();
   }
@@ -150,7 +149,7 @@ export class MainmenuComponent implements OnInit {
       this.isRoomAvailable();
       this.formModalDelete.hide();
     }
-    else if(this.elementOfDelete === "grupp" ){
+    else if(this.elementOfDelete === "group" ){
       sessionStorage.setItem("isDataConfirm", JSON.stringify(false));
       sessionStorage.setItem("TheStatus", JSON.stringify(true));
       sessionStorage.removeItem('person');

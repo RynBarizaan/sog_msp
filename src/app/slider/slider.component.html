@@ -1,9 +1,9 @@
-<div class="SliderContainer">
+<div class="SliderContainer bg-light border rounded-3 shadow rounded">
   <h5 style="margin-top: 18%">Anzahl von Personen in der Sitzordnung</h5>
   <ngx-slider class="slider"  [(value)]="value" [options]="options"></ngx-slider>
   <input class="personCount" [(ngModel)]="value">
-  <button type="button"  class="nextButton btn btn-outline-dark" (click)="toGruppe()">Weiter</button>
-  <button class="backButton btn btn-outline-dark" (click)="toMainMenu()">Zurück</button>
+  <button type="button"  class="nextButton btn btn-outline-dark " (click)="toGruppe()">Weiter</button>
+  <button class="backButton btn btn-secondary" (click)="toMainMenu()">Zurück</button>
 </div>
 
 <!-- Modal -->

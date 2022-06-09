@@ -60,7 +60,7 @@ export class GroupTableComponent {
   }
 
   //// back to mainmenu  /////
-  Cancle(){
+  Cancel(){
     // @ts-ignore
     let data=JSON.parse(sessionStorage.getItem("isDataConfirm"));
     if (!data){

@@ -23,6 +23,7 @@ import { ImportCsvComponent } from './import-csv/import-csv.component';
 import { GroupTableConfirmedComponent } from './group-table-confirmed/group-table-confirmed.component';
 import { PersonPropertiesComponent } from './person-properties/person-properties.component';
 import {ColorPhotoshopModule} from "ngx-color/photoshop";
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 import {SittingPlacesGenerator} from "./sitting-places-generator/sitting-places-generator";
 
 
@@ -38,6 +39,7 @@ import {SittingPlacesGenerator} from "./sitting-places-generator/sitting-places-
     ImportCsvComponent,
     GroupTableConfirmedComponent,
     PersonPropertiesComponent,
+    NavBarComponent,
     SittingPlacesGenerator
 
 
