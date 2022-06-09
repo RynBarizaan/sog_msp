@@ -29,6 +29,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "konva": "^8.3.8",
+    "material-icons": "^1.11.1",
     "ng-csv": "^0.3.6",
     "ngx-color": "^7.3.3",
     "ngx-color-picker": "^12.0.1",
