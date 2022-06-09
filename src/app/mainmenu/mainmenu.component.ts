@@ -108,28 +108,34 @@ export class MainmenuComponent implements OnInit {
       this.formModalDelete.show();
     }
     else if(el === "generator"){
-      this.elementOfDelete = "generator";
-      this.textOFModal = "Die Personen sind mehr als Sitzplätze, würden Sie trotzdem fortfahren?";
-      var countOfTable:number=0;
-      // @ts-ignore
-      var countOfPerson:number=JSON.parse(sessionStorage.getItem("person")).length;
-      // @ts-ignore
-      var myroom:Array<any>= JSON.parse(sessionStorage.getItem("room"));
-      for (var x=0; x<myroom.length ; x++){
-        switch (myroom[x].element) {
-          case "desk": countOfTable++;
-            break;
+      try {
+        this.elementOfDelete = "generator";
+        this.textOFModal = "Die Personen sind mehr als Sitzplätze, würden Sie trotzdem fortfahren?";
+        var countOfTable:number=0;
+        // @ts-ignore
+        var countOfPerson:number=JSON.parse(sessionStorage.getItem("person")).length;
+        // @ts-ignore
+        var myroom:Array<any>= JSON.parse(sessionStorage.getItem("room"));
+        for (var x=0; x<myroom.length ; x++){
+          switch (myroom[x].element) {
+            case "desk": countOfTable++;
+              break;
+          }
+        }
+        if (countOfTable < countOfPerson){
+          this.formModalDelete = new window.bootstrap.Modal(
+            document.getElementById("InfoMessage")
+          )
+          this.formModalDelete.show();
+        }
+        else {
+          this.router.navigate(['/sitting-places-generator']);
         }
       }
-      if (countOfTable < countOfPerson){
-        this.formModalDelete = new window.bootstrap.Modal(
-          document.getElementById("InfoMessage")
-        )
-        this.formModalDelete.show();
-      }
-      else {
+      catch (Exception){
         this.router.navigate(['/sitting-places-generator']);
       }
+
 
     }
     else {
@@ -167,9 +173,5 @@ export class MainmenuComponent implements OnInit {
   }
 
 
-  //////// send on Sitzordnung Component ////////
-  toCreatRandomSeat(){
-
-  }
 
 }
