@@ -25,6 +25,7 @@ import { PersonPropertiesComponent } from './person-properties/person-properties
 import {ColorPhotoshopModule} from "ngx-color/photoshop";
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import {SittingPlacesGenerator} from "./sitting-places-generator/sitting-places-generator";
+import { ImportRoomCsvComponent } from './import-room-csv/import-room-csv.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import {SittingPlacesGenerator} from "./sitting-places-generator/sitting-places-
     GroupTableConfirmedComponent,
     PersonPropertiesComponent,
     NavBarComponent,
-    SittingPlacesGenerator
+    SittingPlacesGenerator,
+    ImportRoomCsvComponent
 
 
   ],

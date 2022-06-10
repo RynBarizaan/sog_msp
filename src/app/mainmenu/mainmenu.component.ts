@@ -10,6 +10,7 @@ declare var window:any;
 })
 export class MainmenuComponent implements OnInit {
   formModal:any;
+  formModalRoom:any;
   formModalDelete: any;
   textOFModal:any;
   elementOfDelete!:string;
@@ -24,6 +25,10 @@ export class MainmenuComponent implements OnInit {
     this.formModalDelete = new window.bootstrap.Modal(
       document.getElementById("InfoMessage")
     )
+
+    this.formModalRoom = new window.bootstrap.Modal(
+      document.getElementById("ImportRoom")
+    )
     this.isRoomAvailable();
   }
   closeModal() {
@@ -31,6 +36,12 @@ export class MainmenuComponent implements OnInit {
   }
   ImportBox(){
     this.formModal.show();
+  }
+  closeModalRoom() {
+    this.formModalRoom.hide();
+  }
+  ImportBoxRoom(){
+    this.formModalRoom.show();
   }
 
   ////// check if a grupp already created /////

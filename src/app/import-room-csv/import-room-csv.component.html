@@ -1,0 +1,18 @@
+
+<!--Import room-->
+<div class="modal fade" id="ImportRoom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content"><small id="FileTypHelp1" class="form-text text-secondary" style="margin-left: 10px">raum importieren</small><div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Eine passende CSV datei auswählen!</h5>
+
+      <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close" >
+        <span aria-hidden="true">&times;</span> </button>
+    </div><div class="modal-body">
+      <span class="material-icons md-48">file_open</span>
+      <input type="file" #csvReader name="Upload CSV" id="txtFileUpload"  accept=".csv"  class="form-control form-control-lg btn-file" style="width: 80%; left:22px"/>
+    </div><div class="modal-footer">
+      <button type="button" (click)="closeModal()" class="btn btn-secondary" data-dismiss="modal">Schlißen</button>
+      <!--<button type="button" class="btn btn-primary">Bestätigen und Importieren</button>-->
+    </div>
+    </div>
+  </div>
+</div>

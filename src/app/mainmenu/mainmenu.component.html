@@ -12,7 +12,7 @@
           </div>
           <div class="btn-group">
             <button type="button" id="roomBtn"  routerLink="/room" class="w-100 shadow rounded-pill rounded-end btn btn-primary mb-3 btn-lg btn-block" ><mat-icon fontSet="material-icons">layers</mat-icon> {{raumStatus}}</button>
-            <button type="button" class="material-icons shadow md-48 btn btn-secondary mb-3 btn-lg btn-block" [ngClass]="{'disabled':this.isRoomAvailable(), 'rounded-pill rounded-start':!this.isRoomAvailable()}"  title="Import">file_open</button>
+            <button type="button" (click)="ImportBoxRoom()" class="material-icons shadow md-48 btn btn-secondary mb-3 btn-lg btn-block" [ngClass]="{'disabled':this.isRoomAvailable(), 'rounded-pill rounded-start':!this.isRoomAvailable()}"  title="Import">file_open</button>
             <button *ngIf="this.isRoomAvailable()" type="button" (click)="deleteData('room')" class="btn shadow btn-danger rounded-pill rounded-start btn-sm btn-block material-icons mb-3" [ngClass]="{'visually-hidden':!this.isRoomAvailable()}" title="Delete">delete</button>
           </div>
           <div class="btn-group">
@@ -27,7 +27,7 @@
 </div>
 
 <app-import-csv></app-import-csv>
-
+<app-import-room-csv></app-import-room-csv>
 
 <!-- Modal -->
 <div class="modal fade" id="InfoMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
