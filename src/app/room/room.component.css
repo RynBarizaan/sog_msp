@@ -1,57 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 #container {
-  position: absolute;
-  width: 1300px;
-  height: 1100px;
   background-color: rgb(248,249,250);
   margin-top: 20px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: 1px #ddd solid;
+  height: 1067px;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+  display: flex;
+  flex-direction: row;
+  font-family: 'Segoe UI';
+  border: 1px solid red;
 }
+
 #toolbar {
   position: relative;
-  width: 416px;
-  height: auto;
+  width: 30%;
+  height: 100%;
   background-color: rgb(248,249,250);
   float: left;
   border-radius: 10px 0px 0px 10px;
   border-right: 1px #ddd solid;
+  border: 1px solid red;
 }
 
 #container-visualiser {
+  position: relative;
   display: flex;
-  justify-content: left;
+  flex-direction: column;
+  align-items: center;
+  padding: 1%;
+  width: 70%;
+  height: 80%;
+  border: 1px solid red;
+}
+
+#footer {
+  height:30px;
+  border: 1px solid red;
 }
 
 #roomvisualiser {
-  background-color: #e2e2e2;
-  position: absolute;
-  border:  3px solid #e2e2e2;
-  border-radius: 6px;
+  position: relative;
+  background-color: #edb9b9;
+  /*background-color: #e2e2e2;*/
+  border: 1px solid red;
 }
-
 
 #visualiser {
   position: relative;
-  width: 700px;
-  height: 700px;
-  margin-left: 40px;
-  margin-top: 10px;
 }
 
 #zoomRange {
   position: relative;
-  display: block;
-  width:50px;
+  width:10%;
   height:280px;
   margin-top: 20px;
-  margin-left: 20px;
   display: flex;
   flex-direction: column;
-}
-
-* {
-  margin: 0;
-  padding: 0;
+  border: 1px solid red;
 }
 
 .material-icons:hover {
@@ -59,11 +69,9 @@
   cursor: pointer;
 }
 
-
 label.label-left-dark {
   color: #777;
-  font-family: arial;
-  font-size: 1.1em;
+  font-size: 14px;
   margin-bottom: 0.2em;
   display: block;
 }
@@ -72,13 +80,13 @@ label.label-left-title {
   margin-bottom: 1em;
   font-weight: 600;
   display: block;
-  font-size: 1.3em;
+  font-size: 18px;
 }
 
 input[type=number],select {
   padding-left: 5px;
   color: #777;
-  font-size: 1.1em;
+  font-size: 14px;
   width: 70px;
   height: 35px;
   background-color: #f8f9fa;
@@ -100,6 +108,7 @@ input[type=number]::-webkit-outer-spin-button {
   justify-content: space-between;
   padding: 10px;
   border-radius: 2px;
+  height: 80px;
 }
 
 .left-container-child {
@@ -112,24 +121,17 @@ input[type=number]::-webkit-outer-spin-button {
 .horizontal-width {
   display: flex;
   flex-direction: column;
+  border: 1px solid red;
 }
 
 .horizontal-width input[type=text] {
   padding-left: 5px;
   color: #777;
-  font-size: 1.1em;
+  font-size: 18px;
   width: 70px;
   height: 35px;
   background-color: rgb(248,249,250);
   border: 1px solid #ddd;
-}
-
-h2 {
-  color: #C6C6C6;
-  text-align: center;
-  font-family: arial;
-  font-size: 20px;
-  padding: 10px;
 }
 
 ::-webkit-scrollbar {
@@ -158,7 +160,6 @@ h2 {
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-family: arial;
   color: #777;
 }
 
@@ -169,7 +170,7 @@ h2 {
   background-color: #fff;
   z-index: 10;
   position: absolute;
-
+  border: 1px solid red;
 }
 
 .headerPopup {
@@ -178,23 +179,24 @@ h2 {
   height: 50px;
   display: flex;
   align-items: center;
-  font-size: 1.4em;
-  font-weight: bold;
+  font-size: 18px;
   padding: 30px;
+  min-width: 300px;
+  border: 1px solid red;
 }
 
 .contentPopup {
   padding: 30px 0px;
-  font-size: 1em;
+  font-size: 14px;
   padding: 30px;
+  border: 1px solid red;
 }
 
 .moreinfosPopup {
-  font-size: 13px;
+  font-size: 14px;
   color: #777;
-  font-weight: bold;
-  font-family: "Segoe UI Light";
   padding: 20px;
+  border: 1px solid red;
 }
 
 .popUpActions {
@@ -202,6 +204,7 @@ h2 {
   display: flex;
   gap: 10px;
   padding: 0px 30px 20px 0px;
+  margin: auto;
 }
 .popUpActions button{
   padding: 3px 10px;
@@ -224,62 +227,62 @@ h2 {
 .contentPopup {
   display: flex;
   justify-content: space-around;
+  border: 1px solid red;
 }
 
 .contentPopup .right{
+  position: relative;
   float: left;
-  width: 100px;
+  width: 70%;
   border-right: 1px solid #ddd;
+  border: 1px solid red;
 }
 .contentPopup .left{
+  position: relative;
   float: left;
-  width:100px;
+  width: 30%;
+  border: 1px solid red;
 }
 
 #workspaceHeader {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
+  padding: 10px;
+  border: 1px solid red;
 }
 
 #workspaceHeader #headerRight {
-  display: flex;
-  gap: 20px;
-  align-items: center;
+  border: 1px solid red;
+}
+
+#workspaceHeader #headerLeft {
+  border: 1px solid red;
 }
 
 #workspaceHeader #headerRight button{
-  width: 120px;
-  height: 30px;
-  font-size: 16px;
-  font-family: "Segoe UI Light";
-  font-weight: 500;
+  position: relative;
+  padding: 6px;
+  font-size: 14px;
   letter-spacing: 1px;
-  background-color: white;
-  border: 0;
-  box-shadow: 0px 0px 8px #777;
-}
-
-#linkedicon {
-  margin-top: 35px;
+  border-radius: 4px;
 }
 
 input[type=range][orient=vertical] {
   -webkit-appearance: slider-vertical;
   width: 2px;
-  height: 200px;
+
   cursor: pointer;
   margin-left: 8px;
 }
 
 hr{
-
-  border: none;
-  border-left:    1px solid hsla(200, 10%, 50%,100);
-  height:         100px;
-  width:          1px;
+  border:none;
+  border-left:1px solid hsla(200, 10%, 50%,100);
+  height:100px;
+  width:1px;
 }
 
 #colorPickerTrigger {
@@ -317,7 +320,7 @@ position: absolute;
   justify-content: space-between;
   align-items: center;
   background-color: #f8f9fa;
-  height:35px;
+  height:40px;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 2px;
@@ -327,16 +330,58 @@ position: absolute;
 .icons {
   height: 26px;
   fill: #777;
+  border: 1px solid red;
 }
 
 .orientation-text {
-  font-family: Arial;
-  font-size: 1em;
-  font-weight: bold;
-  color: #777;
-  margin: auto;
-  padding: 10px;
-  border-radius: 30px;
-  border: 1px solid black;
+  position: relative;
+  font-size: 14px;
+  color: black;
+  border: 1px solid red;
   text-align: center;
 }
+
+#west-ost-visualiser {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.sued-nort {
+
+}
+
+.west-ost {
+
+}
+
+#colorZoomBar {
+  position: relative;
+  border: 1px solid red;
+}
+
+@media only screen and (max-width: 1400px) {
+  .hideStep1 {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .hideStep2 {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  #toolbar {
+    display: none;
+  }
+}
+
+
+
+

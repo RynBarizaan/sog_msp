@@ -6,7 +6,6 @@ import { ColorEvent } from 'ngx-color';
 import objectsData from './objects.json';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
 import {roomInfo} from "../model/roomInfo";
-
 interface Object {
   id: number;
   roomId: number;
@@ -25,6 +24,10 @@ interface Object {
   elementid: number;
   objectWidth?: number;
   objectHeight?: number;
+  xNotSmallerZ?: number | 0;
+  xNotBiggerZ?: number;
+  yNotSmallerZ?: number | 0;
+  yNotBiggerZ?: number;
 }
 import {Router} from "@angular/router";
 import {toNumbers} from "@angular/compiler-cli/src/diagnostics/typescript_version";
@@ -37,6 +40,7 @@ import {toNumbers} from "@angular/compiler-cli/src/diagnostics/typescript_versio
 export class RoomComponent implements OnInit {
   constructor(private route: Router) {
   }
+
   standardRooms: {"id": number, "name": string, "width": number, "height": number}[] = [
     {
       "id": 0,
@@ -62,8 +66,9 @@ export class RoomComponent implements OnInit {
       "width": 8,
       "height": 8
     }
-  ]
-   elementsNumber: any = [
+  ];
+
+  elementsNumber: any = [
      {
        'typ': 'desk',
        'number': 0,
@@ -93,26 +98,19 @@ export class RoomComponent implements OnInit {
   minHeight: number = 5;
   maxHeight: number = 30;
   meterInPixel: number = Math.floor(this.widthStage / this.standardRooms[this.currentRoomId].width);
-  widthMeter: number = this.standardRooms[this.currentRoomId].width;
-  heightMeter: number = this.standardRooms[this.currentRoomId].height;
   // Elements
   stage?: any;
+  backgroundLayer?: any;
   layerElements: any = new Konva.Layer();
   widthSmallDesk?: number;
-  heightSmallDesk?: number;
+  heightDesk?: number;
   radiusSmallDesk?: number;
   radiusBigDesk?: number;
   widthBigDesk?: number;
-  heightBigDesk?: number;
   widthChair?: number;
   heightChair?: number;
-  positionXDeleteIcon?: number;
-  positionXDeleteIcon2?: number;
-  positionYDeleteIcon?: number;
-  radiusDeleteIcon?: number;
-  radiusSmallTriangle?: number;
   // initial color and change color
-  primaryColor = '#777777';
+  primaryColor = '#11b0e7';
   showPicker: boolean = false;
   // room saved then switch elements in visualisation
   isRoomSaved: boolean = false;
@@ -126,6 +124,8 @@ export class RoomComponent implements OnInit {
   // Delete Element
   isToDelete: boolean = false;
   currentId?: any;
+  // Room name
+  roomname: string = 'My Room name';
 
   deskToAdd: {elementtyp: string, place: number, x:number, y: number, degRotation: number, bgClr: string} =
     {
@@ -134,14 +134,14 @@ export class RoomComponent implements OnInit {
       "x": 0,
       "y": 0,
       "degRotation": 0,
-      "bgClr": '#777777'
+      "bgClr": 'white'
     };
   doorToAdd: {elementtyp: string, bgClr: string, platzierung: string, x?:number, y?: number} =
     {
       "elementtyp": "door",
       "x": 0,
       "y": 0,
-      "bgClr": '#777777',
+      "bgClr": 'white',
       "platzierung": 'links'
     };
   windowToAdd: {elementtyp: string, bgClr: string, platzierung: string, x?:number, y?: number} =
@@ -149,31 +149,52 @@ export class RoomComponent implements OnInit {
       "elementtyp": "window",
       "x": 0,
       "y": 0,
-      "bgClr": '#777777',
-      "platzierung": 'rechts'
+      "bgClr": 'white',
+      "platzierung": 'links'
     };
   boardToAdd: {elementtyp: string, bgClr: string, platzierung: string, x?:number, y?: number} =
     {
       "elementtyp": "board",
       "x": 0,
       "y": 0,
-      "bgClr": '#777777',
-      "platzierung": 'vorne'
+      "bgClr": 'white',
+      "platzierung": 'links'
     };
 
-  // zooming stage
   zoomValue: number = 5;
-  // saving room
-  roomElements: any = [];
-  roomToSaveInfos: any = [];
 
+  roomElements: any = [];
+
+
+  // Initial visualisation
   ngOnInit() {
 
+    // Get dimension of html container and give it to the stage
+    let stageContainer: any = document.getElementById('container-visualiser');
+
+    if (this.standardRooms[this.currentRoomId].width > this.standardRooms[this.currentRoomId].height) {
+      this.widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
+      this.heightStage = Math.ceil(this.standardRooms[this.currentRoomId].height * (this.widthStage / this.standardRooms[this.currentRoomId].width));
+    } else if (this.standardRooms[this.currentRoomId].height > this.standardRooms[this.currentRoomId].width) {
+      this.heightStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
+      this.widthStage = Math.ceil(this.standardRooms[this.currentRoomId].width * (this.heightStage / this.standardRooms[this.currentRoomId].height));
+    } else if (this.standardRooms[this.currentRoomId].width = this.standardRooms[this.currentRoomId].height) {
+      this.widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
+      this.heightStage =  this.widthStage;
+    }
+
+
+    // Declaring and Initiate variable with local stored room and dimension of it
     let room = JSON.parse(<string>sessionStorage.getItem("room"));
     let roomDimension = JSON.parse(<string>sessionStorage.getItem("roomDimension"));
+
+    // Conditions if room is saved or not
     if(room != null) {
-      this.allElements = room;
       this.isRoomSaved = true;
+      this.allElements = room;
+      for(let i = 0; i < this.allElements.length; i++){
+        this.allElements[i].id = i;
+      }
       this.standardRooms[0].width = roomDimension.width;
       this.standardRooms[0].height = roomDimension.height;
     } else {
@@ -181,20 +202,27 @@ export class RoomComponent implements OnInit {
       let c: any = document.getElementById('standardRoomsChanger');
       c.style.display = 'flex';
       c.style.alignItems = 'center';
-      c.style.gap = '20px';
+      c.style.gap = '10px';
       c.style.visibility = 'visible';
-      this.setButtons();
+      this.setButtonsStyle();
     }
 
+    // Initiate stage with given dimension from html container
     this.stage = new Konva.Stage({
       container: 'roomvisualiser',
       width: this.widthStage,
       height: this.heightStage,
-      draggable: false,
+      draggable: true,
     });
+
+    // calculate how much pixel in width and height has a Meter
     this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
+
+    // calculate dimensions of desks and chairs based on pixel in meter
     this.calculateElements();
-    let backgroundLayer = new Konva.Layer();
+
+    // initiate and draw the ground
+    this.backgroundLayer = new Konva.Layer();
     for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
       for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
         let rect = new Konva.Rect({
@@ -203,33 +231,76 @@ export class RoomComponent implements OnInit {
           width: this.meterInPixel,
           height: this.meterInPixel,
           fill: '#e2e2e2',
-          stroke: '#000',
-          strokeWidth: .2
+          stroke: '#777',
+          strokeWidth: 1
         });
-        backgroundLayer.add(rect);
+        this.backgroundLayer.add(rect);
       }
     }
-    this.stage.add(backgroundLayer);
 
+    // add the ground in the stage
+    this.stage.add(this.backgroundLayer);
+
+    // draw all elements in the stage
     this.drawElements();
-    this.zoomStage();
+
+    // make zoom slider element functional
     this.changeStageScale();
+
+    // set roomElement object with all element of current room
+    // and set object with number of specific element in the current room
     this.makeRoomDetailsReady();
   }
+
+  // Update visualisation if any changes made
   updateVisualisation(width: number, height: number): void {
 
-    this.setButtons();
+    // Get dimension of html container and give it to the stage
+    let stageContainer: any = document.getElementById('container-visualiser');
 
+    if (this.standardRooms[this.currentRoomId].width > this.standardRooms[this.currentRoomId].height) {
+      this.widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
+      this.heightStage = Math.ceil(this.standardRooms[this.currentRoomId].height * (this.widthStage / this.standardRooms[this.currentRoomId].width));
+    } else if (this.standardRooms[this.currentRoomId].height > this.standardRooms[this.currentRoomId].width) {
+      this.heightStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
+      this.widthStage = Math.ceil(this.standardRooms[this.currentRoomId].width * (this.heightStage / this.standardRooms[this.currentRoomId].height));
+    } else if (this.standardRooms[this.currentRoomId].width = this.standardRooms[this.currentRoomId].height) {
+      this.widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
+      this.heightStage =  this.widthStage;
+    }
+
+
+    this.setButtonsStyle();
+
+    // If the given dimension are permitted
     if (width >= this.minWidth && width <= this.maxWidth && height >= this.minHeight && height <= this.maxHeight) {
-      this.widthMeter = width;
-      this.heightMeter = height;
+
+      this.stage.setWidth(this.widthStage);
+      this.stage.setHeight(this.heightStage);
+
+      // delete last backgroundstage
+      this.backgroundLayer.destroy();
+      /* Temporar code because not necessary only to test some new functionalities
+      this.stage.destroy();
+
+      // Initiate stage with given dimension from html container
       this.stage = new Konva.Stage({
-        container: 'roomvisualiser',   // id of container <div>
+        container: 'roomvisualiser',
         width: this.widthStage,
         height: this.heightStage,
+        draggable: true,
       });
+
+       */
+
+      // calculate how much pixel in width and height has a Meter
       this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
-      let backgroundLayer = new Konva.Layer();
+
+      // calculate dimensions of desks and chairs based on pixel in meter
+      this.calculateElements();
+
+      // initiate and draw the ground
+      this.backgroundLayer = new Konva.Layer();
       for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
         for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
           let rect = new Konva.Rect({
@@ -238,20 +309,28 @@ export class RoomComponent implements OnInit {
             width: this.meterInPixel,
             height: this.meterInPixel,
             fill: '#e2e2e2',
-            stroke: '#000',
-            strokeWidth: .2
+            stroke: '#777',
+            strokeWidth: 1
           });
-          backgroundLayer.add(rect);
+          this.backgroundLayer.add(rect);
         }
       }
-      this.stage.add(backgroundLayer);
+      this.stage.add(this.backgroundLayer);
     }
-    this.calculateElements();
+
+    // delete and initiate layer for elements
+    this.layerElements.destroy();
     this.layerElements = new Konva.Layer();
+
+    // draw all elements in the stage
     this.drawElements();
-    this.zoomStage();
-    this.changeStageScale();
+
+    // set roomElement object with all element of current room
+    // and set object with number of specific element in the current room
+    this.makeRoomDetailsReady();
   }
+
+  // Add new desk and draw it
   addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number, bgClr: string): void {
     let desk: any = {
       "id": this.allElements.length,
@@ -263,18 +342,15 @@ export class RoomComponent implements OnInit {
       "y": y,
       "degRotation": rotation,
       "bgClr": bgClr,
-      "firstname1": 'Vorname',
-      "lastname1": 'Nachname',
-      "firstname2": 'Vorname-2',
-      "lastname2": 'Nachname-2',
       "elementid": this.assignId('desk')
     }
     this.allElements.push(desk);
     this.layerElements.destroy();
     this.drawElements();
   }
-  addDoor(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
 
+  // Add new door and draw it
+  addDoor(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
     let door: any
     if(platzierung == 'links' || platzierung == 'rechts') {
       door = {
@@ -304,13 +380,15 @@ export class RoomComponent implements OnInit {
     this.layerElements.destroy();
     this.drawElements();
   }
+
+  // Add new window and draw it
   addWindow(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
     let window: any
     if(platzierung == 'links' || platzierung == 'rechts') {
       window = {
         "id": this.allElements.length,
         "roomId": this.currentRoomId,
-        "element": 'door',
+        "element": 'window',
         "elementtyp": elementtyp,
         "y": y,
         "bgClr": bgClr,
@@ -321,7 +399,7 @@ export class RoomComponent implements OnInit {
       window = {
         "id": this.allElements.length,
         "roomId": this.currentRoomId,
-        "element": 'door',
+        "element": 'window',
         "elementtyp": elementtyp,
         "x": x,
         "bgClr": bgClr,
@@ -333,13 +411,15 @@ export class RoomComponent implements OnInit {
     this.layerElements.destroy();
     this.drawElements();
   }
+
+  // Add new board and draw it
   addBoard(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
     let board: any
     if(platzierung == 'links' || platzierung == 'rechts') {
       board = {
         "id": this.allElements.length,
         "roomId": this.currentRoomId,
-        "element": 'door',
+        "element": 'board',
         "elementtyp": elementtyp,
         "y": y,
         "bgClr": bgClr,
@@ -350,7 +430,7 @@ export class RoomComponent implements OnInit {
       board = {
         "id": this.allElements.length,
         "roomId": this.currentRoomId,
-        "element": 'door',
+        "element": 'board',
         "elementtyp": elementtyp,
         "x": x,
         "bgClr": bgClr,
@@ -363,6 +443,8 @@ export class RoomComponent implements OnInit {
     this.layerElements.destroy();
     this.drawElements();
   }
+
+  // assign id that is used to scroll to a specific element. this function is triggered every time an element is added
   assignId(objectTyp: string): number {
     let id: number = 0
     for(let e of this.allElements) {
@@ -371,14 +453,12 @@ export class RoomComponent implements OnInit {
       }
     }
     return id;
-
   }
+
+  // Update values for x or y or rotation and update visualisation
   updateElementsObject(id: number, platzierung?: string): void {
-
-
     if(this.allElements[id].element != 'desk') {
       if(platzierung == 'links' || platzierung == 'rechts') {
-        console.log('hallo')
         let idy = 'ely'+id;
         let y : any = document.getElementById(idy);
         this.allElements[id].y = y.valueAsNumber;
@@ -398,60 +478,27 @@ export class RoomComponent implements OnInit {
       let r : any = document.getElementById(idr);
       this.allElements[id].degRotation = r.valueAsNumber;
     }
-
-
-
-
-
     this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height)
   }
-  setButtons(): void {
+
+  // Change buttons stylesheet to show the current room
+  setButtonsStyle(): void {
     for(let i=0;i<4;i++){
       let v: any = 'btn'+i;
       let ele: any = document.getElementById(v);
       if(i === this.currentRoomId){
         ele.style.backgroundColor = '#0088ff';
         ele.style.color = 'white';
+        ele.style.border = '1px solid #ddd';
       } else {
-        ele.style.backgroundColor = '#777';
-        ele.style.color = 'white';
+        ele.style.backgroundColor = '#eee';
+        ele.style.color = '#000';
+        ele.style.border = '1px solid #ddd';
       }
     }
   }
-  zoomStage(): void {
-    let scaleBy: number = 1.1;
-    this.stage.on('wheel', (data: any) =>  {
-      // stop default scrolling
-      data.evt.preventDefault();
 
-      let oldScale = this.stage.scaleX();
-      let pointer = this.stage.getPointerPosition();
-
-      let mousePointTo = {
-        x: (pointer.x - this.stage.x()) / oldScale,
-        y: (pointer.y - this.stage.y()) / oldScale,
-      };
-
-      // how to scale? Zoom in? Or zoom out?
-      let direction = data.evt.deltaY > 0 ? 1 : -1;
-
-      // when we zoom on trackpad, e.evt.ctrlKey is true
-      // in that case lets revert direction
-      if (data.evt.ctrlKey) {
-        direction = -direction;
-      }
-
-      let newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
-
-      this.stage.scale({ x: newScale, y: newScale });
-
-      let newPos = {
-        x: pointer.x - mousePointTo.x * newScale,
-        y: pointer.y - mousePointTo.y * newScale,
-      };
-      this.stage.position(newPos);
-    })
-  }
+  // scale stage in and out on changing the slider position
   changeStageScale(): void {
     if(this.zoomValue === 0) {
       this.stage.scale({ x: .1, y: .1 });
@@ -497,7 +544,8 @@ export class RoomComponent implements OnInit {
       this.stage.scale({ x: 2, y: 2 });
     }
 
-    // if stage scaled draggable
+    /*
+    // if stage scaled make it draggable
     if(this.zoomValue !== 5) {
       this.stage.draggable(true);
     } else if (this.zoomValue === 5) {
@@ -505,61 +553,48 @@ export class RoomComponent implements OnInit {
       this.stage.x(0);
       this.stage.y(0);
     }
-
+    */
 
   }
-  drawElements(): void {
-    for (let i = 0; i < this.allElements.length; i++) {
-      if(this.allElements[i].roomId == this.currentRoomId){
-        this.drawElement(this.allElements[i].element, this.allElements[i].elementtyp, this.allElements[i].place, this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr, this.allElements[i].platzierung)
-      }
-    }
-    this.makeRoomDetailsReady();
-  }
+
+  // convert meter in pixels
   calculateMeter(width: number, height: number): void {
-    if(width > height) {
-      this.meterInPixel = Math.floor(this.widthStage / width);
-    } else {
-      this.meterInPixel = Math.floor(this.widthStage / height);
+
+    if (width > height) {
+      this.meterInPixel = this.widthStage / width;
+    } else if (height > width) {
+      this.meterInPixel = this.heightStage / height;
+    } else if (width == height) {
+      this.meterInPixel = this.widthStage / width;
     }
+
   }
+
+  // calculate desks dimension based on meter in pixel
   calculateElements(): void {
     this.widthSmallDesk = this.meterInPixel * 1.2;
-    this.heightSmallDesk = this.meterInPixel * .7;
-    this.widthBigDesk = (this.meterInPixel * 2) * 1.2;
-    this.heightBigDesk = (this.meterInPixel) * .7;
+    this.widthBigDesk = (this.meterInPixel * 1.2) * 2;
+    this.heightDesk = this.meterInPixel * .7;
     this.widthChair = this.meterInPixel * .4;
     this.heightChair = this.meterInPixel * .3;
-    this.positionXDeleteIcon = this.widthSmallDesk * .9;
-    this.positionXDeleteIcon2 = (this.widthSmallDesk * 2) * .95;
-    this.positionYDeleteIcon = this.widthSmallDesk * .1;
-    this.radiusDeleteIcon = this.widthSmallDesk * .06;
     this.radiusSmallDesk = Math.floor((this.meterInPixel * 1.2) / 2);
     this.radiusBigDesk = Math.floor((this.meterInPixel * 1.2) / 1.5);
-    this.radiusSmallTriangle = Math.floor(this.meterInPixel / 2) * 1.2;
   }
+
+  // delete element from allelements object and rearrange ids and elementids for the scroll functionality then update visualisation
   deleteElem(): void {
-
     this.allElements.splice(this.currentId,1);
-
     for(let i = 0; i < this.allElements.length; i++) {
       this.allElements[i].id = i;
     }
-
-   /* this.roomElements.splice(this.currentId,1);
-
-    for(let i = this.roomElements[0].id; i < this.roomElements.length + this.roomElements[0].id; i++) {
-      this.roomElements[i].id = i;
-    }
-
-    */
-
     let desk: number = 0;
     let door: number = 0;
     let window: number = 0;
     let board: number = 0;
-
+    let i = 0;
     for(let el of this.allElements){
+      el.id = i;
+      i++;
       if(el.roomId == this.currentRoomId) {
         if(el.element === 'desk') {
           el.elementid = desk;
@@ -576,17 +611,26 @@ export class RoomComponent implements OnInit {
         }
       }
     }
-
-
+    this.currentId = undefined;
     this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height)
-
   }
-  drawElement(element: string, elementtyp: string, place: number, id: number, x: number, y: number, rotation: number, bgClr: string, platzierung?: string): void {
-    let objectWidth: any;
-    let objectHeight: any;
 
-    //Step 1
+  // draws all elements
+  drawElements(): void {
     this.stage.add(this.layerElements);
+    for (let i = 0; i < this.allElements.length; i++) {
+      if(this.allElements[i].roomId == this.currentRoomId){
+        this.drawElement(this.allElements[i].element, this.allElements[i].elementtyp, this.allElements[i].place, this.allElements[i].id, this.allElements[i].x, this.allElements[i].y, this.allElements[i].degRotation, this.allElements[i].bgClr,
+          this.allElements[i].platzierung)
+      }
+    }
+  }
+
+  // draw one element
+  drawElement(element: string, elementtyp: string, place: number, id: number, x: number, y: number, rotation: number, bgClr: string, platzierung?: string): void {
+    //Step 1
+    let objWidth: any;
+    let objHeight: any;
 
     //Step 2
     let elemente: any[] = [];
@@ -595,7 +639,7 @@ export class RoomComponent implements OnInit {
     if(element == 'desk' && elementtyp == 'eckig' && place == 1){
       let desktop = new Konva.Rect({
         width: this.widthSmallDesk,
-        height: this.heightSmallDesk,
+        height: this.heightDesk,
         fill: bgClr,
         stroke: 'black',
         strokeWidth: 1,
@@ -612,16 +656,19 @@ export class RoomComponent implements OnInit {
       elemente.push(desktop)
       elemente.push(chair)
 
-      objectWidth = this.widthSmallDesk;
+      objWidth = this.widthSmallDesk;
       // @ts-ignore
-      objectHeight = this.heightSmallDesk + ((this.meterInPixel * 0.75) - this.heightSmallDesk) + this.heightChair;
+      objHeight = this.heightDesk + ((this.meterInPixel * 0.75) - this.heightDesk) + this.heightChair;
     }
+
     // If the object is a big square desk
     else if(element == 'desk' && elementtyp == 'eckig' && place == 2) {
       let desk = new Konva.Rect({
         width: this.widthBigDesk,
-        height: this.heightBigDesk,
+        height: this.heightDesk,
         fill: bgClr,
+        stroke: 'black',
+        strokeWidth: 1,
       })
       let chair1 = new Konva.Rect({
         x: this.meterInPixel * .4,
@@ -629,6 +676,8 @@ export class RoomComponent implements OnInit {
         width: this.widthChair,
         height: this.heightChair,
         fill: bgClr,
+        stroke: 'black',
+        strokeWidth: 1,
       });
       let chair2 = new Konva.Rect({
         x: (this.meterInPixel * .4) + (this.meterInPixel * 1.2),
@@ -636,11 +685,16 @@ export class RoomComponent implements OnInit {
         width: this.widthChair,
         height: this.heightChair,
         fill: bgClr,
+        stroke: 'black',
+        strokeWidth: 1,
       });
       elemente.push(desk)
       elemente.push(chair1)
       elemente.push(chair2)
 
+      objWidth = this.widthBigDesk;
+      // @ts-ignore
+      objHeight = this.heightDesk + ((this.meterInPixel * 0.75) - this.heightDesk) + this.heightChair;
     }
     // If the object is a small round desk
     else if(element == 'desk' && elementtyp == 'rund' && place == 1) {
@@ -649,6 +703,8 @@ export class RoomComponent implements OnInit {
         y: this.radiusSmallDesk,
         radius: this.radiusSmallDesk,
         fill: bgClr,
+        stroke: 'black',
+        strokeWidth: 1,
       })
       let chair = new Konva.Rect({
         x: this.meterInPixel * 0.4,
@@ -656,39 +712,64 @@ export class RoomComponent implements OnInit {
         width: this.widthChair,
         height: this.heightChair,
         fill: bgClr,
+        stroke: 'black',
+        strokeWidth: 1,
       });
       elemente.push(desk)
       elemente.push(chair)
 
+      // @ts-ignore
+      objWidth = this.radiusSmallDesk * 2;
+      // @ts-ignore
+      objHeight = this.meterInPixel * 1.25 + this.heightChair;
     }
     // If the object is a big round desk
     else if(element == 'desk' && elementtyp == 'rund' && place == 2) {
+      // @ts-ignore
+      let xChair1: any = this.radiusBigDesk - (this.widthChair / 2);
+      // @ts-ignore
+      let xChair2: any = this.radiusBigDesk - (this.widthChair / 2);
+      let yChair1: any = 0;
+      // @ts-ignore
+      let yChair2: any = (this.radiusBigDesk * 2) + this.widthChair + (this.widthChair - this.heightChair);
+      let xDesk: any = this.radiusBigDesk;
+      // @ts-ignore
+      let yDesk: any = this.radiusBigDesk + this.widthChair;
+
       let desk = new Konva.Circle({
-        x: this.radiusBigDesk,
-        y: this.radiusBigDesk,
+        x: xDesk,
+        y: yDesk,
         radius: this.radiusBigDesk,
         fill: bgClr,
+        stroke: 'black',
+        strokeWidth: 1,
       })
       let chair1 = new Konva.Rect({
-        x: 0,
-        y: this.meterInPixel * 1.25,
+        x: xChair1,
+        y: yChair1,
         width: this.widthChair,
         height: this.heightChair,
         fill: bgClr,
-        rotation: 45,
+        stroke: 'black',
+        strokeWidth: 1,
       });
       let chair2 = new Konva.Rect({
-        x: this.meterInPixel * 1.5,
-        y: -this.meterInPixel * .2,
+        x: xChair2,
+        y: yChair2,
         width: this.widthChair,
         height: this.heightChair,
         fill: bgClr,
-        rotation: 45,
+        stroke: 'black',
+        strokeWidth: 1,
       });
       elemente.push(desk)
       elemente.push(chair1)
       elemente.push(chair2)
 
+      // @ts-ignore
+      objWidth = this.radiusBigDesk * 2;
+      // @ts-ignore
+      objHeight = yChair2 + this.heightChair;
     }
     // If the object is a door
     else if(element == 'door') {
@@ -710,6 +791,9 @@ export class RoomComponent implements OnInit {
       })
       elemente.push(door1)
       elemente.push(door2)
+
+      objWidth = (this.meterInPixel * 0.08) + (this.meterInPixel * 0.04);
+      objHeight = this.meterInPixel * 2;
     }
     // If the object is a window
     else if(element == 'window') {
@@ -743,6 +827,9 @@ export class RoomComponent implements OnInit {
       elemente.push(window1)
       elemente.push(window2)
       elemente.push(window3)
+
+      objWidth = (this.meterInPixel * 0.08) + (this.meterInPixel * 0.04);
+      objHeight = this.meterInPixel * 2;
     }
 
     // If the object is a board
@@ -757,12 +844,39 @@ export class RoomComponent implements OnInit {
         strokeWidth: 1,
       })
       elemente.push(board)
+
+      objWidth = (this.meterInPixel * 0.08) + (this.meterInPixel * 0.04);
+      objHeight = this.meterInPixel * 2;
     }
 
-    let circle = new Konva.Circle({
-      radius: this.meterInPixel * 0.08,
+    let circleDelete = new Konva.Circle({
+      radius: 12,
       fill: 'red',
     });
+    let cross1 = new Konva.Rect({
+      x: -8,
+      y: -1.5,
+      width: 16,
+      height: 3,
+      fill: 'white',
+      rotation: 0,
+    })
+    let cross2 = new Konva.Rect({
+      x: -1.5,
+      y: -8,
+      width: 3,
+      height: 16,
+      fill: 'white',
+      rotation: 0,
+    })
+    let circle = new Konva.Group({
+      x: 0,
+      y: 0,
+      rotation: 45,
+    })
+    circle.add(circleDelete);
+    circle.add(cross1);
+    circle.add(cross2);
 
     //Step 3
     let groupElements: any;
@@ -778,7 +892,7 @@ export class RoomComponent implements OnInit {
           break;
         case "hinten" : groupElements = new Konva.Group({
           x: x,
-          y: this.widthStage,
+          y: this.heightStage,
           draggable: true,
           rotation: -90,
         })
@@ -798,7 +912,6 @@ export class RoomComponent implements OnInit {
         })
           break;
       }
-
     } else {
        groupElements = new Konva.Group({
         x: x,
@@ -807,7 +920,6 @@ export class RoomComponent implements OnInit {
         rotation: rotation,
       })
     }
-
 
     //Step 4
     for(let e of elemente) {
@@ -821,37 +933,105 @@ export class RoomComponent implements OnInit {
     let tr = new Konva.Transformer({
       rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
       resizeEnabled: false,
-    })
 
+      borderDash: ([4, 4]),
+      borderStroke: 'red',
+      borderStrokeWidth: 1,
+
+      anchorCornerRadius:10,
+      anchorSize: 10,
+      anchorFill: 'red',
+      anchorStroke: 'red',
+      anchorStrokeWidth: 1,
+    })
 
     //Step 7
     this.layerElements.add(tr);
 
-    this.allElements[id].objectWidth = groupElements.getClientRect().width;
-    this.allElements[id].objectHeight = groupElements.getClientRect().height;
+    this.allElements[id].objectWidth = Math.floor(groupElements.getClientRect().width);
+    this.allElements[id].objectHeight = Math.floor(groupElements.getClientRect().height);
 
-    console.log(this.allElements[id].objectWidth)
-    console.log(this.allElements[id].objectHeight)
+    if(this.allElements[id].xNotSmallerZ == undefined) {
+      this.allElements[id].xNotSmallerZ = 0;
+    }
+    if(this.allElements[id].xNotBiggerZ == undefined) {
+      this.allElements[id].xNotBiggerZ = this.widthStage - objWidth;
+    }
+    if(this.allElements[id].yNotSmallerZ == undefined) {
+      this.allElements[id].yNotSmallerZ = 0;
+    }
+    if(this.allElements[id].yNotBiggerZ == undefined) {
+      this.allElements[id].yNotBiggerZ = this.heightStage - objHeight;
+    }
 
     //Step 8
-    groupElements.on('mouseenter', function () {
+    let tooltip = new Konva.Text({
+      text: this.allElements[id].element + ' ' + (this.allElements[id].elementid + 1),
+      fontFamily: 'Calibri',
+      fontSize: 14,
+      padding: 5,
+      textFill: 'white',
+      fill: 'black',
+      alpha: 0.75,
+      visible: false,
+    });
+
+    groupElements.add(tooltip);
+
+    if(id == this.currentId) { /* important */
+
+      if(this.allElements[id].element != 'desk') {
+        tr.rotateEnabled(false);
+
+        if(platzierung == 'links') {
+          circle.x(this.meterInPixel * .12)
+        } else if(platzierung == 'rechts') {
+          circle.y(this.meterInPixel * 2)
+          circle.x(this.meterInPixel * .12)
+        } else if(platzierung == 'vorne') {
+          circle.x(this.meterInPixel * .12)
+        } else if(platzierung == 'hinten') {
+          circle.x(this.meterInPixel * .12)
+          circle.y(this.meterInPixel * 2)
+        }
+      }
+      tr.nodes([groupElements]) // this function will be soon deleted and replaced with attachTo
+      tr.add(circle);
+    }
+
+    //
+    groupElements.on('mouseenter', (e: any) => {
       let x: any = groupElements.getStage();
       x.container().style.cursor = 'move';
+      tooltip.position({
+        x: 0,
+        y: 0,
+      });
+      if(this.allElements[id].element != 'desk' && (this.allElements[id].platzierung == 'links' || this.allElements[id].platzierung == 'rechts')) {
+        tooltip.rotation(90)
+        tooltip.x(40)
+      } else if(this.allElements[id].element != 'desk' && this.allElements[id].platzierung == 'vorne') {
+        tooltip.rotation(270)
+        tooltip.x(16)
+        tooltip.y(objHeight)
+      } else if(this.allElements[id].element != 'desk' && this.allElements[id].platzierung == 'hinten') {
+        tooltip.rotation(90)
+        tooltip.x(40)
+      }
+      tooltip.show();
     });
 
-    groupElements.on('mouseout', function () {
+    //
+    groupElements.on('mouseout', (e: any) => {
       let x: any = groupElements.getStage();
       x.container().style.cursor = 'default';
+      tooltip.hide();
     });
 
+    //
     groupElements.on('click', () => {
 
-
-
-      tr.nodes([groupElements]);
       this.currentId = id;
-      tr.add(circle);
-
 
       for(let j=0; j<this.allElements.length; j++) {
         if(this.allElements[j].roomId == this.currentRoomId) {
@@ -862,8 +1042,6 @@ export class RoomComponent implements OnInit {
         }
       }
 
-
-
       for(let i=0; i<this.allElements.length; i++) {
 
         if (this.allElements[i].id == id) {
@@ -872,78 +1050,49 @@ export class RoomComponent implements OnInit {
           let elemr: any = document.getElementById(idElementr);
           elemr.parentElement.parentElement.classList.add('blink')
 
-
           if (this.allElements[i].element === 'desk') {
-            elemr.parentElement.parentElement.style.backgroundColor = '#ddd'
+            elemr.parentElement.parentElement.style.backgroundColor = '#8DD8F5'
             let element: any = document.getElementById('desks-container')
             element.scrollTo({
-              top: 90 * this.allElements[i].elementid,
+              top: 80 * this.allElements[i].elementid,
               left: 0,
               behavior: 'smooth'
             });
           } else if (this.allElements[i].element === 'door') {
-            tr.rotateEnabled(false)
             elemr.parentElement.parentElement.style.backgroundColor = '#ddd'
             let element: any = document.getElementById('doors-container')
             element.scrollTo({
-              top: 90 * this.allElements[i].elementid,
+              top: 80 * this.allElements[i].elementid,
               left: 0,
               behavior: 'smooth'
             });
           } else if (this.allElements[i].element === 'window') {
-            tr.rotateEnabled(false)
             elemr.parentElement.parentElement.style.backgroundColor = '#ddd'
             let element: any = document.getElementById('windows-container')
             element.scrollTo({
-              top: 90 * this.allElements[i].elementid,
+              top: 80 * this.allElements[i].elementid,
               left: 0,
               behavior: 'smooth'
             });
           } else if (this.allElements[i].element === 'board') {
-            tr.rotateEnabled(false)
             elemr.parentElement.parentElement.style.backgroundColor = '#ddd'
             let element: any = document.getElementById('boards-container')
             element.scrollTo({
-              top: 90 * this.allElements[i].elementid,
+              top: 80 * this.allElements[i].elementid,
               left: 0,
               behavior: 'smooth'
             });
-          }
-        }
-
-        if(this.allElements[id].element != 'desk') {
-          if(platzierung == 'links') {
-            circle.x(this.meterInPixel * .12)
-          } else if(platzierung == 'rechts') {
-            circle.y(this.meterInPixel * 2)
-            circle.x(this.meterInPixel * .12)
-          } else if(platzierung == 'vorne') {
-            circle.x(this.meterInPixel * .12)
-          } else if(platzierung == 'hinten') {
-            circle.x(this.meterInPixel * .12)
-            circle.y(this.meterInPixel * 2)
           }
         }
 
       }
 
-
-
+      this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
 
     });
 
-    groupElements.on('mouseenter', function () {
-      let x: any = groupElements.getStage();
-      x.container().style.cursor = 'move';
-    });
-
-    groupElements.on('mouseout', function () {
-      let x: any = groupElements.getStage();
-      x.container().style.cursor = 'default';
-    });
-
+    //
     groupElements.on('transform dragmove', () => {
-
       if(this.allElements[id].element != 'desk') {
         if(platzierung == 'links') {
           let idElementy = 'ely'+id;
@@ -973,12 +1122,10 @@ export class RoomComponent implements OnInit {
           let elemy: any = document.getElementById(idElementy);
           elemy.value = Math.floor(groupElements.y());
       }
-
-
     });
 
+    //
     groupElements.on('transformend dragend', () => {
-
       if (this.allElements[id].element != 'desk') {
         let idY = 'ely'+id;
         let elemtY: any = document.getElementById(idY);
@@ -1016,73 +1163,136 @@ export class RoomComponent implements OnInit {
         }
 
       } else if (this.allElements[id].element == 'desk'){
+
         let idX = 'elx'+id;
-        let elemtX: any = document.getElementById(idX);
-
+        let elementX: any = document.getElementById(idX);
         let idY = 'ely'+id;
-        let elemtY: any = document.getElementById(idY);
+        let elementY: any = document.getElementById(idY);
 
-        let stageWidth = this.widthStage
-        let objWidth: number = Math.floor(groupElements.getClientRect().width);
-        let xPos: number = Math.floor(groupElements.getClientRect().x);
-        let objectEndX: number = xPos + objWidth;
-        let xEndController: number = stageWidth - objectEndX;
-        let valx: number = 0;
+        let xOver: number;
+        let yOver: number;
+        let rotation: number = Math.floor(groupElements.getAbsoluteRotation());
+        let deg: number;
+        let xNotSmaller: number;
+        let xNotBigger: number;
+        let yNotSmaller: number;
+        let yNotBigger: number;
 
-        let stageHeight = this.heightStage
-        let objHeight: number = Math.floor(groupElements.getClientRect().height);
-        let yPos: number = Math.floor(groupElements.getClientRect().y);
-        let objectEndY: number = yPos + objHeight;
-        let yEndController: number = stageWidth - objectEndY;
-        let valy: number = 0;
+        if (rotation >= 0 && rotation <= 90) {
 
-        let rotDeg: number = groupElements.getAbsoluteRotation();
-        let degrees_to_radians: any = (rotDeg * Math.PI) / 180.0;
+          deg = rotation;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = 0;
+          xOver = Math.ceil(objHeight * Math.sin(deg));
+          xNotSmaller = xOver;
+          xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
 
+          if (elementX.value < xNotSmaller) {
+            elementX.value = xNotSmaller;
+          } else if(elementX.value > xNotBigger) {
+            elementX.value = xNotBigger;
+          }
 
-        if (rotDeg > 0 && rotDeg <= 90) { // Gegenkathete
-          console.log('0 -> 90')
-          valx = Math.sin(degrees_to_radians) * objectWidth // ok
+          if (elementY.value < yNotSmaller) {
+            elementY.value = yNotSmaller;
+          } else if(elementY.value > yNotBigger) {
+            elementY.value = yNotBigger;
+          }
 
-        } else if (rotDeg > 90 && rotDeg <= 180) { // Ankathete
-          console.log('90 -> 180')
-          valx = objWidth // ok
+        } else if (rotation >= 90 && rotation <= 180) {
+          deg = rotation - 90;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = Math.ceil(objHeight * Math.sin(deg));
+          xOver = Math.ceil(groupElements.getClientRect().width);
+          xNotSmaller = xOver;
+          xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
 
-          valy =(Math.cos(degrees_to_radians) * objectHeight) * -1
-        } else if (rotDeg > -180 && rotDeg <= -90) { // Ankathete
-          console.log('-180 -> -90')
-          valx = (Math.cos(degrees_to_radians) * objectWidth) * -1 // ok
+          if (elementX.value < xNotSmaller) {
+            elementX.value = xNotSmaller;
+          } else if(elementX.value > xNotBigger) {
+            elementX.value = xNotBigger;
+          }
 
-          valy = objHeight // ok
-        } else if (rotDeg > -90 && rotDeg <= 0) { // nichts tun
-          console.log('-90 -> 0')
+          if (elementY.value < yNotSmaller) {
+            elementY.value = yNotSmaller;
+          } else if(elementY.value > yNotBigger) {
+            elementY.value = yNotBigger;
+          }
 
-          valy = Math.cos(degrees_to_radians) * objectHeight
+        } else if (rotation >= -180 && rotation <= -90) {
+          deg = (rotation * -1) - 90;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = Math.ceil(groupElements.getClientRect().height);
+          xOver = Math.ceil(objWidth * Math.sin(deg));
+          xNotSmaller = xOver;
+          xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
+
+          if (elementX.value < xNotSmaller) {
+            elementX.value = xNotSmaller;
+          } else if(elementX.value > xNotBigger) {
+            elementX.value = xNotBigger;
+          }
+
+          if (elementY.value < yNotSmaller) {
+            elementY.value = yNotSmaller;
+          } else if(elementY.value > yNotBigger) {
+            elementY.value = yNotBigger;
+          }
+
+        } else if (rotation >= -90 && rotation < 0) {
+          deg = rotation * -1;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = Math.ceil(objWidth * Math.sin(deg));
+          xOver = 0;
+          xNotSmaller = xOver;
+          xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
+
+          if (elementX.value < xNotSmaller) {
+            elementX.value = xNotSmaller;
+          } else if(elementX.value > xNotBigger) {
+            elementX.value = xNotBigger;
+          }
+
+          if (elementY.value < yNotSmaller) {
+            elementY.value = yNotSmaller;
+          } else if(elementY.value > yNotBigger) {
+            elementY.value = yNotBigger;
+          }
+
         }
 
-        if(xEndController < 0){
-          elemtX.value = (stageWidth - (objWidth)) + valx
-        } else if (xEndController > stageWidth - objectWidth){
-          elemtX.value =  valx
-        }
+        // @ts-ignore
+        this.allElements[id].xNotSmallerZ = xNotSmaller
+        // @ts-ignore
+        this.allElements[id].xNotBiggerZ = xNotBigger
+        // @ts-ignore
+        this.allElements[id].yNotSmallerZ = yNotSmaller
+        // @ts-ignore
+        this.allElements[id].yNotBiggerZ = yNotBigger
 
-        if(yEndController < 0){
-          elemtY.value = stageHeight - valy
-        } else if (yEndController > stageHeight - objectHeight){
-          elemtY.value =  valy
-        }
       }
-
 
       this.updateElementsObject(id, platzierung);
 
     });
 
+    //
     circle.on('click', (event) => {
       this.currentId = id;
       this.isToDelete = true;
     });
+
   }
+
+  // save pdf with room title and picture of stage
   savePdf() {
     let d: any = document.querySelector('#roomvisualiser');
     html2canvas(d, {
@@ -1093,48 +1303,57 @@ export class RoomComponent implements OnInit {
       let img = canvas.toDataURL("image/png");
       let pdf = new jsPDF();
       pdf.setFont('Arial');
-      pdf.text('Klasse AC12 | KW 12',30,12);
+      pdf.text(this.roomname,30,12);
       pdf.setFontSize(50);
       pdf.addImage(img, 'PNG',6,20,200,200);
       pdf.save('room.pdf');
     })
   }
+
+  // save image of stage
   downloadAsImage() {
     let dataURL = this.stage.toDataURL({ pixelRatio: 3 });
     let link: any = document.createElement('a');
-    link.download = 'myroom';
+    link.download = this.roomname;
     link.href = dataURL;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     link.download;
   }
+
+  // Set initial rooms
   reset(): void {
     this.allElements = JSON.parse(JSON.stringify(objectsData));
+    this.standardRooms[0].width = 8;
+    this.standardRooms[0].height = 8;
     this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
     this.isRoomSaved = false;
     let c: any = document.getElementById('standardRoomsChanger');
     c.style.display = 'flex';
     c.style.alignItems = 'center';
-    c.style.gap = '20px';
+    c.style.gap = '10px';
     c.style.visibility = 'visible';
-    this.setButtons();
+    this.setButtonsStyle();
     sessionStorage.removeItem('room');
     sessionStorage.removeItem('roomDimension');
   }
+
+  // Set roomelement and elementsnumber
   makeRoomDetailsReady() {
     this.roomElements = [];
-    let roomId: number = this.currentRoomId;
     this.elementsNumber[0].number = 0;
     this.elementsNumber[1].number = 0;
     this.elementsNumber[2].number = 0;
     this.elementsNumber[3].number = 0;
 
     for(let elem of this.allElements) {
-      if(elem.roomId === roomId) {
+      if(elem.roomId === this.currentRoomId) {
+
         let x = new Object();
         x = elem;
         this.roomElements.push(x);
+
         if(elem.element == 'desk'){
           this.elementsNumber[0].number++;
         }
@@ -1149,27 +1368,34 @@ export class RoomComponent implements OnInit {
         }
       }
     }
-    console.log(this.roomElements)
   }
+
+  // Save room in localstorage
   saveRoom() {
     this.route.navigate(['mainmenu']);
 
-    for(let element of this.roomElements) {
-      element.roomId = 0;
+    for(let i = 0; i < this.roomElements.length; i++) {
+      this.allElements[i].id = i;
+      this.roomElements[i].roomId = 0;
     }
 
     sessionStorage.setItem("room", JSON.stringify(this.roomElements));
     let roomStage: any = {
       "width": this.standardRooms[this.currentRoomId].width,
       "height":  this.standardRooms[this.currentRoomId].height,
+      "stageInPixel" : this.widthStage
     }
     sessionStorage.setItem("roomDimension", JSON.stringify(roomStage));
   }
+
+  // Set primarycolor
   changeColor($event: ColorEvent): void {
     this.primaryColor = $event.color.hex;
     let element: any = document.getElementById('colorPickerTrigger');
     element.style.backgroundColor = this.primaryColor;
   }
+
+  // Pass primarycolor to object
   handleAccept(): void {
     this.showPicker = false;
     // Property color for the specific object is to change
@@ -1179,12 +1405,14 @@ export class RoomComponent implements OnInit {
       this.currentId = undefined;
     }
   }
+
+  // Hide colorpicker
   handleCancel(): void {
     this.showPicker = false;
     //
   }
 
-  //Export room as CSV File
+  // Export csv file
   ExportAsCsv(){
     this.makeRoomDetailsReady();
 
@@ -1196,7 +1424,7 @@ export class RoomComponent implements OnInit {
       "height":  this.standardRooms[this.currentRoomId].height,
     }
 
-      var options = {
+      let options = {
         fieldSeparator: ',',
         quoteStrings: '',
         decimalseparator: '.',

@@ -32,11 +32,11 @@
       Neuer Schreibtisch hinzufügen
     </div>
     <div class="contentPopup">
+
       <div class="right">
         <label class="">Type</label><br>
         <select [(ngModel)]="deskToAdd.elementtyp">
           <option value="eckig" selected>Eckig</option>
-          <option value="dreieckig">Dreieckig</option>
           <option value="rund">Rund</option>
         </select>
         <br>
@@ -48,20 +48,20 @@
       </div>
 
       <div class="left">
-        <label class="">X</label><br>
+        <label class="">X</label>
         <input type="number" min="0" max="{{widthStage}}" [(ngModel)]="deskToAdd.x">
         <br>
-        <label class="">Y</label><br>
+        <label class="">Y</label>
         <input type="number" min="0" max="{{heightStage}}" [(ngModel)]="deskToAdd.y">
         <br>
-        <label class="">Rotation</label><br>
+        <label class="">Rotation</label>
         <input type="number" [(ngModel)]="deskToAdd.degRotation">
       </div>
 
     </div>
     <div class="popUpActions">
       <button (click)="isToAddDesk = false">Abbrechen</button>
-      <button (click)="addDesk(deskToAdd.elementtyp,deskToAdd.place,deskToAdd.x,deskToAdd.y,deskToAdd.degRotation,'#777777'); isToAddDesk = false">Hinzufügen</button>
+      <button (click)="addDesk(deskToAdd.elementtyp,deskToAdd.place,deskToAdd.x,deskToAdd.y,deskToAdd.degRotation,'white'); isToAddDesk = false">Hinzufügen</button>
     </div>
   </div>
 
@@ -94,7 +94,7 @@
     </div>
     <div class="popUpActions">
       <button (click)="isToAddDoor = false">Abbrechen</button>
-      <button (click)="addDoor(doorToAdd.elementtyp,'#777777', doorToAdd.platzierung, doorToAdd.x, doorToAdd.y); isToAddDoor = false">Hinzufügen</button>
+      <button (click)="addDoor(doorToAdd.elementtyp,'white', doorToAdd.platzierung, doorToAdd.x, doorToAdd.y); isToAddDoor = false">Hinzufügen</button>
     </div>
   </div>
 
@@ -126,7 +126,7 @@
     </div>
     <div class="popUpActions">
       <button (click)="isToAddWindow = false">Abbrechen</button>
-      <button (click)="addWindow(windowToAdd.elementtyp,'#777777', windowToAdd.platzierung, windowToAdd.x, windowToAdd.y); isToAddWindow = false">Hinzufügen</button>
+      <button (click)="addWindow(windowToAdd.elementtyp,'white', windowToAdd.platzierung, windowToAdd.x, windowToAdd.y); isToAddWindow = false">Hinzufügen</button>
     </div>
   </div>
 
@@ -158,23 +158,24 @@
     </div>
     <div class="popUpActions">
       <button (click)="isToAddBoard = false">Abbrechen</button>
-      <button (click)="addBoard(boardToAdd.elementtyp,'#777777', boardToAdd.platzierung, boardToAdd.x, boardToAdd.y); isToAddBoard = false">Hinzufügen</button>
+      <button (click)="addBoard(boardToAdd.elementtyp,'white', boardToAdd.platzierung, boardToAdd.x, boardToAdd.y); isToAddBoard = false">Hinzufügen</button>
     </div>
-  </div>
+  </div >
 
-  <div *ngIf="isToSaveRoom" class="popupForm">
+  <div *ngIf="isToSaveRoom" class="popupForm" style="width: 50%;">
     <div class="headerPopup">
       Hier sind Details Ihres Raums
     </div>
     <div class="contentPopup">
 
 
-        <div *ngFor="let i of elementsNumber">
-          <label>{{i.typ}}({{i.number}})&nbsp;&nbsp;</label>
+        <div>
+          <div *ngFor="let i of elementsNumber">
+            <label>{{i.typ}}({{i.number}})&nbsp;&nbsp;</label>
+          </div>
         </div>
-      <hr>
-      &nbsp;&nbsp;&nbsp;
-      <div class="">
+
+      <div>
         <div *ngFor="let el of roomElements">
 
           <div *ngIf="el.element == 'desk'">
@@ -219,13 +220,11 @@
 
       <div class="horizontal-left-side-element" style="  align-items: center;">
 
-          <div><label class="label-left-dark">Länge</label></div>
+          <div><label class="label-left-dark">Länge(m)</label></div>
           <input type="number" min="{{minHeight}}" max="{{maxHeight}}" [(ngModel)]="standardRooms[currentRoomId].height" (change)="updateVisualisation(standardRooms[currentRoomId].height,standardRooms[currentRoomId].height)">
 
-
-          <div><label class="label-left-dark">Breite</label></div>
+          <div><label class="label-left-dark">Breite(m)</label></div>
           <input type="number" min="{{minWidth}}" max="{{maxWidth}}" [(ngModel)]="standardRooms[currentRoomId].width" (change)="updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].width)">
-
 
       </div>
 
@@ -254,7 +253,7 @@
 
       <div  *ngFor="let elem of allElements">
 
-        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'desk'" style="height: 90px;">
+        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'desk'" >
           <div class="horizontal-width">
             <div><label class="label-left-dark">Typ</label></div>
             <label  style="color: #999; font-family: 'Segoe UI';">{{elem.elementtyp}}</label>
@@ -263,15 +262,15 @@
             <div><label class="label-left-dark">Plätze</label></div>
             <label  style="color: #999; font-family: 'Segoe UI';">{{elem.place}}</label>
           </div>
-          <div class="horizontal-width">
+          <div class="horizontal-width hideStep2">
             <div><label class="label-left-dark">X</label></div>
-            <input type="number" min="0" max="700" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.xNotSmallerZ}}" max="{{elem.xNotBiggerZ}}" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
           </div>
-          <div class="horizontal-width">
+          <div class="horizontal-width hideStep2">
             <div><label class="label-left-dark">Y</label></div>
-            <input type="number" min="0" max="700" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.yNotSmallerZ}}" max="{{elem.yNotBiggerZ}}" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
           </div>
-          <div class="horizontal-width">
+          <div class="horizontal-width hideStep1">
             <div><label class="label-left-dark">Rotation</label></div>
             <input type="number" value="{{elem.degRotation}}" id="elr{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.degRotation"  style="color: #999; font-family: 'Segoe UI';">
           </div>
@@ -283,9 +282,8 @@
       </div>
 
       <div style="width: 100%; height: 0px;">
-        <label (click)="isToAddDesk = true;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
+        <label (click)="isToAddDesk = true; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
       </div>
-
 
     </div>
 
@@ -312,7 +310,7 @@
 
       <div  *ngFor="let elem of allElements">
 
-        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'door'" style="height: 90px;">
+        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'door'">
           <div class="horizontal-width">
             <div><label class="label-left-dark">Platzierung</label></div>
             <label id="elr{{elem.id}}"  style="color: #999; font-family: 'Segoe UI';">{{elem.platzierung}}</label>
@@ -333,7 +331,7 @@
       </div>
 
       <div style="width: 100%; height: 0px;">
-        <label (click)="isToAddDoor = true;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
+        <label (click)="isToAddDesk = false; isToAddDoor = true; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
       </div>
 
 
@@ -361,7 +359,7 @@
 
       <div *ngFor="let elem of allElements">
 
-        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'window'" style="height: 90px;">
+        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'window'">
           <div class="horizontal-width">
             <div><label class="label-left-dark">Platzierung</label></div>
             <label id="elr{{elem.id}}" style="color: #999; font-family: 'Segoe UI';">{{elem.platzierung}}</label>
@@ -382,7 +380,7 @@
       </div>
 
       <div style="width: 100%; height: 0px;">
-        <label (click)="isToAddWindow = true;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
+        <label (click)="isToAddDesk = false; isToAddDoor = false; isToAddWindow = true; isToAddBoard = false; isRoomEmpty = false;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
       </div>
 
 
@@ -410,7 +408,7 @@
 
       <div  *ngFor="let elem of allElements">
 
-        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'board'" style="height: 90px;">
+        <div class="horizontal-left-side-element"  *ngIf="elem.roomId === currentRoomId && elem.element === 'board'">
           <div class="horizontal-width">
             <div><label class="label-left-dark">Platzierung</label></div>
             <label id="elr{{elem.id}}" style="color: #999; font-family: 'Segoe UI';">{{elem.platzierung}}</label>
@@ -431,7 +429,7 @@
       </div>
 
       <div style="width: 100%; height: 0px;">
-        <label (click)="isToAddBoard = true;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
+        <label (click)="isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = true; isRoomEmpty = false;" style="float: right; width: 40px; height: 40px;"><span class="material-icons">add</span></label>
       </div>
 
 
@@ -439,65 +437,57 @@
 
   </div>
 
-
-
   <div id="container-visualiser">
 
-    <div class="orientation-text">W</div>
+    <div id="workspaceHeader">
+          <div id="headerRight">
+            <div id="standardRoomsChanger" style="visibility: hidden;">
+              <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
+              <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
+              <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
+              <button class="btn" id="btn3" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
+            </div>
 
-    <div id="visualiser">
-
-    <div style="display: flex; align-items: center; flex-direction: column;">
-      <div id="workspaceHeader">
-      <div id="headerRight">
-        <div id="standardRoomsChanger" style="visibility: hidden;">
-          <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
-          <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
-          <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
-          <button class="btn" id="btn3" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
-        </div>
-        <div style="position: absolute"><label *ngIf="isRoomSaved">My Room</label></div>
+          </div>
+      <div *ngIf="isRoomSaved" style="margin-top: 10px; position: absolute;">
+        <input class="objToolbox" [(ngModel)]="roomname">
       </div>
-      <div id="headerLeft">
-        <span (click)="reset()" class="material-icons p-1">restart_alt</span>
-        <span (click)="downloadAsImage()" class="material-icons p-1">image</span>
-        <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
-        <span (click)="isToSaveRoom = true; makeRoomDetailsReady();" class="material-icons p-1">save</span>
-        <mat-icon title="Download as CSV File" (click)="ExportAsCsv()">download</mat-icon>
-      </div>
-      </div>
-      <div>
-      <div class="orientation-text">N</div>
-      </div>
+          <div id="headerLeft">
+            <span (click)="reset()" class="material-icons p-1">restart_alt</span>
+            <span (click)="downloadAsImage()" class="material-icons p-1">image</span>
+            <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
+            <span (click)="isToSaveRoom = true; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; makeRoomDetailsReady();" class="material-icons p-1">save</span>
+            <mat-icon title="Download as CSV File" (click)="ExportAsCsv()">download</mat-icon>
+          </div>
     </div>
+
+    <div class="orientation-text sued-nort">N</div>
 
       <color-photoshop id="color-photoshop" *ngIf="showPicker" style="z-index: 1000; position: absolute;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
       </color-photoshop>
 
-
-    <div id="roomvisualiser">
-    </div>
-
-      <div class="orientation-text" style="margin-top: 100%; margin-left: 50%; position: absolute;">S</div>
-
-    </div>
-
-    <div class="orientation-text">O</div>
-
-    <div id="rightBar">
-      <div id="colorPickerTrigger" (click)="showPicker = true;">
+    <div id="west-ost-visualiser">
+      <div class="orientation-text west-ost">W</div>
+      <div id="roomvisualiser">
       </div>
-      <div id="zoomRange">
-        <span class="material-symbols-outlined">zoom_in</span>
-        <input type="range" id="zoom" orient="vertical" (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
-        <span class="material-symbols-outlined">zoom_out</span>
+      <div class="orientation-text west-ost">O</div>
+      <div id="colorZoomBar">
+        <div id="colorPickerTrigger" (click)="showPicker = true;">
+        </div>
+        <div id="zoomRange">
+          <span class="material-symbols-outlined">zoom_in</span>
+          <input type="range" id="zoom" orient="vertical" (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
+          <span class="material-symbols-outlined">zoom_out</span>
+        </div>
       </div>
     </div>
+
+    <div class="orientation-text sued-nort">S</div>
 
   </div>
 
-
-
 </div>
+
+<div id="footer"></div>
 
 
