@@ -1383,7 +1383,8 @@ export class RoomComponent implements OnInit {
     let roomStage: any = {
       "width": this.standardRooms[this.currentRoomId].width,
       "height":  this.standardRooms[this.currentRoomId].height,
-      "stageInPixel" : this.widthStage
+      "stageWidthInPixel" : this.widthStage,
+      "stageHeightInPixel" : this.heightStage
     }
     sessionStorage.setItem("roomDimension", JSON.stringify(roomStage));
   }
