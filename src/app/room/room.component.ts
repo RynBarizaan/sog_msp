@@ -212,7 +212,7 @@ export class RoomComponent implements OnInit {
       container: 'roomvisualiser',
       width: this.widthStage,
       height: this.heightStage,
-      draggable: true,
+      draggable: false,
     });
 
     // calculate how much pixel in width and height has a Meter
