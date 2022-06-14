@@ -225,16 +225,72 @@ export class RoomComponent implements OnInit {
     this.backgroundLayer = new Konva.Layer();
     for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
       for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
-        let rect = new Konva.Rect({
-          x: i * this.meterInPixel,
-          y: j * this.meterInPixel,
-          width: this.meterInPixel,
-          height: this.meterInPixel,
-          fill: '#e2e2e2',
-          stroke: '#777',
-          strokeWidth: 1
-        });
-        this.backgroundLayer.add(rect);
+        if((i==0 && j==0)){
+          let rect = new Konva.Rect({
+            x: i * this.meterInPixel,
+            y: j * this.meterInPixel,
+            width: this.meterInPixel,
+            height: this.meterInPixel,
+            fill: '#e2e2e2',
+            stroke: '#777',
+            strokeWidth: 1,
+            cornerRadius: [this.meterInPixel*.1,0,0,0],
+          });
+          this.backgroundLayer.add(rect);
+        }
+        else if((i==this.standardRooms[this.currentRoomId].width - 1) && j==0){
+          let rect = new Konva.Rect({
+            x: i * this.meterInPixel,
+            y: j * this.meterInPixel,
+            width: this.meterInPixel,
+            height: this.meterInPixel,
+            fill: '#e2e2e2',
+            stroke: '#777',
+            strokeWidth: 1,
+            cornerRadius: [0,this.meterInPixel*.1,0,0],
+          });
+          this.backgroundLayer.add(rect);
+        }
+        else if((i==this.standardRooms[this.currentRoomId].width - 1) && (j==this.standardRooms[this.currentRoomId].height - 1)){
+          let rect = new Konva.Rect({
+            x: i * this.meterInPixel,
+            y: j * this.meterInPixel,
+            width: this.meterInPixel,
+            height: this.meterInPixel,
+            fill: '#e2e2e2',
+            stroke: '#777',
+            strokeWidth: 1,
+            cornerRadius: [0,0,this.meterInPixel*.1,0],
+          });
+          this.backgroundLayer.add(rect);
+        }
+        else if((i==0) && (j==this.standardRooms[this.currentRoomId].height - 1)){
+          let rect = new Konva.Rect({
+            x: i * this.meterInPixel,
+            y: j * this.meterInPixel,
+            width: this.meterInPixel,
+            height: this.meterInPixel,
+            fill: '#e2e2e2',
+            stroke: '#777',
+            strokeWidth: 1,
+            cornerRadius: [0,0,0,this.meterInPixel*.1],
+          });
+          this.backgroundLayer.add(rect);
+        }
+        else {
+          let rect = new Konva.Rect({
+            x: i * this.meterInPixel,
+            y: j * this.meterInPixel,
+            width: this.meterInPixel,
+            height: this.meterInPixel,
+            fill: '#e2e2e2',
+            stroke: '#777',
+            strokeWidth: 1
+          });
+          this.backgroundLayer.add(rect);
+        }
+
+
       }
     }
 
@@ -290,7 +346,6 @@ export class RoomComponent implements OnInit {
         height: this.heightStage,
         draggable: true,
       });
-
        */
 
       // calculate how much pixel in width and height has a Meter

@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: row;
   font-family: 'Segoe UI';
-  border: 1px solid red;
+
 }
 
 #toolbar {
@@ -24,7 +24,7 @@
   float: left;
   border-radius: 10px 0px 0px 10px;
   border-right: 1px #ddd solid;
-  border: 1px solid red;
+
 }
 
 #container-visualiser {
@@ -35,19 +35,19 @@
   padding: 1%;
   width: 70%;
   height: 80%;
-  border: 1px solid red;
+
 }
 
 #footer {
   height:30px;
-  border: 1px solid red;
+
 }
 
 #roomvisualiser {
   position: relative;
   background-color: #edb9b9;
   /*background-color: #e2e2e2;*/
-  border: 1px solid red;
+
 }
 
 #visualiser {
@@ -61,7 +61,7 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
+
 }
 
 .material-icons:hover {
@@ -121,7 +121,7 @@ input[type=number]::-webkit-outer-spin-button {
 .horizontal-width {
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
+
 }
 
 .horizontal-width input[type=text] {
@@ -170,7 +170,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #fff;
   z-index: 10;
   position: absolute;
-  border: 1px solid red;
+
 }
 
 .headerPopup {
@@ -182,21 +182,21 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 18px;
   padding: 30px;
   min-width: 300px;
-  border: 1px solid red;
+
 }
 
 .contentPopup {
   padding: 30px 0px;
   font-size: 14px;
   padding: 30px;
-  border: 1px solid red;
+
 }
 
 .moreinfosPopup {
   font-size: 14px;
   color: #777;
   padding: 20px;
-  border: 1px solid red;
+
 }
 
 .popUpActions {
@@ -227,7 +227,7 @@ input[type=number]::-webkit-outer-spin-button {
 .contentPopup {
   display: flex;
   justify-content: space-around;
-  border: 1px solid red;
+
 }
 
 .contentPopup .right{
@@ -235,13 +235,13 @@ input[type=number]::-webkit-outer-spin-button {
   float: left;
   width: 70%;
   border-right: 1px solid #ddd;
-  border: 1px solid red;
+
 }
 .contentPopup .left{
   position: relative;
   float: left;
   width: 30%;
-  border: 1px solid red;
+
 }
 
 #workspaceHeader {
@@ -251,15 +251,18 @@ input[type=number]::-webkit-outer-spin-button {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border: 1px solid red;
+
 }
 
 #workspaceHeader #headerRight {
-  border: 1px solid red;
+
 }
 
 #workspaceHeader #headerLeft {
-  border: 1px solid red;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #workspaceHeader #headerRight button{
@@ -291,16 +294,12 @@ hr{
   background-color: #11b0e7;
   border-radius: 2px;
   border: 1px solid #777;
-  margin-left: 13px;
-  margin-top: 80px;
   cursor: pointer;
 }
 
 #colorPickerContainer {
 position: absolute;
   z-index: 100;
-  width: 1300px;
-  height: 850px;
   display: flex;
   justify-content: center;
 }
@@ -330,14 +329,14 @@ position: absolute;
 .icons {
   height: 26px;
   fill: #777;
-  border: 1px solid red;
+
 }
 
 .orientation-text {
   position: relative;
   font-size: 14px;
   color: black;
-  border: 1px solid red;
+
   text-align: center;
 }
 
@@ -352,7 +351,9 @@ position: absolute;
 }
 
 .sued-nort {
-
+  position: relative;
+  width: 70%;
+  margin-left: -7%;
 }
 
 .west-ost {
@@ -361,7 +362,7 @@ position: absolute;
 
 #colorZoomBar {
   position: relative;
-  border: 1px solid red;
+
 }
 
 @media only screen and (max-width: 1400px) {
@@ -374,10 +375,48 @@ position: absolute;
   .hideStep2 {
     display: none;
   }
+  .roomdimension {
+    flex-direction: column;
+    height: 140px;
+  }
+  #container {
+    height: 1127px;
+  }
 }
 
 @media only screen and (max-width: 1000px) {
   #toolbar {
+    width: 20%;
+  }
+
+  .hideStep3 {
+    display: none;
+  }
+
+  #container-visualiser {
+    width: 80%;
+
+  }
+
+  #workspaceHeader {
+    flex-direction: column;
+  }
+
+  .horizontal-left-side-element {
+    flex-direction: column;
+  }
+
+}
+
+@media only screen and (max-width: 770px) {
+  .hideStep4 {
+    display: none;
+  }
+}
+
+
+@media only screen and (max-width: 530px) {
+  .hideStep5 {
     display: none;
   }
 }
