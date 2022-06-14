@@ -79,13 +79,12 @@ export class MainmenuComponent implements OnInit {
 
   ////// check if a grupp and room already created /////
   isDataAndRoomExist(): boolean{
-    /*if (this.isDataExist() && this.isRoomAvailable()){
+    if (this.isDataExist() && this.isRoomAvailable()){
       return true;
     }
     else  {
       return false;
-    }*/
-    return true;
+    }
   }
 
 
@@ -144,7 +143,7 @@ export class MainmenuComponent implements OnInit {
         }
       }
       catch (Exception){
-        this.router.navigate(['/sitting-places-generator']);
+        console.log(Exception);
       }
 
 
