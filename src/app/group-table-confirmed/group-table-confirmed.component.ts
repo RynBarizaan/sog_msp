@@ -84,11 +84,19 @@ export class GroupTableConfirmedComponent implements OnInit {
     if (this.listOfContacts[index-1]['Türnähe']){
       element3.disabled=true;
       element1.disabled=true;
+      element2.disabled =true;
     }
     //////// set Rule of beside the Window ////
     if (this.listOfContacts[index-1]['Fensternähe']){
       element3.disabled=true;
       element.disabled=true;
+      element2.disabled=true;
+    }
+    //////// set Rule of beside the Board ////
+    if (this.listOfContacts[index-1]['Tafelnähe']){
+      element3.disabled=true;
+      element.disabled=true;
+      element1.disabled=true;
     }
     //////// set Rule of Frontal ////
     if (this.listOfContacts[index-1]['Frontal']){

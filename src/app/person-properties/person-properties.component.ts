@@ -46,16 +46,31 @@ export class PersonPropertiesComponent implements OnInit {
     var element3 = <HTMLInputElement> document.getElementById("inFront");
     var element4 = <HTMLInputElement> document.getElementById("backOfTheRoom");
     var element5 = <HTMLInputElement> document.getElementById("frontOfTheRoom");
+    var element6 = <HTMLInputElement> document.getElementById("besideBoard");
 
     if (ID == "besideDoor"){
       //////// set Rule of beside the Door ////
       if (element0.checked){
         element3.disabled=true;
         element1.disabled=true;
+        element6.disabled=true;
       }
       else if(!element0.checked) {
         element3.disabled=false;
         element1.disabled=false;
+        element6.disabled=false;
+      }
+    }
+    else if (ID == "besideBoard"){
+      if (element0.checked){
+        element3.disabled=true;
+        element1.disabled=true;
+        element.disabled=true;
+      }
+      else if(!element0.checked) {
+        element3.disabled=false;
+        element1.disabled=false;
+        element.disabled=false;
       }
     }
     else if(ID == "besideWindow"){
@@ -63,10 +78,12 @@ export class PersonPropertiesComponent implements OnInit {
       if (element0.checked){
         element3.disabled=true;
         element.disabled=true;
+        element6.disabled=true;
       }
       else if(!element0.checked) {
         element3.disabled=false;
         element.disabled=false;
+        element6.disabled=false;
       }
     }
     else if(ID == "inFront"){
