@@ -564,7 +564,6 @@ export class SittingPlacesGenerator implements OnInit {
     this.shuffle(this.VorneImRaum);
     this.shuffle(this.HintenImRaum);
     this.shuffle(this.Tafelnähe);
-    this.shuffle(this.PepoelWithoutProperties);
   }
 //////// calculate the Area of Room from Meter to PX //////
   CalculateRoomArea(){
@@ -600,6 +599,7 @@ export class SittingPlacesGenerator implements OnInit {
       }
       this.customizeTheGroupThroughProperties();
       this.setTypesOfTables();
+      console.log(this.listOfTables);
     }
     catch (Exception){
       console.log(Exception);
@@ -920,14 +920,29 @@ export class SittingPlacesGenerator implements OnInit {
           var theRemovedElement = this.HintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
       }
-      else {
-        if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].firstname1 == "Vorname") {
-          var theRemovedElement = this.PepoelWithoutProperties.shift();
-          this.listOfTables[x].firstname1 = theRemovedElement;
-        }
-      }
-
     }
+
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Türnähe);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Fensternähe);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Frontal);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Tafelnähe);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.VorneImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.HintenImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TürnäheUndHintenImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TürnäheUndVorneImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.FensternäheUndHintenImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.FensternäheUndVorneImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TafelnäheUndHintenImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TafelnäheUndVorneImRaum);
+    console.log(this.PepoelWithoutProperties);
+    this.shuffle(this.PepoelWithoutProperties);
+    for (var x=0; x<this.statusOfTables.length; x++){
+      if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].firstname1 == "Vorname"){
+        var theRemovedElement = this.PepoelWithoutProperties.shift();
+        this.listOfTables[x].firstname1 = theRemovedElement;
+      }
+    }
+
   }
 
 
