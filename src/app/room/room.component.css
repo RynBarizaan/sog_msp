@@ -42,8 +42,6 @@
 
 #roomvisualiser {
   position: relative;
-  background-color: #edb9b9;
-  /*background-color: #e2e2e2;*/
 }
 
 #visualiser {
@@ -57,7 +55,6 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-
 }
 
 .material-icons:hover {
@@ -244,35 +241,38 @@ input[type=number]::-webkit-outer-spin-button {
   position: relative;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-
+  justify-content: space-between;
 }
 
-#workspaceHeader #headerRight {
-
+#workspaceHeader .headerRight {
+  position: relative;
+  width: 70%;
+  height: 40px;
 }
 
 #workspaceHeader #headerLeft {
-
+  position: relative;
+  width: 30%;
+  height: 40px;
   display: flex;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
 }
 
-#workspaceHeader #headerRight button{
+#workspaceHeader .headerRight button{
   position: relative;
   padding: 6px;
   font-size: 14px;
   letter-spacing: 1px;
   border-radius: 4px;
+  display: block;
+  width: 25%;
 }
 
 input[type=range][orient=vertical] {
   -webkit-appearance: slider-vertical;
   width: 2px;
-
   cursor: pointer;
   margin-left: 8px;
 }
@@ -285,12 +285,13 @@ hr{
 }
 
 #colorPickerTrigger {
-  width:30px;
-  height:30px;
+  width:25px;
+  height:25px;
   background-color: #11b0e7;
   border-radius: 2px;
   border: 1px solid #777;
   cursor: pointer;
+  margin-left: -3px;
 }
 
 #colorPickerContainer {
@@ -332,8 +333,12 @@ position: absolute;
   position: relative;
   font-size: 14px;
   color: black;
-
+  border: 1px solid black;
   text-align: center;
+  border-radius: 100px;
+  text-align: center;
+  line-height: 23px;
+  background-color: bisque;
 }
 
 #west-ost-visualiser {
@@ -341,24 +346,36 @@ position: absolute;
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: row;
 }
 
 .sued-nort {
   position: relative;
-  width: 70%;
-  margin-left: -7%;
+  margin-left: -12%;
+  width: 25px;
+  height: 25px;
 }
 
 .west-ost {
-
+  width: 25px;
+  height: 25px;
 }
 
 #colorZoomBar {
   position: relative;
+  margin-left: 5%;
+}
 
+.iconscontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconscontainer label{
+  font-size: 12px;
 }
 
 @media only screen and (max-width: 1400px) {
@@ -391,11 +408,10 @@ position: absolute;
 
   #container-visualiser {
     width: 80%;
-
   }
 
   #workspaceHeader {
-    flex-direction: column;
+
   }
 
   .horizontal-left-side-element {

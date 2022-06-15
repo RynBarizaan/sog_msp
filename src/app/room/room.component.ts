@@ -185,11 +185,11 @@ export class RoomComponent implements OnInit {
 
 
     // Declaring and Initiate variable with local stored room and dimension of it
-    let room = JSON.parse(<string>sessionStorage.getItem("room"));
+    let room: any = JSON.parse(<string>sessionStorage.getItem("room"));
     let roomDimension = JSON.parse(<string>sessionStorage.getItem("roomDimension"));
-
     // Conditions if room is saved or not
     if(room != null) {
+      console.log(room)
       this.isRoomSaved = true;
       this.allElements = room;
       for(let i = 0; i < this.allElements.length; i++){
@@ -289,8 +289,6 @@ export class RoomComponent implements OnInit {
           });
           this.backgroundLayer.add(rect);
         }
-
-
       }
     }
 
@@ -358,16 +356,70 @@ export class RoomComponent implements OnInit {
       this.backgroundLayer = new Konva.Layer();
       for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
         for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
-          let rect = new Konva.Rect({
-            x: i * this.meterInPixel,
-            y: j * this.meterInPixel,
-            width: this.meterInPixel,
-            height: this.meterInPixel,
-            fill: '#e2e2e2',
-            stroke: '#777',
-            strokeWidth: 1
-          });
-          this.backgroundLayer.add(rect);
+          if((i==0 && j==0)){
+            let rect = new Konva.Rect({
+              x: i * this.meterInPixel,
+              y: j * this.meterInPixel,
+              width: this.meterInPixel,
+              height: this.meterInPixel,
+              fill: '#e2e2e2',
+              stroke: '#777',
+              strokeWidth: 1,
+              cornerRadius: [this.meterInPixel*.1,0,0,0],
+            });
+            this.backgroundLayer.add(rect);
+          }
+          else if((i==this.standardRooms[this.currentRoomId].width - 1) && j==0){
+            let rect = new Konva.Rect({
+              x: i * this.meterInPixel,
+              y: j * this.meterInPixel,
+              width: this.meterInPixel,
+              height: this.meterInPixel,
+              fill: '#e2e2e2',
+              stroke: '#777',
+              strokeWidth: 1,
+              cornerRadius: [0,this.meterInPixel*.1,0,0],
+            });
+            this.backgroundLayer.add(rect);
+          }
+          else if((i==this.standardRooms[this.currentRoomId].width - 1) && (j==this.standardRooms[this.currentRoomId].height - 1)){
+            let rect = new Konva.Rect({
+              x: i * this.meterInPixel,
+              y: j * this.meterInPixel,
+              width: this.meterInPixel,
+              height: this.meterInPixel,
+              fill: '#e2e2e2',
+              stroke: '#777',
+              strokeWidth: 1,
+              cornerRadius: [0,0,this.meterInPixel*.1,0],
+            });
+            this.backgroundLayer.add(rect);
+          }
+          else if((i==0) && (j==this.standardRooms[this.currentRoomId].height - 1)){
+            let rect = new Konva.Rect({
+              x: i * this.meterInPixel,
+              y: j * this.meterInPixel,
+              width: this.meterInPixel,
+              height: this.meterInPixel,
+              fill: '#e2e2e2',
+              stroke: '#777',
+              strokeWidth: 1,
+              cornerRadius: [0,0,0,this.meterInPixel*.1],
+            });
+            this.backgroundLayer.add(rect);
+          }
+          else {
+            let rect = new Konva.Rect({
+              x: i * this.meterInPixel,
+              y: j * this.meterInPixel,
+              width: this.meterInPixel,
+              height: this.meterInPixel,
+              fill: '#e2e2e2',
+              stroke: '#777',
+              strokeWidth: 1
+            });
+            this.backgroundLayer.add(rect);
+          }
         }
       }
       this.stage.add(this.backgroundLayer);
@@ -698,6 +750,7 @@ export class RoomComponent implements OnInit {
         fill: bgClr,
         stroke: 'black',
         strokeWidth: 1,
+        cornerRadius: this.meterInPixel * .08,
       })
       let chair = new Konva.Rect({
         x: this.meterInPixel * 0.4,
@@ -707,6 +760,7 @@ export class RoomComponent implements OnInit {
         fill: bgClr,
         stroke: 'black',
         strokeWidth: 1,
+        cornerRadius: this.meterInPixel * .03,
       });
       elemente.push(desktop)
       elemente.push(chair)
@@ -722,8 +776,9 @@ export class RoomComponent implements OnInit {
         width: this.widthBigDesk,
         height: this.heightDesk,
         fill: bgClr,
-        stroke: 'black',
+        stroke: '#000',
         strokeWidth: 1,
+        cornerRadius: this.meterInPixel * .08,
       })
       let chair1 = new Konva.Rect({
         x: this.meterInPixel * .4,
@@ -733,6 +788,7 @@ export class RoomComponent implements OnInit {
         fill: bgClr,
         stroke: 'black',
         strokeWidth: 1,
+        cornerRadius: this.meterInPixel * .03,
       });
       let chair2 = new Konva.Rect({
         x: (this.meterInPixel * .4) + (this.meterInPixel * 1.2),
@@ -742,6 +798,7 @@ export class RoomComponent implements OnInit {
         fill: bgClr,
         stroke: 'black',
         strokeWidth: 1,
+        cornerRadius: this.meterInPixel * .03,
       });
       elemente.push(desk)
       elemente.push(chair1)
@@ -934,52 +991,13 @@ export class RoomComponent implements OnInit {
     circle.add(cross2);
 
     //Step 3
-    let groupElements: any;
+    let groupElements = new Konva.Group();
 
-    if(element == 'door' || element == 'window' || element == 'board') {
-      switch (platzierung) {
-        case "links" : groupElements = new Konva.Group({
-          x: 0,
-          y: y,
-          draggable: true,
-          rotation: 0,
-        })
-          break;
-        case "hinten" : groupElements = new Konva.Group({
-          x: x,
-          y: this.heightStage,
-          draggable: true,
-          rotation: -90,
-        })
-          break;
-        case "rechts" : groupElements = new Konva.Group({
-          x: this.widthStage,
-          y: y + (this.meterInPixel * 2),
-          draggable: true,
-          rotation: 180,
-        })
-          break;
-        case "vorne" : groupElements = new Konva.Group({
-          x: x + (this.meterInPixel * 2),
-          y: 0,
-          draggable: true,
-          rotation: 90,
-        })
-          break;
-      }
-    } else {
-       groupElements = new Konva.Group({
-        x: x,
-        y: y,
-        draggable: true,
-        rotation: rotation,
-      })
-    }
-
-    //Step 4
     for(let e of elemente) {
       groupElements.add(e)
     }
+
+    groupElements.draggable(true);
 
     //Step 5
     this.layerElements.add(groupElements);
@@ -1003,21 +1021,183 @@ export class RoomComponent implements OnInit {
     //Step 7
     this.layerElements.add(tr);
 
+    if(element == 'door' || element == 'window' || element == 'board') {
+
+
+        this.allElements[id].xNotSmallerZ = 0;
+
+        this.allElements[id].xNotBiggerZ = this.widthStage - objWidth;
+
+        this.allElements[id].yNotSmallerZ = 0;
+
+        this.allElements[id].yNotBiggerZ = this.heightStage - objHeight;
+
+
+      if((this.allElements[id].platzierung == 'hinten') || (this.allElements[id].platzierung == 'vorne')) {
+        this.allElements[id].xNotBiggerZ = this.widthStage - objHeight;
+      }
+
+
+      if(x < this.allElements[id].xNotSmallerZ){
+        if(platzierung == 'vorne') {
+          x = this.allElements[id].xNotSmallerZ;
+          this.allElements[id].x = x;
+        }
+        if(platzierung == 'hinten') {
+          x = this.allElements[id].xNotSmallerZ;
+          this.allElements[id].x = x;
+        }
+      }
+
+      if(x > this.allElements[id].xNotBiggerZ){
+        if(platzierung == 'vorne') {
+          x = this.allElements[id].xNotBiggerZ;
+          this.allElements[id].x = x;
+        }
+        if(platzierung == 'hinten') {
+          x = this.allElements[id].xNotBiggerZ;
+          this.allElements[id].x = x;
+        }
+      }
+
+      if(y < this.allElements[id].yNotSmallerZ){
+        if(platzierung == 'links') {
+          y = this.allElements[id].yNotSmallerZ;
+          this.allElements[id].y = y;
+        }
+        if(platzierung == 'rechts') {
+          y = this.allElements[id].yNotSmallerZ;
+          this.allElements[id].y = y;
+        }
+      }
+      if(y > this.allElements[id].yNotBiggerZ){
+        if(platzierung == 'links') {
+          y = this.allElements[id].yNotBiggerZ;
+          this.allElements[id].y = y;
+        }
+        if(platzierung == 'rechts') {
+          y = this.allElements[id].yNotBiggerZ;
+          this.allElements[id].y = y;
+        }
+      }
+
+      switch (platzierung) {
+        case "links" :
+          groupElements.x(0);
+          groupElements.y(y);
+          groupElements.rotation(0);
+          break;
+        case "hinten" :
+          groupElements.x(x);
+          groupElements.y(this.heightStage);
+          groupElements.rotation(-90);
+       break;
+       case "rechts" :
+         groupElements.x(this.widthStage);
+         groupElements.y((y + (this.meterInPixel * 2)));
+         groupElements.rotation(180);
+         break;
+       case "vorne" :
+         groupElements.x(( x + objHeight));
+         groupElements.y(0);
+         groupElements.rotation(90);
+         break;
+   }
+ } else {
+
+      groupElements.rotation(rotation);
+
+      let xOver: number;
+      let yOver: number;
+      let rot: number = Math.floor(groupElements.getAbsoluteRotation());
+      let deg: number;
+      let xNotSmaller: number;
+      let xNotBigger: number;
+      let yNotSmaller: number;
+      let yNotBigger: number;
+
+      if (rot >= 0 && rot <= 90) {
+        deg = rot;
+        deg = (deg * Math.PI) / 180.0;
+        yOver = 0;
+        xOver = Math.ceil(objHeight * Math.sin(deg));
+        xNotSmaller = xOver;
+        xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+        yNotSmaller = yOver;
+        yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
+        this.allElements[id].xNotSmallerZ = xNotSmaller;
+        this.allElements[id].xNotBiggerZ = xNotBigger;
+        this.allElements[id].yNotSmallerZ = yNotSmaller;
+        this.allElements[id].yNotBiggerZ = yNotBigger;
+      }else if (rot >= 90 && rot <= 180) {
+        deg = rot - 90;
+        deg = (deg * Math.PI) / 180.0;
+        yOver = Math.ceil(objHeight * Math.sin(deg));
+        xOver = Math.ceil(groupElements.getClientRect().width);
+        xNotSmaller = xOver;
+        xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+        yNotSmaller = yOver;
+        yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
+        this.allElements[id].xNotSmallerZ = xNotSmaller;
+        this.allElements[id].xNotBiggerZ = xNotBigger;
+        this.allElements[id].yNotSmallerZ = yNotSmaller;
+        this.allElements[id].yNotBiggerZ = yNotBigger;
+      } else if (rot >= -180 && rot <= -90) {
+        deg = (rot * -1) - 90;
+        deg = (deg * Math.PI) / 180.0;
+        yOver = Math.ceil(groupElements.getClientRect().height);
+        xOver = Math.ceil(objWidth * Math.sin(deg));
+        xNotSmaller = xOver;
+        xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+        yNotSmaller = yOver;
+        yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
+        this.allElements[id].xNotSmallerZ = xNotSmaller;
+        this.allElements[id].xNotBiggerZ = xNotBigger;
+        this.allElements[id].yNotSmallerZ = yNotSmaller;
+        this.allElements[id].yNotBiggerZ = yNotBigger;
+      } else if (rot >= -90 && rot < 0) {
+        deg = rot * -1;
+        deg = (deg * Math.PI) / 180.0;
+        yOver = Math.ceil(objWidth * Math.sin(deg));
+        xOver = 0;
+        xNotSmaller = xOver;
+        xNotBigger = this.widthStage - (groupElements.getClientRect().width - xOver);
+        yNotSmaller = yOver;
+        yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
+        this.allElements[id].xNotSmallerZ = xNotSmaller;
+        this.allElements[id].xNotBiggerZ = xNotBigger;
+        this.allElements[id].yNotSmallerZ = yNotSmaller;
+        this.allElements[id].yNotBiggerZ = yNotBigger;
+      }
+
+
+
+
+   if(x < this.allElements[id].xNotSmallerZ){
+     x = this.allElements[id].xNotSmallerZ;
+     this.allElements[id].x = x;
+   }
+   if(x > this.allElements[id].xNotBiggerZ){
+     x = this.allElements[id].xNotBiggerZ;
+     this.allElements[id].x = x;
+   }
+   if(y < this.allElements[id].yNotSmallerZ){
+     y = this.allElements[id].yNotSmallerZ;
+     this.allElements[id].y = y;
+   }
+   if(y > this.allElements[id].yNotBiggerZ){
+     y = this.allElements[id].yNotBiggerZ;
+     this.allElements[id].y = y;
+   }
+      groupElements.x(x);
+      groupElements.y(y);
+
+    }
+
+
     this.allElements[id].objectWidth = Math.floor(groupElements.getClientRect().width);
     this.allElements[id].objectHeight = Math.floor(groupElements.getClientRect().height);
 
-    if(this.allElements[id].xNotSmallerZ == undefined) {
-      this.allElements[id].xNotSmallerZ = 0;
-    }
-    if(this.allElements[id].xNotBiggerZ == undefined) {
-      this.allElements[id].xNotBiggerZ = this.widthStage - objWidth;
-    }
-    if(this.allElements[id].yNotSmallerZ == undefined) {
-      this.allElements[id].yNotSmallerZ = 0;
-    }
-    if(this.allElements[id].yNotBiggerZ == undefined) {
-      this.allElements[id].yNotBiggerZ = this.heightStage - objHeight;
-    }
 
     //Step 8
     let tooltip = new Konva.Text({
@@ -1179,6 +1359,7 @@ export class RoomComponent implements OnInit {
       }
     });
 
+
     //
     groupElements.on('transformend dragend', () => {
       if (this.allElements[id].element != 'desk') {
@@ -1234,7 +1415,6 @@ export class RoomComponent implements OnInit {
         let yNotBigger: number;
 
         if (rotation >= 0 && rotation <= 90) {
-
           deg = rotation;
           deg = (deg * Math.PI) / 180.0;
           yOver = 0;
@@ -1310,6 +1490,7 @@ export class RoomComponent implements OnInit {
           yNotSmaller = yOver;
           yNotBigger = this.heightStage - (groupElements.getClientRect().height - yOver);
 
+
           if (elementX.value < xNotSmaller) {
             elementX.value = xNotSmaller;
           } else if(elementX.value > xNotBigger) {
@@ -1323,7 +1504,6 @@ export class RoomComponent implements OnInit {
           }
 
         }
-
         // @ts-ignore
         this.allElements[id].xNotSmallerZ = xNotSmaller
         // @ts-ignore

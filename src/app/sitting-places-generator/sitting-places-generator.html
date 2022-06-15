@@ -1,21 +1,24 @@
 <div id="container">
 
+  <div id="generator-table">
+      <h2>Liste der Personen</h2>
+  </div>
 
   <div id="container-visualiser">
 
+    <div id="roomvisualiserHeader">
+      <input id="roomname" [(ngModel)]="roomName">
 
-    <div id="generator-table">
+      <a (click)="savePng()" class="link">PNG herunterladen</a>
+
+      <a (click)="savePdf()" class="link">PDF herunterladen</a>
     </div>
-
     <div id="roomvisualiser">
-    </div>
 
+    </div>
 
   </div>
 
-
 </div>
-
-
 
 <div id="footer"></div>

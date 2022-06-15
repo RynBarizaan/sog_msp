@@ -317,11 +317,11 @@
           </div>
           <div *ngIf="elem.platzierung == 'vorne' || elem.platzierung == 'hinten'" class="horizontal-width hideStep3">
             <div><label class="label-left-dark">X</label></div>
-            <input type="number" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.xNotSmallerZ}}" max="{{elem.xNotBiggerZ}}" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div *ngIf="elem.platzierung == 'links' || elem.platzierung == 'rechts'" class="horizontal-width hideStep3">
             <div><label class="label-left-dark">Y</label></div>
-            <input type="number" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.yNotSmallerZ}}" max="{{elem.yNotBiggerZ}}" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width" style="line-height: 80px;">
             <label (click)="isToDelete = true; currentId = elem.id;"><span class="material-icons">delete_sweep</span></label>
@@ -366,11 +366,11 @@
           </div>
           <div *ngIf="elem.platzierung == 'vorne' || elem.platzierung == 'hinten'" class="horizontal-width hideStep3">
             <div><label class="label-left-dark">X</label></div>
-            <input type="number" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.xNotSmallerZ}}" max="{{elem.xNotBiggerZ}}" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div *ngIf="elem.platzierung == 'links' || elem.platzierung == 'rechts'" class="horizontal-width hideStep3">
             <div><label class="label-left-dark">Y</label></div>
-            <input type="number" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.yNotSmallerZ}}" max="{{elem.yNotBiggerZ}}" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width" style="line-height: 80px;">
             <label (click)="isToDelete = true; currentId = elem.id;"><span class="material-icons">delete_sweep</span></label>
@@ -415,11 +415,11 @@
           </div>
           <div *ngIf="elem.platzierung == 'vorne' || elem.platzierung == 'hinten'" class="horizontal-width hideStep3">
             <div><label class="label-left-dark">X</label></div>
-            <input type="number" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.xNotSmallerZ}}" max="{{elem.xNotBiggerZ}}" value="{{elem.x}}" id="elx{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.x"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div *ngIf="elem.platzierung == 'links' || elem.platzierung == 'rechts'" class="horizontal-width hideStep3">
             <div><label class="label-left-dark">Y</label></div>
-            <input type="number" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
+            <input type="number" min="{{elem.yNotSmallerZ}}" max="{{elem.yNotBiggerZ}}" value="{{elem.y}}" id="ely{{elem.id}}" (change)="updateElementsObject(elem.id)" [(ngModel)]="elem.y"   style="color: #999; font-family: 'Segoe UI';">
           </div>
           <div class="horizontal-width" style="line-height: 80px;">
             <label (click)="isToDelete = true; currentId = elem.id;"><span class="material-icons">delete_sweep</span></label>
@@ -440,24 +440,44 @@
   <div id="container-visualiser">
 
     <div id="workspaceHeader">
-          <div id="headerRight">
+          <div class="headerRight">
             <div id="standardRoomsChanger" style="visibility: hidden;">
               <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
               <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
               <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
               <button class="btn" id="btn3" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
             </div>
-
           </div>
-      <div *ngIf="isRoomSaved" style="margin-top: 10px; position: absolute;">
+      <div *ngIf="isRoomSaved" class="headerRight" style="margin-top: 10px; position: absolute;">
         <input class="objToolbox" [(ngModel)]="roomname">
       </div>
           <div id="headerLeft">
-            <span (click)="reset()" class="material-icons p-1">restart_alt</span>
-            <span (click)="downloadAsImage()" class="material-icons p-1">image</span>
-            <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
-            <span (click)="isToSaveRoom = true; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; makeRoomDetailsReady();" class="material-icons p-1">save</span>
-            <mat-icon title="Download as CSV File" (click)="ExportAsCsv()">download</mat-icon>
+            <div class="iconscontainer">
+              <span (click)="reset()" class="material-icons p-1">restart_alt</span>
+              <label>Reset</label>
+            </div>
+
+            <div class="iconscontainer">
+              <span (click)="downloadAsImage()" class="material-icons p-1">image</span>
+              <label>PNG</label>
+            </div>
+
+            <div class="iconscontainer">
+              <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
+              <label>PDF</label>
+            </div>
+
+            <div class="iconscontainer">
+              <span (click)="ExportAsCsv()" class="material-icons p-1">download</span>
+              <label>CSV</label>
+            </div>
+
+            <div class="iconscontainer">
+              <span (click)="isToSaveRoom = true; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; makeRoomDetailsReady();" class="material-icons p-1">save</span>
+              <label>Save</label>
+            </div>
+
+
           </div>
     </div>
 
@@ -473,11 +493,13 @@
       <div class="orientation-text west-ost">O</div>
       <div id="colorZoomBar">
         <div id="colorPickerTrigger" (click)="showPicker = true;">
+          <span class="material-icons">format_color_fill</span>
+
         </div>
         <div id="zoomRange">
-          <span class="material-symbols-outlined">zoom_in</span>
+          <span class="material-icons-outlined">zoom_in</span>
           <input type="range" id="zoom" orient="vertical" (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
-          <span class="material-symbols-outlined">zoom_out</span>
+          <span class="material-icons-outlined">zoom_out</span>
         </div>
       </div>
     </div>

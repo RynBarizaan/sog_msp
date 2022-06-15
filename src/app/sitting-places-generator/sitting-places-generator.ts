@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Person} from "../model/person";
 import Konva from "konva";
+import { jsPDF } from "jspdf"
+import html2canvas from "html2canvas";
 
 @Component({
   selector: 'app-sitting-places-generator',
@@ -33,16 +35,15 @@ export class SittingPlacesGenerator implements OnInit {
   oneMeterInPX?: number;
 
   allElements?: any[];
-
+  stage: any;
+  roomName: string = 'Mein Raumname';
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.CalculateRoomArea();
-
     this.drawRoom();
-
   }
 
   drawRoom(): void {
@@ -51,31 +52,27 @@ export class SittingPlacesGenerator implements OnInit {
     let roomDimension = JSON.parse(<string>sessionStorage.getItem("roomDimension"));
     let width: number = roomDimension.width;
     let height: number = roomDimension.height;
-
     let widthStage: number = 0;
     let heightStage: number = 0;
-
     let meterInPixel: number = 0;
-
 
     // Get dimension of html container and give it to the stage
     let stageContainer: any = document.getElementById('container-visualiser');
 
     if (width > height) {
-      widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .5);
+      widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
       heightStage = Math.ceil(height * (widthStage / width));
     } else if (height > width) {
-      heightStage = Math.ceil(stageContainer.getBoundingClientRect().width * .5);
+      heightStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
       widthStage = Math.ceil(width * (heightStage / height));
     } else if (width = height) {
-      widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .5);
+      widthStage = Math.ceil(stageContainer.getBoundingClientRect().width * .8);
       heightStage = widthStage;
     }
 
     // Initiate stage with given dimension from html container
-    let stage: any;
 
-    stage = new Konva.Stage({
+    this.stage = new Konva.Stage({
       container: 'roomvisualiser',
       width: widthStage,
       height: heightStage,
@@ -99,7 +96,6 @@ export class SittingPlacesGenerator implements OnInit {
     let radiusSmallDesk = Math.floor((meterInPixel * 1.2) / 2);
     let radiusBigDesk = Math.floor((meterInPixel * 1.2) / 1.5);
 
-
     let backgroundLayer = new Konva.Layer();
     for (let i = 0; i < width; i++) {
       for (let j = 0; j < height; j++) {
@@ -115,15 +111,12 @@ export class SittingPlacesGenerator implements OnInit {
         backgroundLayer.add(rect);
       }
     }
-    stage.add(backgroundLayer);
-
+    this.stage.add(backgroundLayer);
 
     let layerElements = new Konva.Layer();
 
-
-    stage.add(layerElements);
+    this.stage.add(layerElements);
     for (let i = 0; i < allElements.length; i++) {
-
 
       //Step 1
       let objWidth: any;
@@ -133,13 +126,14 @@ export class SittingPlacesGenerator implements OnInit {
       let elemente: any[] = [];
 
       // If the object is a small square desk
-      if (allElements[i].element == 'desk' && allElements[i].elementtyp == 'eckig' && allElements[i].place == 1) {
+      if(allElements[i].element == 'desk' && allElements[i].elementtyp == 'eckig' && allElements[i].place == 1){
         let desktop = new Konva.Rect({
           width: widthSmallDesk,
           height: heightDesk,
           fill: allElements[i].bgClr,
           stroke: 'black',
           strokeWidth: 1,
+          cornerRadius: meterInPixel * .08,
         })
         let chair = new Konva.Rect({
           x: meterInPixel * 0.4,
@@ -149,23 +143,25 @@ export class SittingPlacesGenerator implements OnInit {
           fill: allElements[i].bgClr,
           stroke: 'black',
           strokeWidth: 1,
+          cornerRadius: meterInPixel * .03,
         });
         elemente.push(desktop)
         elemente.push(chair)
 
         objWidth = widthSmallDesk;
         // @ts-ignore
-        objHeight = this.heightDesk + ((meterInPixel * 0.75) - this.heightDesk) + this.heightChair;
+        objHeight = heightDesk + ((meterInPixel * 0.75) - heightDesk) + heightChair;
       }
 
       // If the object is a big square desk
-      else if (allElements[i].element == 'desk' && allElements[i].elementtyp == 'eckig' && allElements[i].place == 2) {
+      else if(allElements[i].element == 'desk' && allElements[i].elementtyp == 'eckig' && allElements[i].place == 2) {
         let desk = new Konva.Rect({
           width: widthBigDesk,
           height: heightDesk,
           fill: allElements[i].bgClr,
           stroke: 'black',
           strokeWidth: 1,
+          cornerRadius: meterInPixel * .08,
         })
         let chair1 = new Konva.Rect({
           x: meterInPixel * .4,
@@ -175,6 +171,7 @@ export class SittingPlacesGenerator implements OnInit {
           fill: allElements[i].bgClr,
           stroke: 'black',
           strokeWidth: 1,
+          cornerRadius: meterInPixel * .03,
         });
         let chair2 = new Konva.Rect({
           x: (meterInPixel * .4) + (meterInPixel * 1.2),
@@ -184,17 +181,19 @@ export class SittingPlacesGenerator implements OnInit {
           fill: allElements[i].bgClr,
           stroke: 'black',
           strokeWidth: 1,
+          cornerRadius: meterInPixel * .03,
         });
         elemente.push(desk)
         elemente.push(chair1)
         elemente.push(chair2)
 
+
         objWidth = widthBigDesk;
         // @ts-ignore
-        objHeight = this.heightDesk + ((meterInPixel * 0.75) - this.heightDesk) + this.heightChair;
+        objHeight = heightDesk + ((meterInPixel * 0.75) - heightDesk) + heightChair;
       }
       // If the object is a small round desk
-      else if (allElements[i].element == 'desk' && allElements[i].elementtyp == 'rund' && allElements[i].place == 1) {
+      else if(allElements[i].element == 'desk' && allElements[i].elementtyp == 'rund' && allElements[i].place == 1) {
         let desk = new Konva.Circle({
           x: radiusSmallDesk,
           y: radiusSmallDesk,
@@ -216,12 +215,12 @@ export class SittingPlacesGenerator implements OnInit {
         elemente.push(chair)
 
         // @ts-ignore
-        objWidth = this.radiusSmallDesk * 2;
+        objWidth = radiusSmallDesk * 2;
         // @ts-ignore
-        objHeight = meterInPixel * 1.25 + this.heightChair;
+        objHeight = meterInPixel * 1.25 + heightChair;
       }
       // If the object is a big round desk
-      else if (allElements[i].element == 'desk' && allElements[i].elementtyp == 'rund' && allElements[i].place == 2) {
+      else if(allElements[i].element == 'desk' && allElements[i].elementtyp == 'rund' && allElements[i].place == 2) {
         // @ts-ignore
         let xChair1: any = this.radiusBigDesk - (this.widthChair / 2);
         // @ts-ignore
@@ -264,12 +263,12 @@ export class SittingPlacesGenerator implements OnInit {
         elemente.push(chair2)
 
         // @ts-ignore
-        objWidth = this.radiusBigDesk * 2;
+        objWidth = radiusBigDesk * 2;
         // @ts-ignore
-        objHeight = yChair2 + this.heightChair;
+        objHeight = yChair2 + heightChair;
       }
       // If the object is a door
-      else if (allElements[i].element == 'door') {
+      else if(allElements[i].element == 'door') {
         let door1 = new Konva.Rect({
           width: meterInPixel * 0.08,
           height: meterInPixel * 2,
@@ -293,7 +292,7 @@ export class SittingPlacesGenerator implements OnInit {
         objHeight = meterInPixel * 2;
       }
       // If the object is a window
-      else if (allElements[i].element == 'window') {
+      else if(allElements[i].element == 'window') {
         let window1 = new Konva.Rect({
           x: 0,
           y: 0,
@@ -330,7 +329,7 @@ export class SittingPlacesGenerator implements OnInit {
       }
 
       // If the object is a board
-      else if (allElements[i].element == 'board') {
+      else if(allElements[i].element == 'board') {
         let board = new Konva.Rect({
           x: 0,
           y: 0,
@@ -376,55 +375,14 @@ export class SittingPlacesGenerator implements OnInit {
       circle.add(cross2);
 
       //Step 3
-      let groupElements: any;
+      let groupElements = new Konva.Group();
 
-      if (allElements[i].element == 'door' || allElements[i].element == 'window' || allElements[i].element == 'board') {
-        switch (allElements[i].platzierung) {
-          case "links" :
-            groupElements = new Konva.Group({
-              x: 0,
-              y: allElements[i].y,
-              draggable: false,
-              rotation: 0,
-            })
-            break;
-          case "hinten" :
-            groupElements = new Konva.Group({
-              x: allElements[i].x,
-              y: heightStage,
-              draggable: false,
-              rotation: -90,
-            })
-            break;
-          case "rechts" :
-            groupElements = new Konva.Group({
-              x: widthStage,
-              y: allElements[i].y + (meterInPixel * 2),
-              draggable: false,
-              rotation: 180,
-            })
-            break;
-          case "vorne" :
-            groupElements = new Konva.Group({
-              x: allElements[i].x + (meterInPixel * 2),
-              y: 0,
-              draggable: false,
-              rotation: 90,
-            })
-            break;
-        }
-      } else {
-        groupElements = new Konva.Group({
-          x: allElements[i].x,
-          y: allElements[i].y,
-          draggable: false,
-          rotation: allElements[i].rotation,
-        })
-      }
-      //Step 4
-      for (let e of elemente) {
+      for(let e of elemente) {
         groupElements.add(e)
       }
+
+      groupElements.draggable(false);
+
       //Step 5
       layerElements.add(groupElements);
 
@@ -437,7 +395,7 @@ export class SittingPlacesGenerator implements OnInit {
         borderStroke: 'red',
         borderStrokeWidth: 1,
 
-        anchorCornerRadius: 10,
+        anchorCornerRadius:10,
         anchorSize: 10,
         anchorFill: 'red',
         anchorStroke: 'red',
@@ -447,57 +405,241 @@ export class SittingPlacesGenerator implements OnInit {
       //Step 7
       layerElements.add(tr);
 
+      if(allElements[i].element == 'door' || allElements[i].element == 'window' || allElements[i].element == 'board') {
+
+
+          allElements[i].xNotSmallerZ = 0;
+
+
+          allElements[i].xNotBiggerZ = widthStage - objWidth;
+
+
+          allElements[i].yNotSmallerZ = 0;
+
+
+          allElements[i].yNotBiggerZ = heightStage - objHeight;
+
+
+        if((allElements[i].platzierung == 'hinten') || (allElements[i].platzierung == 'vorne')) {
+          allElements[i].xNotBiggerZ = widthStage - objHeight;
+        }
+
+
+        if(allElements[i].x < allElements[i].xNotSmallerZ){
+          if(allElements[i].platzierung == 'vorne') {
+            allElements[i].x = allElements[i].xNotSmallerZ;
+            allElements[i].x = allElements[i].x;
+          }
+          if(allElements[i].platzierung == 'hinten') {
+            allElements[i].x = allElements[i].xNotSmallerZ;
+            allElements[i].x = allElements[i].x;
+          }
+        }
+
+        if(allElements[i].x > allElements[i].xNotBiggerZ){
+          if(allElements[i].platzierung == 'vorne') {
+            allElements[i].x = allElements[i].xNotBiggerZ;
+            allElements[i].x = allElements[i].x;
+          }
+          if(allElements[i].platzierung == 'hinten') {
+            allElements[i].x = allElements[i].xNotBiggerZ;
+            allElements[i].x = allElements[i].x;
+          }
+        }
+
+        if(allElements[i].y < allElements[i].yNotSmallerZ){
+          if(allElements[i].platzierung == 'links') {
+            allElements[i].y = allElements[i].yNotSmallerZ;
+            allElements[i].y = allElements[i].y;
+          }
+          if(allElements[i].platzierung == 'rechts') {
+            allElements[i].y = allElements[i].yNotSmallerZ;
+            allElements[i].y = allElements[i].y;
+          }
+        }
+        if(allElements[i].y > allElements[i].yNotBiggerZ){
+          if(allElements[i].platzierung == 'links') {
+            allElements[i].y = allElements[i].yNotBiggerZ;
+            allElements[i].y = allElements[i].y;
+          }
+          if(allElements[i].platzierung == 'rechts') {
+            allElements[i].y = allElements[i].yNotBiggerZ;
+            allElements[i].y = allElements[i].y;
+          }
+        }
+
+        switch (allElements[i].platzierung) {
+          case "links" :
+            groupElements.x(0);
+            groupElements.y(allElements[i].y);
+            groupElements.rotation(0);
+            break;
+          case "hinten" :
+            groupElements.x(allElements[i].x);
+            groupElements.y(heightStage);
+            groupElements.rotation(-90);
+            break;
+          case "rechts" :
+            groupElements.x(widthStage);
+            groupElements.y((allElements[i].y + (meterInPixel * 2)));
+            groupElements.rotation(180);
+            break;
+          case "vorne" :
+            groupElements.x(( allElements[i].x + objHeight));
+            groupElements.y(0);
+            groupElements.rotation(90);
+            break;
+        }
+      } else {
+
+        groupElements.rotation(allElements[i].degRotation);
+
+        let xOver: number;
+        let yOver: number;
+        let rot: number = Math.floor(groupElements.getAbsoluteRotation());
+        let deg: number;
+        let xNotSmaller: number;
+        let xNotBigger: number;
+        let yNotSmaller: number;
+        let yNotBigger: number;
+
+        if (rot >= 0 && rot <= 90) {
+          deg = rot;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = 0;
+          xOver = Math.ceil(objHeight * Math.sin(deg));
+          xNotSmaller = xOver;
+          xNotBigger = widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = heightStage - (groupElements.getClientRect().height - yOver);
+          allElements[i].xNotSmallerZ = xNotSmaller;
+          allElements[i].xNotBiggerZ = xNotBigger;
+          allElements[i].yNotSmallerZ = yNotSmaller;
+          allElements[i].yNotBiggerZ = yNotBigger;
+        }else if (rot >= 90 && rot <= 180) {
+          deg = rot - 90;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = Math.ceil(objHeight * Math.sin(deg));
+          xOver = Math.ceil(groupElements.getClientRect().width);
+          xNotSmaller = xOver;
+          xNotBigger = widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = heightStage - (groupElements.getClientRect().height - yOver);
+          allElements[i].xNotSmallerZ = xNotSmaller;
+          allElements[i].xNotBiggerZ = xNotBigger;
+          allElements[i].yNotSmallerZ = yNotSmaller;
+          allElements[i].yNotBiggerZ = yNotBigger;
+        } else if (rot >= -180 && rot <= -90) {
+          deg = (rot * -1) - 90;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = Math.ceil(groupElements.getClientRect().height);
+          xOver = Math.ceil(objWidth * Math.sin(deg));
+          xNotSmaller = xOver;
+          xNotBigger = widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = heightStage - (groupElements.getClientRect().height - yOver);
+          allElements[i].xNotSmallerZ = xNotSmaller;
+          allElements[i].xNotBiggerZ = xNotBigger;
+          allElements[i].yNotSmallerZ = yNotSmaller;
+          allElements[i].yNotBiggerZ = yNotBigger;
+        } else if (rot >= -90 && rot < 0) {
+          deg = rot * -1;
+          deg = (deg * Math.PI) / 180.0;
+          yOver = Math.ceil(objWidth * Math.sin(deg));
+          xOver = 0;
+          xNotSmaller = xOver;
+          xNotBigger = widthStage - (groupElements.getClientRect().width - xOver);
+          yNotSmaller = yOver;
+          yNotBigger = heightStage - (groupElements.getClientRect().height - yOver);
+          allElements[i].xNotSmallerZ = xNotSmaller;
+          allElements[i].xNotBiggerZ = xNotBigger;
+          allElements[i].yNotSmallerZ = yNotSmaller;
+          allElements[i].yNotBiggerZ = yNotBigger;
+        }
+
+        if(allElements[i].x < allElements[i].xNotSmallerZ){
+          allElements[i].x = allElements[i].xNotSmallerZ;
+          allElements[i].x = allElements[i].x;
+        }
+        if(allElements[i].x > allElements[i].xNotBiggerZ){
+          allElements[i].x = allElements[i].xNotBiggerZ;
+          allElements[i].x = allElements[i].x;
+        }
+        if(allElements[i].y < allElements[i].yNotSmallerZ){
+          allElements[i].y = allElements[i].yNotSmallerZ;
+          allElements[i].y = allElements[i].y;
+        }
+        if(allElements[i].y > allElements[i].yNotBiggerZ){
+          allElements[i].y = allElements[i].yNotBiggerZ;
+          allElements[i].y = allElements[i].y;
+        }
+        groupElements.x(allElements[i].x);
+        groupElements.y(allElements[i].y);
+      }
+
       allElements[i].objectWidth = Math.floor(groupElements.getClientRect().width);
       allElements[i].objectHeight = Math.floor(groupElements.getClientRect().height);
-
-      if (allElements[i].xNotSmallerZ == undefined) {
-        allElements[i].xNotSmallerZ = 0;
-      }
-      if (allElements[i].xNotBiggerZ == undefined) {
-        allElements[i].xNotBiggerZ = widthStage - objWidth;
-      }
-      if (allElements[i].yNotSmallerZ == undefined) {
-        allElements[i].yNotSmallerZ = 0;
-      }
-      if (allElements[i].yNotBiggerZ == undefined) {
-        allElements[i].yNotBiggerZ = heightStage - objHeight;
-      }
 
       //Step 8
       let tooltip:any;
 
-
       if(allElements[i].firstname1 == 'Vorname') {
         tooltip = new Konva.Text({
           text: '',
-          fontFamily: 'Calibri',
-          fontSize: 14,
-          padding: 5,
-          paddingLeft: 10,
-          textFill: 'white',
-          fill: 'black',
-          alpha: 0.75,
-          visible: true,
         });
       } else {
         tooltip = new Konva.Text({
-          text: allElements[i].firstname1,
-          fontFamily: 'Calibri',
-          fontSize: 14,
+          text: allElements[i].id + '       ' + allElements[i].firstname1,
+          fontFamily: 'Segoe UI',
+          fontSize: objWidth*.15,
+          y:objHeight*.03,
+          x:objWidth*.1,
           padding: 5,
-          paddingLeft: 10,
+          letterSpacing:1,
           textFill: 'white',
-          fill: 'black',
+          width: objWidth*.9,
+          fill: '#777',
           alpha: 0.75,
           visible: true,
         });
       }
-
       groupElements.add(tooltip);
+      }
 
 
-    }
+    //sessionStorage.setItem("room", JSON.stringify(allElements));
 
+
+  }
+
+  // save pdf with room title and picture of stage
+  savePdf() {
+    let d: any = document.querySelector('#roomvisualiser');
+    html2canvas(d, {
+      allowTaint:true,
+      useCORS: true,
+      scale: 1
+    }).then(canvas => {
+      let img = canvas.toDataURL("image/png");
+      let pdf = new jsPDF();
+      pdf.setFont('Arial');
+      pdf.text(this.roomName,30,12);
+      pdf.setFontSize(50);
+      pdf.addImage(img, 'PNG',6,20,200,200);
+      pdf.save(this.roomName+'.pdf');
+    })
+  }
+
+  // save image of stage
+  savePng() {
+    let dataURL = this.stage.toDataURL({ pixelRatio: 3 });
+    let link: any = document.createElement('a');
+    link.download = this.roomName;
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    link.download;
   }
 
   /////// the Method to mix the Values //////
