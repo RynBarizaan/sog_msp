@@ -1850,14 +1850,14 @@ export class RoomComponent implements OnInit {
   // Set initial rooms
   reset(): void {
     this.allElements = JSON.parse(JSON.stringify(objectsData));
-    this.standardRooms[0].width = 20;
-    this.standardRooms[0].height = 20;
-    this.standardRooms[1].width = 5;
-    this.standardRooms[1].height = 5;
-    this.standardRooms[2].width = 15;
-    this.standardRooms[2].height = 15;
-    this.standardRooms[3].width = 8;
-    this.standardRooms[3].height = 8;
+    this.standardRooms[0].width = 10;
+    this.standardRooms[0].height = 10;
+    this.standardRooms[1].width = 10;
+    this.standardRooms[1].height = 10;
+    this.standardRooms[2].width = 10;
+    this.standardRooms[2].height = 10;
+    this.standardRooms[3].width = 10;
+    this.standardRooms[3].height = 10;
     this.calculateCoordinates = true;
 
     this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
