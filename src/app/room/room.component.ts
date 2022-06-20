@@ -45,26 +45,26 @@ export class RoomComponent implements OnInit {
     {
       "id": 0,
       "name": "Unterricht",
-      "width": 8,
-      "height": 8
+      "width": 10,
+      "height": 10
     },
     {
       "id": 1,
       "name": "Konferenz",
-      "width": 8,
-      "height": 8
+      "width": 10,
+      "height": 10
     },
     {
       "id": 2,
       "name": "Workshop",
-      "width": 8,
-      "height": 8
+      "width": 10,
+      "height": 10
     },
     {
       "id": 3,
       "name": "Customised Room",
-      "width": 8,
-      "height": 8
+      "width": 10,
+      "height": 10
     }
   ];
 
@@ -121,6 +121,10 @@ export class RoomComponent implements OnInit {
   isToAddBoard: boolean = false;
   isToSaveRoom: boolean = false;
   isRoomEmpty: boolean = false;
+  isToCustomizeRoomUnterricht: boolean = false;
+  isToCustomizeRoomKonferrenz: boolean = false;
+  isToCustomizeRoomWorkshop: boolean = false;
+  calculateCoordinates: boolean = false;
   // Delete Element
   isToDelete: boolean = false;
   currentId?: any;
@@ -160,15 +164,27 @@ export class RoomComponent implements OnInit {
       "bgClr": 'white',
       "platzierung": 'links'
     };
+  roomToCustomize: {roomWidth: number, roomHeight: number, roomTyp: string, anzahlRundeTische: number, anzahlEckigeTische: number, anzahlTuere: number, anzahlFenster: number, anzahlTafeln: number} =
+    {
+      "roomWidth": 10,
+      "roomHeight": 10,
+      "roomTyp": "Unterricht",
+      "anzahlRundeTische": 0,
+      "anzahlEckigeTische": 0,
+      "anzahlTuere": 0,
+      "anzahlFenster": 0,
+      "anzahlTafeln": 0
+    };
 
   zoomValue: number = 5;
-
   roomElements: any = [];
-
+  popUpSlide: boolean = false;
+  nrRoomToCustomize: number = 10;
+  popUpForm: boolean = false;
+  showLoader: boolean = true;
 
   // Initial visualisation
   ngOnInit() {
-
     // Get dimension of html container and give it to the stage
     let stageContainer: any = document.getElementById('container-visualiser');
 
@@ -189,7 +205,6 @@ export class RoomComponent implements OnInit {
     let roomDimension = JSON.parse(<string>sessionStorage.getItem("roomDimension"));
     // Conditions if room is saved or not
     if(room != null) {
-      console.log(room)
       this.isRoomSaved = true;
       this.allElements = room;
       for(let i = 0; i < this.allElements.length; i++){
@@ -225,59 +240,6 @@ export class RoomComponent implements OnInit {
     this.backgroundLayer = new Konva.Layer();
     for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
       for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
-        if((i==0 && j==0)){
-          let rect = new Konva.Rect({
-            x: i * this.meterInPixel,
-            y: j * this.meterInPixel,
-            width: this.meterInPixel,
-            height: this.meterInPixel,
-            fill: '#e2e2e2',
-            stroke: '#777',
-            strokeWidth: 1,
-            cornerRadius: [this.meterInPixel*.1,0,0,0],
-          });
-          this.backgroundLayer.add(rect);
-        }
-        else if((i==this.standardRooms[this.currentRoomId].width - 1) && j==0){
-          let rect = new Konva.Rect({
-            x: i * this.meterInPixel,
-            y: j * this.meterInPixel,
-            width: this.meterInPixel,
-            height: this.meterInPixel,
-            fill: '#e2e2e2',
-            stroke: '#777',
-            strokeWidth: 1,
-            cornerRadius: [0,this.meterInPixel*.1,0,0],
-          });
-          this.backgroundLayer.add(rect);
-        }
-        else if((i==this.standardRooms[this.currentRoomId].width - 1) && (j==this.standardRooms[this.currentRoomId].height - 1)){
-          let rect = new Konva.Rect({
-            x: i * this.meterInPixel,
-            y: j * this.meterInPixel,
-            width: this.meterInPixel,
-            height: this.meterInPixel,
-            fill: '#e2e2e2',
-            stroke: '#777',
-            strokeWidth: 1,
-            cornerRadius: [0,0,this.meterInPixel*.1,0],
-          });
-          this.backgroundLayer.add(rect);
-        }
-        else if((i==0) && (j==this.standardRooms[this.currentRoomId].height - 1)){
-          let rect = new Konva.Rect({
-            x: i * this.meterInPixel,
-            y: j * this.meterInPixel,
-            width: this.meterInPixel,
-            height: this.meterInPixel,
-            fill: '#e2e2e2',
-            stroke: '#777',
-            strokeWidth: 1,
-            cornerRadius: [0,0,0,this.meterInPixel*.1],
-          });
-          this.backgroundLayer.add(rect);
-        }
-        else {
           let rect = new Konva.Rect({
             x: i * this.meterInPixel,
             y: j * this.meterInPixel,
@@ -288,12 +250,18 @@ export class RoomComponent implements OnInit {
             strokeWidth: 1
           });
           this.backgroundLayer.add(rect);
-        }
       }
     }
 
     // add the ground in the stage
     this.stage.add(this.backgroundLayer);
+
+    if(room == null) {
+      this.generUnterrichtCoordinates();
+      this.generKonferenzCoordinates();
+      this.generWorkshopCoordinates();
+      this.calculateCoordinates = false;
+    }
 
     // draw all elements in the stage
     this.drawElements();
@@ -308,6 +276,7 @@ export class RoomComponent implements OnInit {
 
   // Update visualisation if any changes made
   updateVisualisation(width: number, height: number): void {
+    if(this.zoomValue === 5) {
 
     // Get dimension of html container and give it to the stage
     let stageContainer: any = document.getElementById('container-visualiser');
@@ -323,28 +292,18 @@ export class RoomComponent implements OnInit {
       this.heightStage =  this.widthStage;
     }
 
-
     this.setButtonsStyle();
 
     // If the given dimension are permitted
     if (width >= this.minWidth && width <= this.maxWidth && height >= this.minHeight && height <= this.maxHeight) {
 
+      /*
       this.stage.setWidth(this.widthStage);
       this.stage.setHeight(this.heightStage);
+       */
 
       // delete last backgroundstage
       this.backgroundLayer.destroy();
-      /* Temporar code because not necessary only to test some new functionalities
-      this.stage.destroy();
-
-      // Initiate stage with given dimension from html container
-      this.stage = new Konva.Stage({
-        container: 'roomvisualiser',
-        width: this.widthStage,
-        height: this.heightStage,
-        draggable: true,
-      });
-       */
 
       // calculate how much pixel in width and height has a Meter
       this.calculateMeter(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
@@ -352,63 +311,33 @@ export class RoomComponent implements OnInit {
       // calculate dimensions of desks and chairs based on pixel in meter
       this.calculateElements();
 
+      //
+      if(this.calculateCoordinates) {
+        this.generUnterrichtCoordinates();
+        this.generKonferenzCoordinates();
+        this.generWorkshopCoordinates();
+        this.calculateCoordinates = false;
+      }
+      if(this.nrRoomToCustomize == 0) {
+
+        this.generUnterrichtCoordinates();
+        this.nrRoomToCustomize = 10;
+      }
+      if(this.nrRoomToCustomize == 1) {
+
+        this.generKonferenzCoordinates();
+        this.nrRoomToCustomize = 10;
+      }
+      if(this.nrRoomToCustomize == 2) {
+
+        this.generWorkshopCoordinates();
+        this.nrRoomToCustomize = 10;
+      }
+
       // initiate and draw the ground
       this.backgroundLayer = new Konva.Layer();
       for (let i = 0; i < this.standardRooms[this.currentRoomId].width; i++) {
         for (let j = 0; j < this.standardRooms[this.currentRoomId].height; j++) {
-          if((i==0 && j==0)){
-            let rect = new Konva.Rect({
-              x: i * this.meterInPixel,
-              y: j * this.meterInPixel,
-              width: this.meterInPixel,
-              height: this.meterInPixel,
-              fill: '#e2e2e2',
-              stroke: '#777',
-              strokeWidth: 1,
-              cornerRadius: [this.meterInPixel*.1,0,0,0],
-            });
-            this.backgroundLayer.add(rect);
-          }
-          else if((i==this.standardRooms[this.currentRoomId].width - 1) && j==0){
-            let rect = new Konva.Rect({
-              x: i * this.meterInPixel,
-              y: j * this.meterInPixel,
-              width: this.meterInPixel,
-              height: this.meterInPixel,
-              fill: '#e2e2e2',
-              stroke: '#777',
-              strokeWidth: 1,
-              cornerRadius: [0,this.meterInPixel*.1,0,0],
-            });
-            this.backgroundLayer.add(rect);
-          }
-          else if((i==this.standardRooms[this.currentRoomId].width - 1) && (j==this.standardRooms[this.currentRoomId].height - 1)){
-            let rect = new Konva.Rect({
-              x: i * this.meterInPixel,
-              y: j * this.meterInPixel,
-              width: this.meterInPixel,
-              height: this.meterInPixel,
-              fill: '#e2e2e2',
-              stroke: '#777',
-              strokeWidth: 1,
-              cornerRadius: [0,0,this.meterInPixel*.1,0],
-            });
-            this.backgroundLayer.add(rect);
-          }
-          else if((i==0) && (j==this.standardRooms[this.currentRoomId].height - 1)){
-            let rect = new Konva.Rect({
-              x: i * this.meterInPixel,
-              y: j * this.meterInPixel,
-              width: this.meterInPixel,
-              height: this.meterInPixel,
-              fill: '#e2e2e2',
-              stroke: '#777',
-              strokeWidth: 1,
-              cornerRadius: [0,0,0,this.meterInPixel*.1],
-            });
-            this.backgroundLayer.add(rect);
-          }
-          else {
             let rect = new Konva.Rect({
               x: i * this.meterInPixel,
               y: j * this.meterInPixel,
@@ -419,7 +348,6 @@ export class RoomComponent implements OnInit {
               strokeWidth: 1
             });
             this.backgroundLayer.add(rect);
-          }
         }
       }
       this.stage.add(this.backgroundLayer);
@@ -429,16 +357,333 @@ export class RoomComponent implements OnInit {
     this.layerElements.destroy();
     this.layerElements = new Konva.Layer();
 
+
     // draw all elements in the stage
     this.drawElements();
 
     // set roomElement object with all element of current room
     // and set object with number of specific element in the current room
     this.makeRoomDetailsReady();
+    } else {
+      this.stage.draggable(true);
+    }
+  }
+
+  customizeRoom(roomWidth: number, roomHeight: number, roomTyp: string, anzahlRundeTische: number, anzahlEckigeTische: number, anzahlTuere: number, anzahlFenster: number, anzahlTafeln: number): void {
+
+
+    let loader: any = document.getElementById('loader');
+    loader.style.visibility = 'visible';
+
+
+    if(this.nrRoomToCustomize == 0) {
+      let roomElements: any = [];
+      for(let elem of this.allElements){
+        if (elem.roomId != 0) {
+          let x = new Object();
+          x = elem;
+          roomElements.push(elem)
+        }
+      }
+      this.allElements = roomElements;
+
+      for (let i=0; i<this.allElements.length; i++) {
+        this.allElements[i].id = i;
+      }
+      for (let i=0; i<anzahlEckigeTische; i++) {
+        this.addDesk('eckig', 1, 0, 0, 0, '#eee')
+      }
+      for (let i=0; i<anzahlRundeTische; i++) {
+        this.addDesk('rund', 1, 0, 0, 0, '#eee')
+      }
+      for (let i=0; i<anzahlTuere; i++) {
+        this.addDoor('door', '#eee', 'links', 100, 100)
+      }
+      for (let i=0; i<anzahlFenster; i++) {
+        this.addWindow('window', '#eee', 'rechts', 100, 100)
+      }
+      for (let i=0; i<anzahlTafeln; i++) {
+        this.addBoard('board', '#eee', 'vorne', 100, 100)
+      }
+      this.standardRooms[0].width = roomWidth;
+      this.standardRooms[0].height = roomHeight;
+    }
+
+    else if(this.nrRoomToCustomize == 1) {
+
+      let roomElements: any = [];
+      for(let elem of this.allElements){
+        if (elem.roomId != 1) {
+          let x = new Object();
+          x = elem;
+          roomElements.push(elem)
+        }
+      }
+      this.allElements = roomElements;
+      for (let i=0; i<this.allElements.length; i++) {
+        this.allElements[i].id = i;
+      }
+      for (let i=0; i<anzahlEckigeTische; i++) {
+        this.addDesk('eckig', 1, 0, 0, 0, '#eee')
+      }
+      for (let i=0; i<anzahlRundeTische; i++) {
+        this.addDesk('rund', 1, 0, 0, 0, '#eee')
+      }
+      for (let i=0; i<anzahlTuere; i++) {
+        this.addDoor('door', '#eee', 'links', 100, 100)
+      }
+      for (let i=0; i<anzahlFenster; i++) {
+        this.addWindow('window', '#eee', 'rechts', 100, 100)
+      }
+      for (let i=0; i<anzahlTafeln; i++) {
+        this.addBoard('board', '#eee', 'vorne', 100, 100)
+      }
+      this.standardRooms[1].width = roomWidth;
+      this.standardRooms[1].height = roomHeight;
+    }
+
+    else if(this.nrRoomToCustomize == 2) {
+
+      let roomElements: any = [];
+      for(let elem of this.allElements){
+        if (elem.roomId != 2) {
+          let x = new Object();
+          x = elem;
+          roomElements.push(elem)
+        }
+      }
+      this.allElements = roomElements;
+
+      for (let i=0; i<this.allElements.length; i++) {
+        this.allElements[i].id = i;
+      }
+      for (let i=0; i<anzahlEckigeTische; i++) {
+        this.addDesk('eckig', 1, 0, 0, 0, '#eee')
+
+      }
+      for (let i=0; i<anzahlRundeTische; i++) {
+        this.addDesk('rund', 1, 0, 0, 0, '#eee')
+
+      }
+      for (let i=0; i<anzahlTuere; i++) {
+        this.addDoor('door', '#eee', 'links', 100, 100)
+      }
+      for (let i=0; i<anzahlFenster; i++) {
+        this.addWindow('window', '#eee', 'rechts', 100, 100)
+      }
+      for (let i=0; i<anzahlTafeln; i++) {
+        this.addBoard('board', '#eee', 'vorne', 100, 100)
+      }
+      this.standardRooms[2].width = roomWidth;
+      this.standardRooms[2].height = roomHeight;
+    }
+    this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
+  }
+
+  generUnterrichtCoordinates() {
+    //Unterricht
+
+  let nbrDesksWidth: number = 0;
+  let nbrDesksHeight: number = 0;
+  let widthDesk: number = this.meterInPixel * 1.2;
+  let heightDesk: number = this.meterInPixel * 1.05;
+  let widthProgress: number = 0;
+  let heightProgress: number = 0;
+  let xCoordinates: number[] = [];
+  let yCoordinates: number[] = [];
+  let nbrRoomObjects: number = 0;
+  let elementIds: number[] = [];
+  for(let i=0; i<this.allElements.length; i++) {
+    if(this.allElements[i].roomId == 0 && this.allElements[i].element == 'desk' && (widthProgress<this.widthStage - widthDesk)) {
+      let xObject = widthProgress + (this.meterInPixel * .4);
+      widthProgress += this.meterInPixel * 1.5;
+      xCoordinates[nbrDesksWidth] = xObject;
+      nbrDesksWidth++;
+    }
+  }
+  for(let j=0; j<this.allElements.length; j++) {
+    if(this.allElements[j].roomId == 0 && this.allElements[j].element == 'desk' && (heightProgress<this.heightStage - heightDesk)) {
+      let yObject = heightProgress + (this.meterInPixel);
+      heightProgress += this.meterInPixel * 1.8;
+      yCoordinates[nbrDesksHeight] = yObject;
+      nbrDesksHeight++;
+    }
+  }
+  for(let j=0; j<this.allElements.length; j++) {
+    if(this.allElements[j].roomId == 0 && this.allElements[j].element == 'desk') {
+      elementIds[nbrRoomObjects] = j;
+      nbrRoomObjects++;
+    }
+  }
+
+
+  let c = 0;
+    for(let j=0; j<yCoordinates.length; j++) {
+      for(let k=0; k<xCoordinates.length; k++) {
+        if(c < elementIds.length){
+          this.allElements[elementIds[c]].x = xCoordinates[k];
+          this.allElements[elementIds[c]].y = yCoordinates[j];
+          c++;
+        }
+      }
+    }
+
+  }
+
+  generKonferenzCoordinates() {
+//Konferenz
+    let nbrOfObjects: number = 0;
+    let elemsIds: number[] = [];
+    // @ts-ignore
+    let heightOfObj: number = this.meterInPixel * 1.25 + this.heightChair;
+    let widthOfObj: number = this.meterInPixel * 1.05;
+    let widthScene: number = this.widthStage / (5/3);
+    let heightScene: number = this.heightStage / (5/3);
+
+    let widthCapacity: number = Math.floor(widthScene / heightOfObj);
+    let heightCapacity: number = Math.floor(heightScene / heightOfObj);
+
+    let overWidth: number = widthScene - (widthCapacity * heightOfObj);
+    let distanceDesksWidth: number = overWidth / widthCapacity;
+
+    let overHeight: number = heightScene - (heightCapacity * heightOfObj);
+    let distanceDesksHeight: number = overHeight / heightCapacity;
+
+    for(let j=0; j<this.allElements.length; j++) {
+      if(this.allElements[j].roomId == 1 && this.allElements[j].element == 'desk') {
+        elemsIds[nbrOfObjects] = j;
+        nbrOfObjects++;
+      }
+    }
+
+    let xCors: number[] = []
+    let xProgress = 0;
+    for(let i=0; i< widthCapacity; i++){
+      xCors[i] = xProgress;
+      xProgress += heightOfObj + distanceDesksWidth;
+    }
+
+    let yCors: number[] = []
+    let yProgress = 0;
+    for(let i=0; i< heightCapacity; i++){
+      yCors[i] = yProgress;
+      yProgress += heightOfObj + distanceDesksHeight;
+    }
+
+    let coordinateCombis: any[] = [];
+    let z: number = 0;
+    for (let i=0; i<xCors.length; i++) {
+      let obj: any = {
+        x: xCors[i] + widthOfObj,
+        y: 0,
+        r: -180
+      }
+      coordinateCombis[z] = obj;
+      z++
+    }
+    for (let i=0; i<yCors.length; i++) {
+      let obj: any = {
+        x: xCors[xCors.length-1] + widthOfObj,
+        y: yCors[i] + widthOfObj,
+        r: -90
+      }
+      coordinateCombis[z] = obj;
+      z++
+    }
+    for (let i=xCors.length; i>0; i--) {
+      let obj: any = {
+        x: xCors[i-1],
+        y: yCors[yCors.length-1] + widthOfObj,
+        r: 0
+      }
+      coordinateCombis[z] = obj;
+      z++
+    }
+    for (let i=yCors.length; i>0; i--) {
+      let obj: any = {
+        x: xCors[0],
+        y: yCors[i-1],
+        r: 90
+      }
+      coordinateCombis[z] = obj;
+      z++
+    }
+    let verschiebungsWert: number = (this.widthStage - widthScene) / 1.7;
+
+    for(let cor of coordinateCombis){
+      cor.x += verschiebungsWert;
+      cor.y += verschiebungsWert;
+    }
+
+    let u = 0;
+    for(let k=0; k<this.allElements.length; k++) {
+      for(let i=0; i<elemsIds.length; i++) {
+        if(this.allElements[k].id == elemsIds[i] && u < (widthCapacity*2 + heightCapacity*2)){
+          this.allElements[elemsIds[u]].x = coordinateCombis[u].x;
+          this.allElements[elemsIds[u]].y = coordinateCombis[u].y;
+          this.allElements[elemsIds[u]].degRotation = coordinateCombis[u].r;
+          u++;
+        }
+      }
+    }
+  }
+
+  generWorkshopCoordinates() {
+
+    //Workshop
+    let radius: number = 0;
+    if(this.widthStage > this.heightStage) {
+      radius = this.heightStage / 3;
+    } else if (this.widthStage < this.heightStage) {
+      radius = this.widthStage / 3;
+    }else if (this.widthStage = this.heightStage) {
+      radius = this.widthStage / 3;
+    }
+    let countdesk: number = 0;
+    for(let j=0; j<this.allElements.length; j++) {
+      if(this.allElements[j].roomId == 2 && this.allElements[j].element == 'desk') {
+        countdesk++;
+      }
+    }
+    let drehdegree: number = Math.ceil(360/countdesk);
+    let xCor: number[] = [];
+    let yCor: number[] = [];
+    let degRotation: number[] = [];
+    for(let i=0; i<countdesk; i++) {
+      let degree: number = ((i*drehdegree)* Math.PI) / 180.0;
+      let x: number = Math.ceil(radius * Math.cos(degree));
+      let y: number = Math.ceil(radius * Math.sin(degree));
+      x += radius + (radius / 2);
+      y += radius + (radius / 2);
+      xCor[i] = x;
+      yCor[i] = y;
+      degRotation[i] = i*drehdegree;
+    }
+
+    let nbrObjects: number = 0;
+    let elemIds: number[] = [];
+
+    for(let j=0; j<this.allElements.length; j++) {
+      if(this.allElements[j].roomId == 2 && this.allElements[j].element == 'desk') {
+        elemIds[nbrObjects] = j;
+        nbrObjects++;
+      }
+    }
+    let a: number = 0;
+    for(let j=0; j<xCor.length; j++) {
+      if(a < elemIds.length){
+        this.allElements[elemIds[a]].x = xCor[j];
+        this.allElements[elemIds[a]].y = yCor[j];
+        this.allElements[elemIds[a]].degRotation = degRotation[j] -101;
+        a++;
+      }
+    }
+
+
   }
 
   // Add new desk and draw it
-  addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number, bgClr: string): void {
+  addDesk(elementtyp: string, place: number, x: number, y: number, rotation: number, bgClr: string, firstname1?: string, lastname1?: string): void {
     let desk: any = {
       "id": this.allElements.length,
       "roomId": this.currentRoomId,
@@ -449,7 +694,9 @@ export class RoomComponent implements OnInit {
       "y": y,
       "degRotation": rotation,
       "bgClr": bgClr,
-      "elementid": this.assignId('desk')
+      "elementid": this.assignId('desk'),
+      "firstname1": 'Vorname',
+      "lastname1": 'Nachname'
     }
     this.allElements.push(desk);
     this.layerElements.destroy();
@@ -459,6 +706,8 @@ export class RoomComponent implements OnInit {
   // Add new door and draw it
   addDoor(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
     let door: any
+    if(x == undefined) { x = 0}
+    if(y == undefined) { y = 0}
     if(platzierung == 'links' || platzierung == 'rechts') {
       door = {
         "id": this.allElements.length,
@@ -491,6 +740,8 @@ export class RoomComponent implements OnInit {
   // Add new window and draw it
   addWindow(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
     let window: any
+    if(x == undefined) { x = 0}
+    if(y == undefined) { y = 0}
     if(platzierung == 'links' || platzierung == 'rechts') {
       window = {
         "id": this.allElements.length,
@@ -499,7 +750,7 @@ export class RoomComponent implements OnInit {
         "elementtyp": elementtyp,
         "y": y,
         "bgClr": bgClr,
-        "elementid": this.assignId('door'),
+        "elementid": this.assignId('window'),
         "platzierung": platzierung
       }
     } else if(platzierung == 'vorne' || platzierung == 'hinten') {
@@ -510,7 +761,7 @@ export class RoomComponent implements OnInit {
         "elementtyp": elementtyp,
         "x": x,
         "bgClr": bgClr,
-        "elementid": this.assignId('door'),
+        "elementid": this.assignId('window'),
         "platzierung": platzierung
       }
     }
@@ -522,6 +773,8 @@ export class RoomComponent implements OnInit {
   // Add new board and draw it
   addBoard(elementtyp: string, bgClr: string, platzierung: string, x?: number, y?: number): void {
     let board: any
+    if(x == undefined) { x = 0}
+    if(y == undefined) { y = 0}
     if(platzierung == 'links' || platzierung == 'rechts') {
       board = {
         "id": this.allElements.length,
@@ -530,7 +783,7 @@ export class RoomComponent implements OnInit {
         "elementtyp": elementtyp,
         "y": y,
         "bgClr": bgClr,
-        "elementid": this.assignId('door'),
+        "elementid": this.assignId('board'),
         "platzierung": platzierung
       }
     } else if(platzierung == 'vorne' || platzierung == 'hinten') {
@@ -541,7 +794,7 @@ export class RoomComponent implements OnInit {
         "elementtyp": elementtyp,
         "x": x,
         "bgClr": bgClr,
-        "elementid": this.assignId('door'),
+        "elementid": this.assignId('board'),
         "platzierung": platzierung
       }
     }
@@ -609,58 +862,99 @@ export class RoomComponent implements OnInit {
   changeStageScale(): void {
     if(this.zoomValue === 0) {
       this.stage.scale({ x: .1, y: .1 });
+      this.stage.x((this.widthStage - (this.widthStage * .1) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .1) )/ 2);
     } else if(this.zoomValue === 0.5) {
       this.stage.scale({ x: .2, y: .2 });
+      this.stage.x((this.widthStage - (this.widthStage * .2) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .2) )/ 2);
     } else if(this.zoomValue === 1) {
       this.stage.scale({ x: .3, y: .3 });
+      this.stage.x((this.widthStage - (this.widthStage * .3) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .3) )/ 2);
     } else if(this.zoomValue === 1.5) {
       this.stage.scale({ x: .4, y: .4 });
+      this.stage.x((this.widthStage - (this.widthStage * .4) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .4) )/ 2);
     } else if(this.zoomValue === 2) {
       this.stage.scale({ x: .5, y: .5 });
+      this.stage.x((this.widthStage - (this.widthStage * .5) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .5) )/ 2);
     } else if(this.zoomValue === 2.5) {
       this.stage.scale({ x: .6, y: .6 });
+      this.stage.x((this.widthStage - (this.widthStage * .6) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .6) )/ 2);
     } else if(this.zoomValue === 3) {
       this.stage.scale({ x: .7, y: .7 });
+      this.stage.x((this.widthStage - (this.widthStage * .7) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .7) )/ 2);
     } else if(this.zoomValue === 3.5) {
       this.stage.scale({ x: .8, y: .8 });
+      this.stage.x((this.widthStage - (this.widthStage * .8) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .8) )/ 2);
     } else if(this.zoomValue === 4) {
       this.stage.scale({ x: .9, y: .9 });
+      this.stage.x((this.widthStage - (this.widthStage * .9) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * .9) )/ 2);
     } else if(this.zoomValue === 4.5) {
       this.stage.scale({ x: 1, y: 1 });
+      this.stage.x((this.widthStage - (this.widthStage * 1) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1) )/ 2);
     } else if(this.zoomValue === 5) {
       this.stage.scale({ x: 1, y: 1 });
+      this.stage.x((this.widthStage - (this.widthStage * 1) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1) )/ 2);
     } else if(this.zoomValue === 5.5) {
       this.stage.scale({ x: 1.1, y: 1.1 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.1) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.1) )/ 2);
     } else if(this.zoomValue === 6) {
       this.stage.scale({ x: 1.2, y: 1.2 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.2) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.2) )/ 2);
     } else if(this.zoomValue === 6.5) {
       this.stage.scale({ x: 1.3, y: 1.3 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.3) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.3) )/ 2);
     } else if(this.zoomValue === 7) {
       this.stage.scale({ x: 1.4, y: 1.4 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.4) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.4) )/ 2);
     } else if(this.zoomValue === 7.5) {
       this.stage.scale({ x: 1.5, y: 1.5 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.5) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.5) )/ 2);
     } else if(this.zoomValue === 8) {
       this.stage.scale({ x: 1.6, y: 1.6 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.6) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.6) )/ 2);
     } else if(this.zoomValue === 8.5) {
       this.stage.scale({ x: 1.7, y: 1.7 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.7) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.7) )/ 2);
     } else if(this.zoomValue === 9) {
       this.stage.scale({ x: 1.8, y: 1.8 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.8) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.8) )/ 2);
     } else if(this.zoomValue === 9.5) {
       this.stage.scale({ x: 1.9, y: 1.9 });
+      this.stage.x((this.widthStage - (this.widthStage * 1.9) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 1.9) )/ 2);
     } else if(this.zoomValue === 10) {
       this.stage.scale({ x: 2, y: 2 });
+      this.stage.x((this.widthStage - (this.widthStage * 2) )/ 2);
+      this.stage.y((this.widthStage - (this.widthStage * 2) )/ 2);
     }
 
-    /*
-    // if stage scaled make it draggable
-    if(this.zoomValue !== 5) {
-      this.stage.draggable(true);
-    } else if (this.zoomValue === 5) {
+
+    if(this.zoomValue === 5) {
       this.stage.draggable(false);
-      this.stage.x(0);
-      this.stage.y(0);
+    } else {
+      this.stage.draggable(true);
+      for(let child of this.stage.children[1].children) {
+        child.draggable(false);
+      }
     }
-    */
 
   }
 
@@ -1171,8 +1465,6 @@ export class RoomComponent implements OnInit {
       }
 
 
-
-
    if(x < this.allElements[id].xNotSmallerZ){
      x = this.allElements[id].xNotSmallerZ;
      this.allElements[id].x = x;
@@ -1194,10 +1486,8 @@ export class RoomComponent implements OnInit {
 
     }
 
-
-    this.allElements[id].objectWidth = Math.floor(groupElements.getClientRect().width);
-    this.allElements[id].objectHeight = Math.floor(groupElements.getClientRect().height);
-
+    this.allElements[id].objectWidth = objWidth;
+    this.allElements[id].objectHeight = objHeight;
 
     //Step 8
     let tooltip = new Konva.Text({
@@ -1535,10 +1825,10 @@ export class RoomComponent implements OnInit {
       useCORS: true,
       scale: 1
     }).then(canvas => {
-      let img = canvas.toDataURL("image/png");
+      let img = this.stage.toDataURL({ pixelRatio: 3 });
       let pdf = new jsPDF();
       pdf.setFont('Arial');
-      pdf.text(this.roomname,30,12);
+      pdf.text(this.roomname,10,12);
       pdf.setFontSize(50);
       pdf.addImage(img, 'PNG',6,20,200,200);
       pdf.save('room.pdf');
@@ -1560,8 +1850,16 @@ export class RoomComponent implements OnInit {
   // Set initial rooms
   reset(): void {
     this.allElements = JSON.parse(JSON.stringify(objectsData));
-    this.standardRooms[0].width = 8;
-    this.standardRooms[0].height = 8;
+    this.standardRooms[0].width = 20;
+    this.standardRooms[0].height = 20;
+    this.standardRooms[1].width = 5;
+    this.standardRooms[1].height = 5;
+    this.standardRooms[2].width = 15;
+    this.standardRooms[2].height = 15;
+    this.standardRooms[3].width = 8;
+    this.standardRooms[3].height = 8;
+    this.calculateCoordinates = true;
+
     this.updateVisualisation(this.standardRooms[this.currentRoomId].width,this.standardRooms[this.currentRoomId].height);
     this.isRoomSaved = false;
     let c: any = document.getElementById('standardRoomsChanger');
@@ -1609,10 +1907,16 @@ export class RoomComponent implements OnInit {
   saveRoom() {
     this.route.navigate(['mainmenu']);
 
+    this.makeRoomDetailsReady();
+
     for(let i = 0; i < this.roomElements.length; i++) {
       this.allElements[i].id = i;
+      this.roomElements[i].id = i;
       this.roomElements[i].roomId = 0;
     }
+
+
+
 
     sessionStorage.setItem("room", JSON.stringify(this.roomElements));
     let roomStage: any = {
@@ -1678,4 +1982,25 @@ export class RoomComponent implements OnInit {
       new ngxCsv(this.roomElements, "Room", options);
     }
     }
+
+    hideAllPopups() {
+      setTimeout((): any =>{
+        let loader: any = document.getElementById('loader');
+        loader.style.visibility = 'hidden';
+        this.showLoader = false;
+        this.isRoomEmpty = false;
+        this.isToDelete = false;
+        this.isToAddDesk = false;
+        this.isToAddDoor = false;
+        this.isToAddWindow = false;
+        this.isToAddBoard = false;
+        this.isToCustomizeRoomUnterricht = false;
+        this.isToCustomizeRoomKonferrenz = false;
+        this.isToCustomizeRoomWorkshop = false;
+        this.isToSaveRoom = false;
+        this.popUpSlide = false;
+        this.popUpForm = false;
+      }, 400);
+    }
+
 }

@@ -37,6 +37,7 @@ export class SittingPlacesGenerator implements OnInit {
   allElements?: any[];
   stage: any;
   roomName: string = 'Mein Raumname';
+  groupToString: string = '';
 
   constructor() {
   }
@@ -583,13 +584,24 @@ export class SittingPlacesGenerator implements OnInit {
       //Step 8
       let tooltip:any;
 
-      if(allElements[i].firstname1 == 'Vorname') {
+      if(allElements[i].firstname1 == 'Vorname' || allElements[i].firstname1 == undefined) {
         tooltip = new Konva.Text({
-          text: '',
+          text: allElements[i].id,
+          fontFamily: 'Segoe UI',
+          fontSize: objWidth*.15,
+          y:objHeight*.03,
+          x:objWidth*.1,
+          padding: 5,
+          letterSpacing:1,
+          textFill: 'white',
+          width: objWidth*.9,
+          fill: '#777',
+          alpha: 0.75,
+          visible: true,
         });
       } else {
         tooltip = new Konva.Text({
-          text: allElements[i].id + '       ' + allElements[i].firstname1,
+          text: allElements[i].id + '           ' + allElements[i].firstname1,
           fontFamily: 'Segoe UI',
           fontSize: objWidth*.15,
           y:objHeight*.03,
@@ -609,7 +621,6 @@ export class SittingPlacesGenerator implements OnInit {
 
     //sessionStorage.setItem("room", JSON.stringify(allElements));
 
-
   }
 
   // save pdf with room title and picture of stage
@@ -620,13 +631,21 @@ export class SittingPlacesGenerator implements OnInit {
       useCORS: true,
       scale: 1
     }).then(canvas => {
-      let img = canvas.toDataURL("image/png");
+      let img = this.stage.toDataURL({ pixelRatio: 3 });
       let pdf = new jsPDF();
-      pdf.setFont('Arial');
-      pdf.text(this.roomName,30,12);
-      pdf.setFontSize(50);
-      pdf.addImage(img, 'PNG',6,20,200,200);
-      pdf.save(this.roomName+'.pdf');
+      pdf.setFontSize(20);
+      pdf.setTextColor('#494949');
+      pdf.text(this.roomName,10,15);
+      for(let p of this.listOfTables) {
+        if(p.firstname1 != 'Vorname' && p.firstname1 != undefined) {
+          let text: string = 'Name : ' + p.firstname1 + ', Tischnummer : ' + p.id.toString();
+          pdf.setFontSize(12);
+          pdf.setTextColor('#494949');
+          pdf.text(text,8,(p.id+5) * 6);
+        }
+      }
+      pdf.addImage(img, 'PNG',93,10,110,110);
+      pdf.save('room.pdf');
     })
   }
 

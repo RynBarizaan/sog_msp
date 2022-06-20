@@ -42,20 +42,18 @@
 
 #roomvisualiser {
   position: relative;
+  border-radius: 4px;
+  box-shadow: 1px 1px 2px #999;
+  padding: 10px;
+  background-color: #F6F6F6;
 }
 
 #visualiser {
   position: relative;
+
 }
 
-#zoomRange {
-  position: relative;
-  width:10%;
-  height:280px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-}
+
 
 .material-icons:hover {
   color: #777777;
@@ -158,13 +156,73 @@ input[type=number]::-webkit-outer-spin-button {
 
 .popupForm {
   margin-top: 6%;
-  box-shadow: 5px 5px 10px #ccc;
   border-radius: 5px;
+  border: 1px solid #ddd;
   background-color: #fff;
   z-index: 10;
   position: absolute;
-
 }
+
+.popUpSlidIn {
+  animation-duration: 500ms;
+  animation-name: slideIn;
+  transition-timing-function: ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    margin-top: -5%;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.popUpSlidOut {
+  animation-duration: 500ms;
+  animation-name: slideOut;
+  transition-timing-function: ease-in-out;
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    margin-top: 50%;
+  }
+}
+
+.transparenz {
+  position: absolute;
+  margin-top: -300px;
+  margin-bottom: 100px;
+  width: 100%;
+  height: 1467px;
+  z-index: 9;
+  background-color: #000;
+  opacity: .8;
+}
+
+.loader {
+  animation: blinker 1.5s linear infinite;
+  animation-name: loader-animation;
+  transition-timing-function: ease-in-out;
+  position: absolute;
+  z-index: 100;
+  margin: auto;
+}
+
+@keyframes loader-animation {
+  50% {
+    opacity: .2;
+  }
+}
+
 
 .headerPopup {
   border-bottom: 1px solid #ddd;
@@ -175,7 +233,6 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 18px;
   padding: 30px;
   min-width: 300px;
-
 }
 
 .contentPopup {
@@ -189,7 +246,9 @@ input[type=number]::-webkit-outer-spin-button {
   font-size: 14px;
   color: #777;
   padding: 20px;
-
+}
+.moreinfosPopup p {
+  max-width: 400px;
 }
 
 .popUpActions {
@@ -220,21 +279,17 @@ input[type=number]::-webkit-outer-spin-button {
 .contentPopup {
   display: flex;
   justify-content: space-around;
-
 }
 
 .contentPopup .right{
   position: relative;
-  float: left;
-  width: 70%;
-  border-right: 1px solid #ddd;
-
+  display: flex;
+  flex-direction: column;
 }
 .contentPopup .left{
   position: relative;
-  float: left;
-  width: 30%;
-
+  display: flex;
+  flex-direction: column;
 }
 
 #workspaceHeader {
@@ -248,7 +303,7 @@ input[type=number]::-webkit-outer-spin-button {
 #workspaceHeader .headerRight {
   position: relative;
   width: 70%;
-  height: 40px;
+  height: 40px;;
 }
 
 #workspaceHeader #headerLeft {
@@ -262,12 +317,31 @@ input[type=number]::-webkit-outer-spin-button {
 
 #workspaceHeader .headerRight button{
   position: relative;
-  padding: 6px;
   font-size: 14px;
   letter-spacing: 1px;
-  border-radius: 4px;
-  display: block;
+  border-radius: 8px 0px 0px 8px;
+  width: 100%;
+  height: 40px;
+}
+
+.roomChangerbtn {
+  display: flex;
   width: 25%;
+  height: 40px;
+}
+
+.custom-room-icons {
+  border: 1px solid #ddd;
+  border-radius: 0px 8px 8px 0px;
+  background-color: #e8e8e8;
+  width: 40%;
+  height: 40px;
+  padding: 7px;
+  cursor: pointer;
+}
+
+#btnEmptyRoom{
+
 }
 
 input[type=range][orient=vertical] {
@@ -277,28 +351,44 @@ input[type=range][orient=vertical] {
   margin-left: 8px;
 }
 
-hr{
-  border:none;
-  border-left:1px solid hsla(200, 10%, 50%,100);
-  height:100px;
-  width:1px;
+#colorZoomBar {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+  background-color: #eee;
+  border: 1px #ddd solid;
+  border-radius: 2px;
+  padding: 1%;
+  margin: 1.5%;
+}
+
+#zoomRange {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#zoom {
+
 }
 
 #colorPickerTrigger {
-  width:25px;
-  height:25px;
+  width:35px;
+  height:35px;
   background-color: #11b0e7;
   border-radius: 2px;
-  border: 1px solid #777;
   cursor: pointer;
-  margin-left: -3px;
+}
+
+#colorPickerTrigger span {
+  padding: 5px;
 }
 
 #colorPickerContainer {
 position: absolute;
   z-index: 100;
-  display: flex;
-  justify-content: center;
 }
 
 .blink {
@@ -325,46 +415,37 @@ position: absolute;
 
 .icons {
   height: 26px;
-  fill: #777;
-
+  fill: #494949;
 }
 
 .orientation-text {
   position: relative;
   font-size: 14px;
-  color: black;
-  border: 1px solid black;
   text-align: center;
-  border-radius: 100px;
+  border-radius: 100%;
   text-align: center;
-  line-height: 23px;
-  background-color: bisque;
+  background-color: #e8e8e8;
+  box-shadow: inset 0.05em 0.05em 0.15em #494949;;
+  color: #494949;
+  font-weight: 500;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
 }
 
 #west-ost-visualiser {
   position: relative;
   width: 100%;
-  height: auto;
   display: flex;
   align-items: center;
   flex-direction: row;
+  justify-content: center;
 }
 
-.sued-nort {
-  position: relative;
-  margin-left: -12%;
-  width: 25px;
-  height: 25px;
-}
-
-.west-ost {
-  width: 25px;
-  height: 25px;
-}
-
-#colorZoomBar {
-  position: relative;
-  margin-left: 5%;
+#nsv-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .iconscontainer {
@@ -374,9 +455,19 @@ position: absolute;
   justify-content: center;
 }
 
+.iconscontainer {
+  background-color: #e8e8e8;
+  margin-left: 5px;
+  border-radius: 4px;
+  padding: 0px 4px 0px 4px;
+  border: 1px solid #ddd;
+}
+
 .iconscontainer label{
   font-size: 12px;
 }
+
+
 
 @media only screen and (max-width: 1400px) {
   .hideStep1 {
@@ -418,12 +509,80 @@ position: absolute;
     flex-direction: column;
   }
 
+  #workspaceHeader {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #workspaceHeader .headerRight{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  #workspaceHeader .headerLeft{
+    display: flex;
+    align-items: center;
+  }
+  .roomChangerbtn {
+    display: flex;
+    width: 120px;
+    height: 40px;
+  }
+  #headerLeft{
+    display: flex;
+    margin-top: 10px;
+
+  }
+
+  .iconscontainer{
+
+  }
+
 }
 
 @media only screen and (max-width: 770px) {
   .hideStep4 {
     display: none;
   }
+  .roomChangerbtn {
+    display: flex;
+    width: 92px;
+    height: 40px;
+  }
+  #workspaceHeader{
+    display: flex;
+    align-items: center;
+  }
+  #workspaceHeader .headerRight{
+    position: relative;
+    width: 100%;
+  }
+  #workspaceHeader #headerLeft{
+    position: relative;
+    width: 100%;
+    margin-top: 0px;
+    float: right;
+  }
+  #workspaceHeader .headerRight button{
+    font-size: 10px;
+    height: 30px;
+    border-radius: 4px 0px 0px 4px;
+  }
+  .custom-room-icons {
+    border: 1px solid #ddd;
+    border-radius: 0px 4px 4px 0px;
+    background-color: #e8e8e8;
+    width: 32%;
+    height: 30px;
+    padding: 2px;
+    cursor: pointer;
+  }
+  .btnEmptyRoom{
+    border-radius: 4px;
+  }
+
+
 }
 
 
@@ -434,5 +593,9 @@ position: absolute;
 }
 
 
-
+#loader {
+  position: absolute;
+  visibility: hidden;
+  z-index: 100;
+}
 
