@@ -297,10 +297,10 @@ export class RoomComponent implements OnInit {
     // If the given dimension are permitted
     if (width >= this.minWidth && width <= this.maxWidth && height >= this.minHeight && height <= this.maxHeight) {
 
-      /*
+
       this.stage.setWidth(this.widthStage);
       this.stage.setHeight(this.heightStage);
-       */
+
 
       // delete last backgroundstage
       this.backgroundLayer.destroy();
