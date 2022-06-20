@@ -33,7 +33,11 @@ export class SittingPlacesGenerator implements OnInit {
   heightOFTable?: number;
   widthOFTable?: number;
   oneMeterInPX?: number;
-
+  rotation:number=0;
+  oldx:number=0;
+  oldy:number=0;
+  newx:number=0;
+  newy:number=0;
   allElements?: any[];
   stage: any;
   roomName: string = 'Mein Raumname';
@@ -713,8 +717,6 @@ export class SittingPlacesGenerator implements OnInit {
     let heightAndwidth: any = JSON.parse(sessionStorage.getItem("roomDimension"));
     let width = heightAndwidth.width;
     let height = heightAndwidth.height;
-    this.heightOFTable = this.listOfTables[0].objectHeight;
-    this.widthOFTable = this.listOfTables[0].objectWidth;
     console.log(this.heightOFTable+","+this.widthOFTable);
     try {
       if (width > height){
@@ -750,6 +752,72 @@ export class SittingPlacesGenerator implements OnInit {
 
   }
 
+  //////// set x and y after Rotation ////////
+setXAndYAfterRotation(indexOfElement: number){
+  this.rotation = this.listOfTables[indexOfElement].degRotation;
+  this.oldx= this.listOfTables[indexOfElement].x;
+  this.oldy=this.listOfTables[indexOfElement].y;
+  this.heightOFTable = this.listOfTables[indexOfElement].objectHeight;
+  this.widthOFTable = this.listOfTables[indexOfElement].objectWidth;
+  if (this.rotation >=0 && this.rotation <= 45 ){
+    this.newx = (this.oldx-this.rotation )-this.rotation /9;
+    this.newy= (this.oldy+this.rotation )-(this.rotation /4.4);
+  }
+  else if (this.rotation >=46 && this.rotation <= 67 ){
+    this.newx = (this.oldx-this.rotation )-this.rotation /9;
+    this.newy= this.oldy+(this.rotation /2.24);
+  }
+  else if (this.rotation >=68 && this.rotation <= 90 ){
+    this.newx = (this.oldx-this.rotation )-this.rotation /9;
+    this.newy= this.oldy+(this.rotation /5.4);
+  }
+  else if (this.rotation>= 91 && this.rotation<=111){
+    this.newx = (this.oldx-this.rotation)+this.rotation/16
+    this.newy= this.oldy-(this.rotation/25.25);
+  }
+  else if (this.rotation>= 112 && this.rotation<=135){
+    this.newx = (this.oldx-this.rotation)+this.rotation/16
+    this.newy= this.oldy-(this.rotation/4.24);
+  }
+  else if(this.rotation>= 136 && this.rotation<=157){
+    // @ts-ignore
+    this.newx= (this.oldx-this.widthOFTable)-17
+    this.newy= this.oldy-(this.rotation/2.56);
+  }
+  else if (this.rotation>= 158 && this.rotation<=180){
+    // @ts-ignore
+    this.newx = (this.oldx-this.widthOFTable)-8;
+    this.newy= this.oldy-(this.rotation/2);
+  }
+
+  else if(this.rotation <= 0 && this.rotation>=-45) {
+    this.newx = this.oldx-(this.rotation/1.46);
+    this.newy= this.oldy+this.rotation
+  }
+  else if(this.rotation <= -46 && this.rotation>=-67) {
+    this.newx = this.oldx-(this.rotation/3.5);
+    this.newy= (this.oldy+this.rotation)+(this.rotation/6.09);
+  }
+  else if(this.rotation <= -68 && this.rotation>=-90) {
+    this.newx = this.oldx-(this.rotation/40.2);
+    this.newy= (this.oldy+this.rotation)+(this.rotation/6.09);
+  }
+  else if(this.rotation <= -91 && this.rotation>=-135) {
+    this.newx = this.oldx+(this.rotation/2.860);
+    this.newy= (this.oldy+this.rotation)-(this.rotation/56);
+  }
+  else if(this.rotation <= -136 && this.rotation>=-157) {
+    this.newx = this.oldx+(this.rotation/1.91);
+    this.newy= (this.oldy+this.rotation)-(this.rotation/4.9);
+  }
+  else if(this.rotation <= -158 && this.rotation>=-180) {
+    this.newx = this.oldx+(this.rotation/1.91);
+    this.newy= (this.oldy+this.rotation)-(this.rotation/2.640);
+  }
+  console.log(this.newx+"!"+this.newy);
+
+
+}
 
 
   /////// Analyse location of Table with Algorithms condition ///////
@@ -757,20 +825,23 @@ export class SittingPlacesGenerator implements OnInit {
 
     for (var x=0; x< this.listOfTables.length; x++) {
       if (this.listOfTables[x].element == "desk") {
+        this.setXAndYAfterRotation(x);
+        this.heightOFTable = this.listOfTables[x].objectHeight;
+        this.widthOFTable = this.listOfTables[x].objectWidth;
         /////// check if the Table Frontal ///
         // @ts-ignore
-        if ((this.listOfTables[x].y < this.height / 3 - this.heightOFTable) && (this.listOfTables[x].x > this.width / 3) && (this.listOfTables[x].x < 2 * (this.width / 3) - this.widthOFTable)) {
+        if ((this.newy < (this.height) / 2.8 - this.heightOFTable) && (this.newx > this.width / 3) && (this.newx < 2 * (this.width / 3) - this.widthOFTable)) {
           this.statusOfTables[x].Frontal = true;
-        }
 
+        }
           /////// check if the Table behind of Room ///
         // @ts-ignore
-        else if (this.listOfTables[x].y > (this.height / 3) * 2) {
+        else if (this.newy > (this.height / 3) * 2) {
           this.statusOfTables[x].HintenImRaum = true;
         }
           /////// check if the Table in front of Room ///
         // @ts-ignore
-        else if (this.listOfTables[x].y < (this.height / 3) - this.heightOFTable) {
+        else if (this.newy < (this.height / 2.8) - this.heightOFTable) {
           this.statusOfTables[x].VorneImRaum = true;
 
         }
@@ -780,18 +851,22 @@ export class SittingPlacesGenerator implements OnInit {
         if (this.listOfTables[x].platzierung == "rechts") {
           for (var y = 0; y < this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].y > this.listOfTables[x].y) && ((this.listOfTables[y].y < this.listOfTables[x].y + (3 * this.oneMeterInPX)) && ((this.listOfTables[y].x) + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              if ((this.newy > this.listOfTables[x].y) && ((this.newy < this.listOfTables[x].y + (3 * this.oneMeterInPX)) &&(this.newx + (this.widthOFTable)) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Türnähe= true;
+                alert("hi");
+              }
 
+              // @ts-ignore
+              else if ((this.newy < this.listOfTables[x].y) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+                this.statusOfTables[y].Türnähe= true;
+                alert("hi");
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y < this.listOfTables[x].y) && ((this.listOfTables[y].y + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.listOfTables[y].x + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              else if ((this.newy == this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Türnähe= true;
-              }
-              // @ts-ignore
-              else if ((this.listOfTables[y].y == this.listOfTables[x].y) && ((this.listOfTables[y].x + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Türnähe= true;
+                alert("hi");
               }
             }
           }
@@ -799,18 +874,18 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung == "links") {
           for (var y = 0; y < this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].y > this.listOfTables[x].y) && (this.listOfTables[y].y < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.listOfTables[y].x < this.oneMeterInPX)) {
+              if ((this.newy > this.listOfTables[x].y) && (this.newy < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.newx < this.oneMeterInPX)) {
                 this.statusOfTables[y].Türnähe= true;
 
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y < this.listOfTables[x].y) && (this.listOfTables[y].x < this.oneMeterInPX) && ((this.listOfTables[y].y + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
+              else if ((this.newy < this.listOfTables[x].y) && (this.newx < this.oneMeterInPX) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
                 this.statusOfTables[y].Türnähe= true;
-
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y == this.listOfTables[x].y) && (this.listOfTables[y].x < this.oneMeterInPX)) {
+              else if ((this.newy == this.listOfTables[x].y) && (this.newx < this.oneMeterInPX)) {
                 this.statusOfTables[y].Türnähe= true;
 
               }
@@ -820,17 +895,18 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung == "vorne") {
           for (var y = 0; y < this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].x > this.listOfTables[x].x) && (this.listOfTables[y].x < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.listOfTables[y].y < this.oneMeterInPX)) {
+              if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy < this.oneMeterInPX)) {
                 this.statusOfTables[y].Türnähe= true;
               }
 
               // @ts-ignore
-              else if ((this.listOfTables[y].x < this.listOfTables[x].x) && (this.listOfTables[y].y < this.oneMeterInPX) && ((this.listOfTables[y].x + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
+              else if ((this.newx < this.listOfTables[x].x) && (this.newy < this.oneMeterInPX) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
                 this.statusOfTables[y].Türnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x == this.listOfTables[x].x) && (this.listOfTables[y].y < this.oneMeterInPX)) {
+              else if ((this.newx == this.listOfTables[x].x) && (this.newy < this.oneMeterInPX)) {
                 this.statusOfTables[y].Türnähe= true;
               }
             }
@@ -839,16 +915,17 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung == "hinten") {
           for (var y = 0; y < this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].x > this.listOfTables[x].x) && (this.listOfTables[y].x < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable)) {
+              if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
                 this.statusOfTables[y].Türnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x < this.listOfTables[x].x) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.listOfTables[y].x + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
+              else if ((this.newx < this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
                 this.statusOfTables[y].Türnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x == this.listOfTables[x].x) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable)) {
+              else if ((this.newx == this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
                 this.statusOfTables[y].Türnähe= true;
               }
             }
@@ -860,16 +937,17 @@ export class SittingPlacesGenerator implements OnInit {
         if (this.listOfTables[x].platzierung =="rechts"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].y > this.listOfTables[x].y) && ((this.listOfTables[y].y < this.listOfTables[x].y + (3 * this.oneMeterInPX)) && ((this.listOfTables[y].x) + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              if ((this.newy > this.listOfTables[x].y) && ((this.newy < this.listOfTables[x].y + (3 * this.oneMeterInPX)) && ((this.newx) + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Fensternähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y < this.listOfTables[x].y) && ((this.listOfTables[y].y + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.listOfTables[y].x + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              else if ((this.newy < this.listOfTables[x].y) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Fensternähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y == this.listOfTables[x].y) && ((this.listOfTables[y].x + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              else if ((this.newy == this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Fensternähe= true;
               }
             }
@@ -878,16 +956,17 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung =="links"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].y > this.listOfTables[x].y) && (this.listOfTables[y].y < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.listOfTables[y].x < this.oneMeterInPX)) {
+              if ((this.newy > this.listOfTables[x].y) && (this.newy < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.newx < this.oneMeterInPX)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y < this.listOfTables[x].y) && (this.listOfTables[y].x < this.oneMeterInPX) && ((this.listOfTables[y].y + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
+              else if ((this.newy < this.listOfTables[x].y) && (this.newx < this.oneMeterInPX) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y == this.listOfTables[x].y) && (this.listOfTables[y].x < this.oneMeterInPX)) {
+              else if ((this.newy == this.listOfTables[x].y) && (this.newx < this.oneMeterInPX)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
             }
@@ -896,17 +975,18 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung =="vorne"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].x > this.listOfTables[x].x) && (this.listOfTables[y].x < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.listOfTables[y].y < this.oneMeterInPX)) {
+              if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy < this.oneMeterInPX)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
 
               // @ts-ignore
-              else if ((this.listOfTables[y].x < this.listOfTables[x].x) && (this.listOfTables[y].y < this.oneMeterInPX) && ((this.listOfTables[y].x + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
+              else if ((this.newx < this.listOfTables[x].x) && (this.newy < this.oneMeterInPX) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x == this.listOfTables[x].x) && (this.listOfTables[y].y < this.oneMeterInPX)) {
+              else if ((this.newx == this.listOfTables[x].x) && (this.newy < this.oneMeterInPX)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
             }
@@ -916,16 +996,17 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung =="hinten"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].x > this.listOfTables[x].x) && (this.listOfTables[y].x < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable)) {
+              if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x < this.listOfTables[x].x) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.listOfTables[y].x + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
+              else if ((this.newx < this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x == this.listOfTables[x].x) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable)) {
+              else if ((this.newx == this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
                 this.statusOfTables[y].Fensternähe= true;
               }
             }
@@ -937,16 +1018,17 @@ export class SittingPlacesGenerator implements OnInit {
         if (this.listOfTables[x].platzierung =="rechts"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].y > this.listOfTables[x].y) && ((this.listOfTables[y].y < this.listOfTables[x].y + (3 * this.oneMeterInPX)) && ((this.listOfTables[y].x) + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              if ((this.newy > this.listOfTables[x].y) && ((this.newy < this.listOfTables[x].y + (3 * this.oneMeterInPX)) && ((this.newx) + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y < this.listOfTables[x].y) && ((this.listOfTables[y].y + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.listOfTables[y].x + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              else if ((this.newy < this.listOfTables[x].y) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y == this.listOfTables[x].y) && ((this.listOfTables[y].x + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
+              else if ((this.newy == this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
             }
@@ -955,16 +1037,17 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung =="links"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].y > this.listOfTables[x].y) && (this.listOfTables[y].y < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.listOfTables[y].x < this.oneMeterInPX)) {
+              if ((this.newy > this.listOfTables[x].y) && (this.newy < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.newx < this.oneMeterInPX)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y < this.listOfTables[x].y) && (this.listOfTables[y].x < this.oneMeterInPX) && ((this.listOfTables[y].y + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
+              else if ((this.newy < this.listOfTables[x].y) && (this.newx < this.oneMeterInPX) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].y == this.listOfTables[x].y) && (this.listOfTables[y].x < this.oneMeterInPX)) {
+              else if ((this.newy == this.listOfTables[x].y) && (this.newx < this.oneMeterInPX)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
             }
@@ -973,17 +1056,18 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung =="vorne"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].x > this.listOfTables[x].x) && (this.listOfTables[y].x < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.listOfTables[y].y < this.oneMeterInPX)) {
+              if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy < this.oneMeterInPX*2)) {
                 this.statusOfTables[y].Tafelnähe= true;
 
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x < this.listOfTables[x].x) && (this.listOfTables[y].y < this.oneMeterInPX) && ((this.listOfTables[y].x + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
+              else if ((this.newx < this.listOfTables[x].x) && (this.newy < this.oneMeterInPX*2) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x == this.listOfTables[x].x) && (this.listOfTables[y].y < this.oneMeterInPX)) {
+              else if ((this.newx == this.listOfTables[x].x) && (this.newy < this.oneMeterInPX*2)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
             }
@@ -992,16 +1076,17 @@ export class SittingPlacesGenerator implements OnInit {
         else if (this.listOfTables[x].platzierung =="hinten"){
           for (var y=0; y< this.listOfTables.length; y++) {
             if (this.listOfTables[y].element == "desk") {
+              this.setXAndYAfterRotation(y);
               // @ts-ignore
-              if ((this.listOfTables[y].x > this.listOfTables[x].x) && (this.listOfTables[y].x < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable)) {
+              if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x < this.listOfTables[x].x) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.listOfTables[y].x + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
+              else if ((this.newx < this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
               // @ts-ignore
-              else if ((this.listOfTables[y].x == this.listOfTables[x].x) && (this.listOfTables[y].y > this.height - this.oneMeterInPX - this.heightOFTable)) {
+              else if ((this.newx == this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
                 this.statusOfTables[y].Tafelnähe= true;
               }
             }

@@ -127,6 +127,7 @@ export class RoomComponent implements OnInit {
   // Room name
   roomname: string = 'My Room name';
 
+
   deskToAdd: {elementtyp: string, place: number, x:number, y: number, degRotation: number, bgClr: string} =
     {
       "elementtyp": "eckig",
@@ -1195,8 +1196,10 @@ export class RoomComponent implements OnInit {
     }
 
 
-    this.allElements[id].objectWidth = Math.floor(groupElements.getClientRect().width);
-    this.allElements[id].objectHeight = Math.floor(groupElements.getClientRect().height);
+    /*this.allElements[id].objectWidth = Math.floor(groupElements.getClientRect().width);
+    this.allElements[id].objectHeight = Math.floor(groupElements.getClientRect().height);*/
+    this.allElements[id].objectWidth = objWidth;
+    this.allElements[id].objectHeight = objHeight;
 
 
     //Step 8
