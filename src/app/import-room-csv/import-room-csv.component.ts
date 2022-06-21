@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MainmenuComponent} from "../mainmenu/mainmenu.component";
+import {csvRecord} from "../model/csv-record";
+import * as CryptoJS from "crypto-js";
 
 @Component({
   selector: 'app-import-room-csv',
@@ -15,4 +17,6 @@ export class ImportRoomCsvComponent implements OnInit {
   closeModal() {
     this.mainmenuComponent.closeModalRoom();
   }
+
+
 }

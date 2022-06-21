@@ -127,9 +127,11 @@ export class MainmenuComponent implements OnInit {
         // @ts-ignore
         var myroom:Array<any>= JSON.parse(sessionStorage.getItem("room"));
         for (var x=0; x<myroom.length ; x++){
-          switch (myroom[x].element) {
-            case "desk": countOfTable++;
-              break;
+          if (myroom[x].element=="desk"&&myroom[x].place==1){
+            countOfTable++;
+          }
+          else if (myroom[x].element=="desk"&&myroom[x].place==2){
+            countOfTable+=2;
           }
         }
         if (countOfTable < countOfPerson){
@@ -140,6 +142,7 @@ export class MainmenuComponent implements OnInit {
         }
         else {
           this.router.navigate(['/sitting-places-generator']);
+          console.log(countOfTable);
         }
       }
       catch (Exception){

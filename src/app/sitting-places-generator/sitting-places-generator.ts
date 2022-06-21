@@ -874,18 +874,15 @@ setXAndYAfterRotation(indexOfElement: number){
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && ((this.newy < this.listOfTables[x].y + (3 * this.oneMeterInPX)) &&(this.newx + (this.widthOFTable)) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Türnähe= true;
-                alert("hi");
               }
 
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Türnähe= true;
-                alert("hi");
               }
               // @ts-ignore
               else if ((this.newy == this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
                 this.statusOfTables[y].Türnähe= true;
-                alert("hi");
               }
             }
           }
@@ -897,7 +894,6 @@ setXAndYAfterRotation(indexOfElement: number){
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && (this.newy < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.newx < this.oneMeterInPX)) {
                 this.statusOfTables[y].Türnähe= true;
-
               }
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && (this.newx < this.oneMeterInPX) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
@@ -1118,53 +1114,198 @@ setXAndYAfterRotation(indexOfElement: number){
 ///////// push the right Person(person with properties or not) in the right place(Table) ////////
   setPesronToTable(){
     for (var x=0; x<this.statusOfTables.length; x++){
-      if ((this.statusOfTables[x].Frontal)&&(this.Frontal.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      if ((this.statusOfTables[x].Frontal)&&(this.Frontal.length != 0 )){
+        if ( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.Frontal.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+          else if (this.listOfTables[x].place == 2 ){
+            if (this.listOfTables[x].firstname1 == "Vorname" && this.Frontal.length != 0 ){
+              var theRemovedElement = this.Frontal.shift();
+              this.listOfTables[x].firstname1 = theRemovedElement;
+            }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.Frontal.length != 0 ){
+            var theRemovedElement = this.Frontal.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+          }
       }
-      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Türnähe)&&this.TürnäheUndVorneImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname"){
+      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Türnähe)&&this.TürnäheUndVorneImRaum.length != 0){
+        if ( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.TürnäheUndVorneImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TürnäheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TürnäheUndVorneImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TürnäheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TürnäheUndVorneImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
+
       }
-      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Türnähe)&&(this.TürnäheUndHintenImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Türnähe)&&(this.TürnäheUndHintenImRaum.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.TürnäheUndHintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TürnäheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TürnäheUndHintenImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TürnäheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TürnäheUndHintenImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Tafelnähe)&&(this.TafelnäheUndVorneImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Tafelnähe)&&(this.TafelnäheUndVorneImRaum.length != 0)){
+        if(this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.TafelnäheUndVorneImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TafelnäheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnäheUndVorneImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TafelnäheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnäheUndVorneImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Tafelnähe)&&(this.TafelnäheUndHintenImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname") ){
+      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Tafelnähe)&&(this.TafelnäheUndHintenImRaum.length != 0)){
+        if(this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.TafelnäheUndHintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TafelnäheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnäheUndHintenImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TafelnäheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnäheUndHintenImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Fensternähe)&&(this.FensternäheUndVorneImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Fensternähe)&&(this.FensternäheUndVorneImRaum.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.FensternäheUndVorneImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.FensternäheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.FensternäheUndVorneImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.FensternäheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.FensternäheUndVorneImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Fensternähe)&&(this.FensternäheUndHintenImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname") ){
+      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Fensternähe)&&(this.FensternäheUndHintenImRaum.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.FensternäheUndHintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.FensternäheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.FensternäheUndHintenImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.FensternäheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.FensternäheUndHintenImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].Türnähe)&&(this.Türnähe.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].Türnähe)&&(this.Türnähe.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.Türnähe.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.Türnähe.length != 0 ){
+            var theRemovedElement = this.Türnähe.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.Türnähe.length != 0 ){
+            var theRemovedElement = this.Türnähe.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].Tafelnähe)&&(this.Tafelnähe.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].Tafelnähe)&&(this.Tafelnähe.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.Tafelnähe.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.Tafelnähe.length != 0 ){
+            var theRemovedElement = this.Tafelnähe.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.Tafelnähe.length != 0 ){
+            var theRemovedElement = this.Tafelnähe.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].Fensternähe)&&(this.Fensternähe.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].Fensternähe)&&(this.Fensternähe.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.Fensternähe.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.Fensternähe.length != 0 ){
+            var theRemovedElement = this.Fensternähe.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.Fensternähe.length != 0 ){
+            var theRemovedElement = this.Fensternähe.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].VorneImRaum)&&(this.VorneImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].VorneImRaum)&&(this.VorneImRaum.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.VorneImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.VorneImRaum.length != 0 ){
+            var theRemovedElement = this.VorneImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.VorneImRaum.length != 0 ){
+            var theRemovedElement = this.VorneImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
-      else if ((this.statusOfTables[x].HintenImRaum)&&(this.HintenImRaum.length != 0 && this.listOfTables[x].firstname1 == "Vorname")){
+      else if ((this.statusOfTables[x].HintenImRaum)&&(this.HintenImRaum.length != 0)){
+        if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
           var theRemovedElement = this.HintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
+        }
+        else if (this.listOfTables[x].place == 2 ){
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.HintenImRaum.length != 0 ){
+            var theRemovedElement = this.HintenImRaum.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.HintenImRaum.length != 0 ){
+            var theRemovedElement = this.HintenImRaum.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+        }
       }
     }
 
@@ -1183,14 +1324,23 @@ setXAndYAfterRotation(indexOfElement: number){
     console.log(this.PepoelWithoutProperties);
     this.shuffle(this.PepoelWithoutProperties);
     for (var x=0; x<this.statusOfTables.length; x++){
-      if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].firstname1 == "Vorname"){
-        var theRemovedElement = this.PepoelWithoutProperties.shift();
-        this.listOfTables[x].firstname1 = theRemovedElement;
+        if (this.listOfTables[x].place == 1) {
+          if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].firstname1 == "Vorname") {
+            var theRemovedElement = this.PepoelWithoutProperties.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+        }
+        else if (this.listOfTables[x].place == 2){
+          if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].firstname1 == "Vorname") {
+            var theRemovedElement = this.PepoelWithoutProperties.shift();
+            this.listOfTables[x].firstname1 = theRemovedElement;
+          }
+          if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].lastname1 == "Nachname") {
+            var theRemovedElement = this.PepoelWithoutProperties.shift();
+            this.listOfTables[x].lastname1 = theRemovedElement;
+          }
+
+        }
       }
-    }
-
-  }
-
-
-
+     }
 }
