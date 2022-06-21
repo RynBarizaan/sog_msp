@@ -63,3 +63,22 @@ margin-left: 17.5%;
 #footer {
   height:30px;
 }
+#loader {
+  position: absolute;
+  visibility: hidden;
+  z-index: 100;
+}
+.loader {
+  animation: blinker 1.5s linear infinite;
+  animation-name: loader-animation;
+  transition-timing-function: ease-in-out;
+  position: absolute;
+  z-index: 100;
+  margin: auto;
+}
+
+@keyframes loader-animation {
+  50% {
+    opacity: .2;
+  }
+}

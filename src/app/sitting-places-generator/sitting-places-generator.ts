@@ -38,6 +38,7 @@ export class SittingPlacesGenerator implements OnInit {
   oldy:number=0;
   newx:number=0;
   newy:number=0;
+  showLoader: boolean = true;
   allElements?: any[];
   stage: any;
   roomName: string = 'Mein Raumname';
@@ -1364,6 +1365,12 @@ setXAndYAfterRotation(indexOfElement: number){
     this.PepoelWithoutProperties = [];
     this.CalculateRoomArea();
     this.drawRoom();
+    let loader: any = document.getElementById('loader');
+    loader.style.visibility = 'visible';
+    setTimeout((): any =>{
+      let loader: any = document.getElementById('loader');
+      loader.style.visibility = 'hidden';
+      this.showLoader = false;},400);
 
   }
 }
