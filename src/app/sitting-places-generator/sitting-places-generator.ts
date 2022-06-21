@@ -1343,4 +1343,27 @@ setXAndYAfterRotation(indexOfElement: number){
         }
       }
      }
+  newGenerator(){
+    // @ts-ignore
+    this.listOfContacts= JSON.parse(sessionStorage.getItem("person"));
+    // @ts-ignore
+    this.listOfTables= JSON.parse(sessionStorage.getItem("room"));
+    this.statusOfTables= [];
+    this.Türnähe = [];
+    this.Fensternähe = [];
+    this.Frontal = [];
+    this.Tafelnähe= [];
+    this.VorneImRaum= [];
+    this.HintenImRaum= [];
+    this.TürnäheUndHintenImRaum= [];
+    this.TürnäheUndVorneImRaum = [];
+    this.FensternäheUndHintenImRaum= [];
+    this.FensternäheUndVorneImRaum= [];
+    this.TafelnäheUndHintenImRaum = [];
+    this.TafelnäheUndVorneImRaum = [];
+    this.PepoelWithoutProperties = [];
+    this.CalculateRoomArea();
+    this.drawRoom();
+
+  }
 }
