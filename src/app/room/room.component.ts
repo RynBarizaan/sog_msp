@@ -31,6 +31,8 @@ interface Object {
 }
 import {Router} from "@angular/router";
 import {toNumbers} from "@angular/compiler-cli/src/diagnostics/typescript_version";
+import {encrypt} from "../model/encrypt";
+import * as CryptoJS from "crypto-js";
 
 @Component({
   selector: 'app-room',
@@ -1951,10 +1953,16 @@ export class RoomComponent implements OnInit {
     this.showPicker = false;
     //
   }
+  Encrypt: Array<any> = [];
+  password = "123";
 
   // Export csv file
   ExportAsCsv(){
+
+    let arr =[];
+    this.Encrypt =[];
     this.makeRoomDetailsReady();
+
 
     for(let element of this.roomElements) {
       element.roomId = 0;
@@ -1963,14 +1971,13 @@ export class RoomComponent implements OnInit {
       "width": this.standardRooms[this.currentRoomId].width,
       "height":  this.standardRooms[this.currentRoomId].height,
     }
-
-      let options = {
-        fieldSeparator: ',',
-        quoteStrings: '',
-        decimalseparator: '.',
-        showLabels: true,
-        showTitle: false,
-        useBom: false,
+    var options = {
+      fieldSeparator: ',',
+      quoteStrings: '',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: false,
+      useBom: false,
         headers: ["RoomInfos"]
     };
     //Error message for if room is empty
@@ -1978,8 +1985,12 @@ export class RoomComponent implements OnInit {
       this.isRoomEmpty = true;
     }
     else {
-      this.roomElements.push(roomStage)
-      new ngxCsv(this.roomElements, "Room", options);
+      this.roomElements.unshift(roomStage);
+      for (let i = 0; i < this.roomElements.length; i++) {
+        arr.push(JSON.stringify(this.roomElements[i]));
+        this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
+      }
+      new ngxCsv(this.Encrypt, "Room", options);
     }
     }
 

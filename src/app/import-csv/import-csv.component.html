@@ -1,20 +1,15 @@
 <div class="modal fade" id="ModalBoxImport" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content"><small id="FileTypHelp1" class="form-text text-secondary" style="margin-left: 10px">gruppe importieren</small><div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLongTitle">Passende verschlüsselte Datei auswählen und ein gültiges Passwort eingeben!</h5>
+      <h5 class="modal-title" id="exampleModalLongTitle">Eine gültiges Passwort eingeben und Passende verschlüsselte Datei auswählen!</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
       <div class="modal-body "style="width: 100%;">
-        <span class="material-icons md-48">file_open</span>
-        <input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"  class="form-control form-control-lg btn-file" style="width: 80%; left:22px"/>
-        <small id="FileTypHelp" class="form-text text-danger" style="margin-left: 70px">{{messageIfNoFile}}</small> <br>
         <span class="material-icons md-48 mt-2">lock</span>
-
         <mat-form-field appearance="outline" style="width: 80%; left: 20px"  class="mr-2">
           <mat-label>Passwort</mat-label>
-
           <input #myInput matInput
                  placeholder="Passwort eingeben"
                  [type]="hide ? 'password': 'text'"
@@ -27,8 +22,12 @@
             Bitte Passwort eingeben
           </mat-error>
         </mat-form-field>
-        <small id="WrongFile" class="form-text text-danger" style="margin-left: 70px">{{messageIfWrongPass}}</small> <br>
+        <br>
 
+        <span class="material-icons md-48">file_open</span>
+        <br><input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"  class="form-control form-control-lg btn-file" style="width: 80%; left:22px; top: 1vh;"/>
+        <br><small id="FileTypHelp" class="form-text text-danger" style="top: -2vh; margin-left: 70px;">{{messageIfNoFile}}</small> <br>
+        <small id="WrongFile" class="form-text text-danger" style="margin-left: 70px">{{messageIfWrongPass}}</small> <br>
 
       </div>
       <div class="modal-footer">
