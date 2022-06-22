@@ -13,7 +13,7 @@
           <a class="nav-link" routerLink="/room"><h5><mat-icon fontSet="material-icons-outlined">layers</mat-icon> Raum</h5></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" routerLink="" aria-disabled="true"><h5><mat-icon fontSet="material-icons-outlined">event_seat</mat-icon> Sitzordnung</h5></a>
+          <a class="nav-link disabled" id="sitzordnung" (click)="this.mainMenu.deleteData('generator')" aria-disabled="true"><h5><mat-icon fontSet="material-icons-outlined">event_seat</mat-icon> Sitzordnung</h5></a>
         </li>
       </ul>
     </div>
