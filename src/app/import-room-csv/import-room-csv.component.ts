@@ -19,6 +19,7 @@ export class ImportRoomCsvComponent implements OnInit {
   password= "123";
   hide = true;
   messageIfNoFile!: string;
+  messageIfWrongPass!: string;
   csv = [];
   isTrue= false;
 
@@ -27,6 +28,7 @@ export class ImportRoomCsvComponent implements OnInit {
   @ViewChild('csvReader') csvReader: any;
 
   // Import CSV File in Array
+  private sessionStorage: any;
   uploadListener($event: any): void {
 
     let files = $event.srcElement.files;
@@ -56,27 +58,32 @@ export class ImportRoomCsvComponent implements OnInit {
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any) {
 
+
     for (let i = 1; i < csvRecordsArray.length - 1; i++) {
       let curruntRecord = (<string>csvRecordsArray[i]).split(/\r\n|\n/);
       this.roomElements.push((CryptoJS.AES.decrypt(curruntRecord.toString(), this.password.trim()).toString(CryptoJS.enc.Utf8)));
       this.roomDetails = [];
-
+      this.isTrue=false;
     }
     if (this.roomElements.length==0 || this.roomElements==[] || this.roomElements==null){
       this.messageIfNoFile = "Ausgewählt CSV Datei ist Leer";
+      this.isTrue=false;
+
     }
+
+
+
     else {
       for (var x = 0; x < this.roomElements.length; x++) {
         this.roomDetails[x] = JSON.parse(this.roomElements[x]);
       }
       sessionStorage.setItem("roomDimension", JSON.stringify(this.roomDetails[0]));
+      this.isTrue=true;
 
       for (var x = 1; x < this.roomElements.length; x++) {
         this.roomDetails[x] = JSON.parse(this.roomElements[x]);
       }
       sessionStorage.setItem("room", JSON.stringify(this.roomDetails));
-      this.fileReset();
-      this.closeModal();
     }
   }
 
@@ -92,11 +99,44 @@ export class ImportRoomCsvComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //click event
+
+  Import(){
+    //Error if you didn't upload any file
+    this.isTrue==false
+    if (this.csvReader.nativeElement.value == ""){
+      this.messageIfNoFile="Bitte eine CSV Datei Auswählen";
+      this.messageIfWrongPass=""
+    }
+    else {
+      this.messageIfNoFile="";
+    }
+    //Error if you enter wrong password or wrong csv file
+    if (this.roomElements.length == 0 || this.roomElements==null || this.roomElements ==[] || this.roomElements==['']) {
+      this.messageIfWrongPass = "Passwort ist falsch oder Falsche CSV Datei Ausgewählt";
+      this.fileReset()
+      console.log("bite richtige password eingeben")
+    }
+    if (this.isTrue){
+      sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
+      this.closeModal()
+      this.isTrue=false;
+    }
+    else {
+      this.isTrue==false;
+      this.messageIfWrongPass = "Passwort ist falsch oder Falsche CSV Datei Ausgewählt";
+    }
+
+  }
+
   //close modal box
   closeModal() {
     this.mainmenuComponent.closeModalRoom();
     this.fileReset();
     this.messageIfNoFile=""
+    this.isTrue==false;
+    sessionStorage.setItem("isDataConfirm", JSON.stringify(false));
+    this.messageIfWrongPass =""
   }
 
 

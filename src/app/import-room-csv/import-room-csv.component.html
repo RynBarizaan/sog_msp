@@ -10,9 +10,11 @@
       <span class="material-icons md-48">file_open</span>
       <input type="file" #csvReader name="Upload CSV" id="txtFileUpload"  accept=".csv" (change)="uploadListener($event)"  class="form-control form-control-lg btn-file" style="width: 80%; left:22px"/>
       <small id="FileTypHelp" class="form-text text-danger" style="margin-left: 70px">{{messageIfNoFile}}</small> <br>
+      <small id="FileTypHelp2" class="form-text text-danger" style="margin-left: 70px">{{messageIfWrongPass}}</small> <br>
+
     </div><div class="modal-footer">
       <button type="button" (click)="closeModal()" class="btn btn-secondary" data-dismiss="modal">Schlißen</button>
-      <!--<button type="button" class="btn btn-primary">Bestätigen und Importieren</button>-->
+      <button type="button" (click)="Import()" class="btn btn-primary">Bestätigen und Importieren</button>
     </div>
     </div>
   </div>
