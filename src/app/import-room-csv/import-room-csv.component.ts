@@ -58,7 +58,6 @@ export class ImportRoomCsvComponent implements OnInit {
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any) {
 
-
     for (let i = 1; i < csvRecordsArray.length - 1; i++) {
       let curruntRecord = (<string>csvRecordsArray[i]).split(/\r\n|\n/);
       this.roomElements.push((CryptoJS.AES.decrypt(curruntRecord.toString(), this.password.trim()).toString(CryptoJS.enc.Utf8)));
@@ -66,11 +65,9 @@ export class ImportRoomCsvComponent implements OnInit {
       this.isTrue=false;
     }
     if (this.roomElements.length==0 || this.roomElements==[] || this.roomElements==null){
-      this.messageIfNoFile = "Ausgewählt CSV Datei ist Leer";
+      this.messageIfNoFile = "Falsche CSV Datei Ausgewählt";
       this.isTrue=false;
-
     }
-
 
 
     else {
@@ -111,11 +108,10 @@ export class ImportRoomCsvComponent implements OnInit {
     else {
       this.messageIfNoFile="";
     }
-    //Error if you enter wrong password or wrong csv file
+    //Error if you choose wrong csv file
     if (this.roomElements.length == 0 || this.roomElements==null || this.roomElements ==[] || this.roomElements==['']) {
-      this.messageIfWrongPass = "Passwort ist falsch oder Falsche CSV Datei Ausgewählt";
+      this.messageIfWrongPass = "Falsche CSV Datei Ausgewählt";
       this.fileReset()
-      console.log("bite richtige password eingeben")
     }
     if (this.isTrue){
       sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
@@ -124,7 +120,7 @@ export class ImportRoomCsvComponent implements OnInit {
     }
     else {
       this.isTrue==false;
-      this.messageIfWrongPass = "Passwort ist falsch oder Falsche CSV Datei Ausgewählt";
+      this.messageIfWrongPass = "Falsche CSV Datei Ausgewählt";
     }
 
   }
