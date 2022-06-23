@@ -123,6 +123,8 @@ export class RoomComponent implements OnInit {
   isToAddBoard: boolean = false;
   isToSaveRoom: boolean = false;
   isRoomEmpty: boolean = false;
+  isNameOfRooms: boolean = false;
+
   isToCustomizeRoomUnterricht: boolean = false;
   isToCustomizeRoomKonferrenz: boolean = false;
   isToCustomizeRoomWorkshop: boolean = false;
@@ -1953,10 +1955,12 @@ export class RoomComponent implements OnInit {
     this.showPicker = false;
     //
   }
+
+  // Export csv file
+
   Encrypt: Array<any> = [];
   password = "123";
 
-  // Export csv file
   ExportAsCsv(){
 
     let arr =[];
@@ -1985,12 +1989,13 @@ export class RoomComponent implements OnInit {
       this.isRoomEmpty = true;
     }
     else {
+
       this.roomElements.unshift(roomStage);
       for (let i = 0; i < this.roomElements.length; i++) {
         arr.push(JSON.stringify(this.roomElements[i]));
         this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
       }
-      new ngxCsv(this.Encrypt, "Room", options);
+      new ngxCsv(this.Encrypt, "room", options);
     }
     }
 

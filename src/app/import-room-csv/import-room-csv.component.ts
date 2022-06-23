@@ -18,7 +18,7 @@ export class ImportRoomCsvComponent implements OnInit {
   password= "123";
   hide = true;
   messageIfNoFile!: string;
-
+  csv = [];
 
   public records: any[] = [];
   @ViewChild('csvReader') csvReader: any;
@@ -27,6 +27,20 @@ export class ImportRoomCsvComponent implements OnInit {
   uploadListener($event: any): void {
 
     let files = $event.srcElement.files;
+
+      if(files && files.length > 0) {
+        let file : File = files.item(0);
+        console.log(file.name);
+        console.log(file.size);
+        console.log(file.type);
+
+        let reader: FileReader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        reader.onload = (e) => {
+          let csv: string = reader.result as string;
+          console.log("\ufeff" + csv);
+        }
+    }
 
     if (this.isValidCSVFile(files[0]) ) {
 
@@ -55,32 +69,26 @@ export class ImportRoomCsvComponent implements OnInit {
 
     console.log("is works 2");
 
-
-    //this.roomElements = [];
     for (let i = 1; i < csvRecordsArray.length - 1; i++) {
       let curruntRecord = (<string>csvRecordsArray[i]).split(/\r\n|\n/);
       this.roomElements.push((CryptoJS.AES.decrypt(curruntRecord.toString(), this.password.trim()).toString(CryptoJS.enc.Utf8)));
       this.roomDetails = [];
     }
-    /*if (csvRecordsArray.length == utf8Encode(csvRecordsArray) ){
-      console.log("Empty")
-    }
-    else {
-      console.log(csvRecordsArray[1])
-    }*/
-
 
     if (this.roomElements.length==0 || this.roomElements==[] || this.roomElements==null ){
-      this.messageIfNoFile = "Falsche CSV Datei Ausgewählt";
+      this.messageIfNoFile = "Ausgewählt CSV Datei ist Leer";
       console.log("Error")
-      //this.isTrue=false;
     }
-    else {
+
 
       for (var x = 0; x < this.roomElements.length; x++) {
         this.roomDetails[x] = JSON.parse(this.roomElements[x]);
       }
-      console.log(this.roomDetails[0]);
+      console.log(this.roomElements[0]);
+      if (this.roomElements[0]=={width:""}){
+        console.log("Falshe datei")
+      }
+      else {
       sessionStorage.setItem("roomDimension", JSON.stringify(this.roomDetails[0]));
       for (var x = 1; x < this.roomElements.length; x++) {
         this.roomDetails[x] = JSON.parse(this.roomElements[x]);
@@ -91,14 +99,12 @@ export class ImportRoomCsvComponent implements OnInit {
     }
   }
 
-
   isValidCSVFile(file: any) {
     return file.name.endsWith(".csv");
   }
   fileReset() {
     this.csvReader.nativeElement.value = "";
   }
-
 
   constructor(public mainmenuComponent: MainmenuComponent ) { }
 
