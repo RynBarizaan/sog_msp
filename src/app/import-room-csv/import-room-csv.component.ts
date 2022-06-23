@@ -19,7 +19,7 @@ export class ImportRoomCsvComponent implements OnInit {
   password= "123";
   hide = true;
   messageIfNoFile!: string;
-  messageIfWrongPass!: string;
+  messageIfWrongCSV!: string;
   csv = [];
   isTrue= false;
 
@@ -28,7 +28,6 @@ export class ImportRoomCsvComponent implements OnInit {
   @ViewChild('csvReader') csvReader: any;
 
   // Import CSV File in Array
-  private sessionStorage: any;
   uploadListener($event: any): void {
 
     let files = $event.srcElement.files;
@@ -64,24 +63,19 @@ export class ImportRoomCsvComponent implements OnInit {
       this.roomDetails = [];
       this.isTrue=false;
     }
-    if (this.roomElements.length==0 || this.roomElements==[] || this.roomElements==null){
-      this.messageIfNoFile = "Falsche CSV Datei Ausgewählt";
-      this.isTrue=false;
-    }
-
-
-    else {
       for (var x = 0; x < this.roomElements.length; x++) {
         this.roomDetails[x] = JSON.parse(this.roomElements[x]);
       }
       sessionStorage.setItem("roomDimension", JSON.stringify(this.roomDetails[0]));
       this.isTrue=true;
+      this.messageIfWrongCSV="";
+      this.messageIfNoFile="";
 
       for (var x = 1; x < this.roomElements.length; x++) {
         this.roomDetails[x] = JSON.parse(this.roomElements[x]);
       }
       sessionStorage.setItem("room", JSON.stringify(this.roomDetails));
-    }
+
   }
 
   isValidCSVFile(file: any) {
@@ -103,26 +97,25 @@ export class ImportRoomCsvComponent implements OnInit {
     this.isTrue==false
     if (this.csvReader.nativeElement.value == ""){
       this.messageIfNoFile="Bitte eine CSV Datei Auswählen";
-      this.messageIfWrongPass=""
     }
     else {
       this.messageIfNoFile="";
     }
     //Error if you choose wrong csv file
     if (this.roomElements.length == 0 || this.roomElements==null || this.roomElements ==[] || this.roomElements==['']) {
-      this.messageIfWrongPass = "Falsche CSV Datei Ausgewählt";
+      this.messageIfWrongCSV = "Falsche CSV Datei Ausgewählt";
       this.fileReset()
     }
     if (this.isTrue){
       sessionStorage.setItem("isDataConfirm", JSON.stringify(true));
       this.closeModal()
+      this.messageIfWrongCSV=" "
       this.isTrue=false;
     }
     else {
       this.isTrue==false;
-      this.messageIfWrongPass = "Falsche CSV Datei Ausgewählt";
+      this.messageIfWrongCSV = "Falsche CSV Datei Ausgewählt";
     }
-
   }
 
   //close modal box
@@ -132,7 +125,7 @@ export class ImportRoomCsvComponent implements OnInit {
     this.messageIfNoFile=""
     this.isTrue==false;
     sessionStorage.setItem("isDataConfirm", JSON.stringify(false));
-    this.messageIfWrongPass =""
+    this.messageIfWrongCSV =""
   }
 
 
