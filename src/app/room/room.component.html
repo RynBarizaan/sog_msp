@@ -576,7 +576,7 @@
                       <path d="M239.36,179.94c-7.76,0-15.12,1.65-21.78,4.62-3.32,1.48-4.28,5.75-1.83,8.43,8.77,9.58,14.49,21.98,15.6,35.68,.22,2.76,2.52,4.89,5.29,4.89h50.74c3.18,0,5.63-2.78,5.28-5.94-2.95-26.82-25.69-47.68-53.29-47.68Z"/>
                     </g></svg>
                 </button>
-                <span (click)="popUpForm = true; nrRoomToCustomize = 0; currentRoomId = 0; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
+                <span [ngClass]="{'disableButton': currentRoomId == 0}" (click)="popUpForm = true; nrRoomToCustomize = 0; currentRoomId = 0; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
               tune
               </span>
               </div>
@@ -600,7 +600,7 @@
                   </g>
                   </svg>
                 </button>
-                <span (click)="popUpForm = true; nrRoomToCustomize = 1; currentRoomId = 1; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
+                <span  [ngClass]="{'disableButton': currentRoomId == 1}"  (click)="popUpForm = true; nrRoomToCustomize = 1; currentRoomId = 1; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
               tune
               </span>
               </div>
@@ -626,7 +626,7 @@
                   </svg>
 
                 </button>
-                <span (click)="popUpForm = true; nrRoomToCustomize = 2; currentRoomId = 2; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
+                <span [ngClass]="{'disableButton': currentRoomId == 2}"  (click)="popUpForm = true; nrRoomToCustomize = 2; currentRoomId = 2; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
               tune
               </span>
               </div>

@@ -37,7 +37,7 @@
 }
 
 #footer {
-  height:100px;
+  height:60px;
 }
 
 #roomvisualiser {
@@ -202,9 +202,9 @@ input[type=number]::-webkit-outer-spin-button {
 
 .transparenz {
   position: absolute;
-
+margin-top: 20px;
   width: 100%;
-  height: 1467px;
+  height: 1117px;
   z-index: 9;
   background-color: #fff;
   opacity: .8;
@@ -342,9 +342,14 @@ input[type=number]::-webkit-outer-spin-button {
   height: 50px;
   padding: 12px;
   cursor: pointer;
-  color: #0088ff;
+  color: #999;
+  pointer-events: none;
 }
 
+.disableButton {
+  pointer-events: visible;
+  color: #0088ff;
+}
 
 
 .custom-room-icons:hover{
@@ -486,8 +491,10 @@ position: absolute;
 }
 
 .roomChangerbtn label{
-  display: block;
+
 }
+
+
 
 .room-icons {
   display: none;

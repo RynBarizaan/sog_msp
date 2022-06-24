@@ -589,16 +589,19 @@ export class SittingPlacesGenerator implements OnInit {
         tooltip = new Konva.Text({
           text: allElements[i].id,
           fontFamily: 'Segoe UI',
+          fontStyle: 'Bold',
           fontSize: objWidth*.15,
-          y:objHeight*.03,
+          y:0,
           x:objWidth*.1,
           padding: 5,
           letterSpacing:1,
-          textFill: 'white',
+          fill: '#fff',
           width: objWidth*.9,
-          fill: '#777',
           alpha: 0.75,
           visible: true,
+          shadowBlur: 3,
+          shadowColor: '#000',
+          shadowOffset: {x: 1, y: 1},
         });
       } else if (allElements[i].firstname1 != 'Vorname' && allElements[i].lastname1 != 'Nachname' && allElements[i].firstname1 != undefined && allElements[i].lastname1 != undefined){
         tooltip = new Konva.Text({
