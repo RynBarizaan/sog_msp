@@ -1,5 +1,5 @@
 <div id="popupContainer" >
-
+<!--popUp if room is empty   -->
   <div *ngIf="isRoomEmpty" [ngClass]="{
         'popUpSlidIn': isRoomEmpty,
         'popUpSlidOut': popUpSlide
@@ -13,6 +13,35 @@
     </div>
     <div class="popUpActions">
       <button (click)="popUpSlide = true; hideAllPopups();">Schließen</button>
+    </div>
+  </div>
+
+  <!--popUp get room name-->
+  <div *ngIf="isRoomNameEmpty" [ngClass]="{
+        'popUpSlidIn': isRoomNameEmpty,
+        'popUpSlidOut': popUpSlide
+    }" class="popupForm">
+    <div class="headerPopup">
+      Klasse Name Eingeben
+    </div>
+    <div class="contentPopup">
+      <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>Raum Name</mat-label>
+        <input #myInput1
+               matInput  placeholder="Name des raum eingeben"
+               [formControl]="confirmFormControl1"
+               required
+               (keyup)="onKey($event)"/>
+        <mat-error *ngIf="confirmFormControl1.hasError('required')">
+          Bitte name ihre raum eingeben
+        </mat-error>
+
+      </mat-form-field>
+      <br>
+    </div>
+    <div class="popUpActions">
+      <button type="button" class="btn btn-secondary m-3" (click)="popUpSlide = true; hideAllPopups();">Schließen</button>
+      <button type="button" class="btn btn-outline-dark m-3" (click)="ExportAsCsv()">Speichern und als CSV herunterladen</button>
     </div>
   </div>
 
@@ -623,7 +652,7 @@
               <label>PDF Herunterladen</label>
             </div>
 
-            <div (click)="ExportAsCsv()"  class="iconscontainer">
+            <div (click)="popUpForm = true; modalBox()"  class="iconscontainer">
               <span class="material-icons p-1">download</span>
               <label>CSV Herunterladen</label>
             </div>
