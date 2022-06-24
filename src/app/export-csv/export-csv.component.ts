@@ -13,6 +13,7 @@ import { saveAs } from 'file-saver';
 declare var window: any;
 
 
+
 @Component({
   selector: 'app-export-csv',
   templateUrl: './export-csv.component.html',
@@ -42,7 +43,7 @@ export class ExportCSVComponent {
     this.formModal = new window.bootstrap.Modal(
       document.getElementById("exampleModalCenter1"));
   }
-//Password page
+//Password pagee
   confirmFormControl = new FormControl('', [
     Validators.required,
   ]);

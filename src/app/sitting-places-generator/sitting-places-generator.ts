@@ -1397,8 +1397,6 @@ setXAndYAfterRotation(indexOfElement: number){
 
   }
 
-
-
   listePerson () {
     let contacts = this.listOfContacts.map(subject => {
       let tables = this.listOfTables.find(element => element.firstname1 === subject.Vorname + " "+ subject.Nachname)
