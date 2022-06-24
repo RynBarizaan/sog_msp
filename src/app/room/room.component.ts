@@ -1801,7 +1801,6 @@ export class RoomComponent implements OnInit {
         this.allElements[id].yNotSmallerZ = yNotSmaller
         // @ts-ignore
         this.allElements[id].yNotBiggerZ = yNotBigger
-
       }
 
       this.updateElementsObject(id, platzierung);
@@ -1812,6 +1811,7 @@ export class RoomComponent implements OnInit {
     circle.on('click', (event) => {
       this.currentId = id;
       this.isToDelete = true;
+      this.popUpForm = true;
     });
 
   }
