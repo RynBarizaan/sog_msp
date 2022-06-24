@@ -2,7 +2,7 @@
      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content"><div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLongTitle1">Erstellemn Sie eine Passwort um ihre Daten zu Schutzen</h5>
+      <h5 class="modal-title" id="exampleModalLongTitle1">Erstellen Sie eine Passwort um ihre Daten zu schützen</h5>
       <br>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">&times;</span>
@@ -14,14 +14,14 @@
         <small id="FileTypHelp2" class="form-text text-danger" style="margin-left: 10px">{{messageFilenameEmpty}}</small>-->
         <div>
           <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
-            <mat-label>Gruppe Name</mat-label>
+            <mat-label>Gruppen Name</mat-label>
             <input #myInput1
-                   matInput  placeholder="Name des gruppe eingeben"
+                   matInput  placeholder="Name der Gruppe eingeben"
                    [formControl]="confirmFormControl1"
                    required
                    (keyup)="onKey($event)"/>
             <mat-error *ngIf="confirmFormControl1.hasError('required')">
-              Bitte name ihre gruppe eingeben
+              Bitte name ihrer Gruppe eingeben
             </mat-error>
 
           </mat-form-field>
@@ -30,7 +30,7 @@
             <mat-label>Passwort</mat-label>
             <input #myInput matInput
                    #passwordWithValidation
-                   placeholder="Neue passwort eingeben"
+                   placeholder="Neues Passwort eingeben"
                    [type]="hide ? 'password': 'text'"
                    required
                    [formControl]="passwordComponentWithValidation.passwordFormControl"
@@ -43,7 +43,7 @@
             </mat-hint>
             <mat-error
               *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')">
-              Bitte neue password eingeben
+              Bitte neues Passwort eingeben
             </mat-error>
             <mat-error
               *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('pattern')">
@@ -77,7 +77,7 @@
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' :
               'visibility'}}</mat-icon>
             <mat-error *ngIf="confirmFormControl.hasError('required')">
-              Bitte Bestätige das Passwort
+              Bitte erneut das Passwort eingeben
             </mat-error>
             <mat-error *ngIf="confirmFormControl.hasError('pattern')">
               Passwort & Passwort bestätigen stimmen nicht überein            </mat-error>

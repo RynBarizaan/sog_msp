@@ -2,7 +2,7 @@
 <!--Import room-->
 <div class="modal fade" id="ImportRoom" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content"><small id="FileTypHelp1" class="form-text text-secondary" style="margin-left: 10px">raum importieren</small><div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Eine passende CSV datei auswählen!</h5>
+    <div class="modal-content"><small id="FileTypHelp1" class="form-text text-secondary" style="margin-left: 10px">raum importieren</small><div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">Eine gültige CSV Datei auswählen!</h5>
 
       <button type="button" (click)="closeModal()" class="close" data-dismiss="modal" aria-label="Close" >
         <span aria-hidden="true">&times;</span> </button>
@@ -13,7 +13,7 @@
       <small id="FileTypHelp2" class="form-text text-danger" style="margin-left: 70px">{{messageIfWrongCSV}}</small> <br>
 
     </div><div class="modal-footer">
-      <button type="button" (click)="closeModal()" class="btn btn-secondary" data-dismiss="modal">Schlißen</button>
+      <button type="button" (click)="closeModal()" class="btn btn-secondary" data-dismiss="modal">Schließen</button>
       <button type="button" (click)="Import()" class="btn btn-primary">Bestätigen und Importieren</button>
     </div>
     </div>

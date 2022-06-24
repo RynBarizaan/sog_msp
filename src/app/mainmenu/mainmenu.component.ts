@@ -58,7 +58,7 @@ export class MainmenuComponent implements OnInit {
     }
   }
 
-
+  // check if a room is available /////
   isRoomAvailable(): boolean {
     let room: any;
     room = sessionStorage.getItem("room");
@@ -77,7 +77,7 @@ export class MainmenuComponent implements OnInit {
     }
   }
 
-  ////// check if a grupp and room already created /////
+  ////// check if a group and room are already created /////
   isDataAndRoomExist(): boolean{
     if (this.isDataExist() && this.isRoomAvailable()){
       return true;
@@ -88,7 +88,7 @@ export class MainmenuComponent implements OnInit {
   }
 
 
-  ////////// edit or create a Grupp ////
+  ////////// edit or create a group ////
   editOrCreatGroup(){
     if (this.isDataExist()){
       sessionStorage.setItem("TheStatus", JSON.stringify(true));
@@ -161,6 +161,8 @@ export class MainmenuComponent implements OnInit {
     this.formModalDelete.hide();
   }
 
+
+ //// confirm delete of Group table or Room /////
   confirmModalText() {
     if (this.elementOfDelete === "room"){
       sessionStorage.removeItem("room");

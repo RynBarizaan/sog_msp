@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Eigenschften hinzufügen</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Eigenschaften hinzufügen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -18,7 +18,7 @@
             <div class="col p-1 mb-2 bg-secondary text-white" style="text-align: center">Vor- und Nachname</div>
             <div class="col p-1" style="text-align: center">{{firstName}} {{lastName}}</div>
             <div class="w-100"></div>
-            <div class="col p-1 mb-2 bg-secondary text-white" style="text-align: center">Eigenschften</div>
+            <div class="col p-1 mb-2 bg-secondary text-white" style="text-align: center">Eigenschaften</div>
           </div>
           <div class="row">
             <div class="form-check">
@@ -58,7 +58,7 @@
               </label>
             </div>
             <label class="form-check-label" style="padding-left:0;">
-              darf nicht neben
+              Darf nicht neben
               <div class="container containerProperties" style="float: right">
                 <div *ngFor="let group of neighborList;  let i = index" class="form-check">
                   <input class="form-check-input" type="checkbox" value="" id="checkbox{{firstName}}{{lastName}}{{i}}" >
