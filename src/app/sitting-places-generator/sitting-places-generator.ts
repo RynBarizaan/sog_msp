@@ -228,15 +228,15 @@ export class SittingPlacesGenerator implements OnInit {
       // If the object is a big round desk
       else if(allElements[i].element == 'desk' && allElements[i].elementtyp == 'rund' && allElements[i].place == 2) {
         // @ts-ignore
-        let xChair1: any = this.radiusBigDesk - (this.widthChair / 2);
+        let xChair1: any = radiusBigDesk - (widthChair / 2);
         // @ts-ignore
-        let xChair2: any = this.radiusBigDesk - (this.widthChair / 2);
+        let xChair2: any = radiusBigDesk - (widthChair / 2);
         let yChair1: any = 0;
         // @ts-ignore
-        let yChair2: any = (this.radiusBigDesk * 2) + this.widthChair + (this.widthChair - this.heightChair);
+        let yChair2: any = (radiusBigDesk * 2) + widthChair + (widthChair - heightChair);
         let xDesk: any = radiusBigDesk;
         // @ts-ignore
-        let yDesk: any = this.radiusBigDesk + this.widthChair;
+        let yDesk: any = radiusBigDesk + widthChair;
 
         let desk = new Konva.Circle({
           x: xDesk,
@@ -413,18 +413,10 @@ export class SittingPlacesGenerator implements OnInit {
 
       if(allElements[i].element == 'door' || allElements[i].element == 'window' || allElements[i].element == 'board') {
 
-
           allElements[i].xNotSmallerZ = 0;
-
-
           allElements[i].xNotBiggerZ = widthStage - objWidth;
-
-
           allElements[i].yNotSmallerZ = 0;
-
-
           allElements[i].yNotBiggerZ = heightStage - objHeight;
-
 
         if((allElements[i].platzierung == 'hinten') || (allElements[i].platzierung == 'vorne')) {
           allElements[i].xNotBiggerZ = widthStage - objHeight;
@@ -565,19 +557,19 @@ export class SittingPlacesGenerator implements OnInit {
 
         if(allElements[i].x < allElements[i].xNotSmallerZ){
           allElements[i].x = allElements[i].xNotSmallerZ;
-          allElements[i].x = allElements[i].x;
+          //allElements[i].x = allElements[i].x;
         }
         if(allElements[i].x > allElements[i].xNotBiggerZ){
           allElements[i].x = allElements[i].xNotBiggerZ;
-          allElements[i].x = allElements[i].x;
+          //allElements[i].x = allElements[i].x;
         }
         if(allElements[i].y < allElements[i].yNotSmallerZ){
           allElements[i].y = allElements[i].yNotSmallerZ;
-          allElements[i].y = allElements[i].y;
+          //allElements[i].y = allElements[i].y;
         }
         if(allElements[i].y > allElements[i].yNotBiggerZ){
           allElements[i].y = allElements[i].yNotBiggerZ;
-          allElements[i].y = allElements[i].y;
+          //allElements[i].y = allElements[i].y;
         }
         groupElements.x(allElements[i].x);
         groupElements.y(allElements[i].y);
@@ -604,20 +596,41 @@ export class SittingPlacesGenerator implements OnInit {
           alpha: 0.75,
           visible: true,
         });
-      } else {
+      } else if (allElements[i].firstname1 != 'Vorname' && allElements[i].lastname1 != 'Nachname' && allElements[i].firstname1 != undefined && allElements[i].lastname1 != undefined){
         tooltip = new Konva.Text({
-          text: allElements[i].id + '           ' + allElements[i].firstname1,
+          text: 'Nummer ' + (allElements[i].id+1) + '\n' + allElements[i].firstname1 + '\n' + allElements[i].lastname1,
           fontFamily: 'Segoe UI',
+          fontStyle: 'Bold',
           fontSize: objWidth*.15,
-          y:objHeight*.03,
+          y:0,
           x:objWidth*.1,
           padding: 5,
           letterSpacing:1,
-          textFill: 'white',
+          fill: '#fff',
           width: objWidth*.9,
-          fill: '#777',
           alpha: 0.75,
           visible: true,
+          shadowBlur: 3,
+          shadowColor: '#000',
+          shadowOffset: {x: 1, y: 1},
+        });
+      } else if (allElements[i].firstname1 != 'Vorname' && allElements[i].firstname1 != undefined && (allElements[i].lastname1 == 'Nachname' || allElements[i].lastname1 == undefined)){
+        tooltip = new Konva.Text({
+          text: 'Nummer ' + (allElements[i].id+1) + '\n' + allElements[i].firstname1,
+          fontFamily: 'Segoe UI',
+          fontStyle: 'Bold',
+          fontSize: objWidth*.15,
+          y:0,
+          x:objWidth*.1,
+          padding: 5,
+          letterSpacing:1,
+          fill: '#fff',
+          width: objWidth*.9,
+          alpha: 0.75,
+          visible: true,
+          shadowBlur: 3,
+          shadowColor: '#000',
+          shadowOffset: {x: 1, y: 1},
         });
       }
       groupElements.add(tooltip);
@@ -650,7 +663,7 @@ export class SittingPlacesGenerator implements OnInit {
         }
       }
       pdf.addImage(img, 'PNG',93,10,110,110);
-      pdf.save('room.pdf');
+      pdf.save(this.roomName+'.pdf');
     })
   }
 

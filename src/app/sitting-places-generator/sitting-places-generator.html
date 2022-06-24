@@ -8,12 +8,9 @@
 
     <div id="roomvisualiserHeader">
       <input id="roomname" [(ngModel)]="roomName">
-
       <a (click)="savePng()" class="link">PNG herunterladen</a>
-
       <a (click)="savePdf()" class="link">PDF herunterladen</a>
       <a (click)="newGenerator()" class="link">Neu generieren</a>
-
     </div>
     <div id="loader" [ngClass]="{
         'loader': showLoader

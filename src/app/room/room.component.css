@@ -37,14 +37,14 @@
 }
 
 #footer {
-  height:30px;
+  height:100px;
 }
 
 #roomvisualiser {
   position: relative;
   border-radius: 4px;
   box-shadow: 1px 1px 2px #999;
-  padding: 10px;
+  padding: 1%;
   background-color: #F6F6F6;
 }
 
@@ -53,10 +53,13 @@
 
 }
 
-
+.material-icons {
+  color: #0088ff;
+  cursor: pointer;
+}
 
 .material-icons:hover {
-  color: #777777;
+  color: #284d60;
   cursor: pointer;
 }
 
@@ -298,50 +301,55 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
 }
 
-#workspaceHeader .headerRight {
+#workspaceHeader #headerRight {
   position: relative;
-  width: 70%;
-  height: 40px;;
+  width: 100%;
+  height: 50px;
+  display: none;
 }
 
 #workspaceHeader #headerLeft {
   position: relative;
-  width: 30%;
-  height: 40px;
+  width: 100%;
+  height: 50px;
   display: flex;
   justify-content: right;
   align-items: center;
 }
 
-#workspaceHeader .headerRight button{
+#workspaceHeader #headerRight button{
   position: relative;
   font-size: 14px;
   letter-spacing: 1px;
-  border-radius: 8px 0px 0px 8px;
+  border-radius: 4px 0px 0px 4px;
   width: 100%;
-  height: 40px;
+  height: 50px;
 }
 
 .roomChangerbtn {
   display: flex;
   width: 25%;
-  height: 40px;
+  height: 50px;
 }
 
 .custom-room-icons {
   border: 1px solid #ddd;
-  border-radius: 0px 8px 8px 0px;
+  border-radius: 0px 4px 4px 0px;
   background-color: #e8e8e8;
-  width: 40%;
-  height: 40px;
-  padding: 7px;
+  height: 50px;
+  padding: 12px;
   cursor: pointer;
+  color: #0088ff;
 }
 
-#btnEmptyRoom{
 
+
+.custom-room-icons:hover{
+  color: #284d60;
 }
 
 input[type=range][orient=vertical] {
@@ -359,9 +367,8 @@ input[type=range][orient=vertical] {
   gap: 20px;
   background-color: #eee;
   border: 1px #ddd solid;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 1%;
-  margin: 1.5%;
 }
 
 #zoomRange {
@@ -370,14 +377,15 @@ input[type=range][orient=vertical] {
   flex-direction: row-reverse;
 }
 
-#zoom {
-
+#zoomRange span {
+color: #0088ff;
 }
+
 
 #colorPickerTrigger {
   width:35px;
   height:35px;
-  background-color: #11b0e7;
+  background-color: #dadada;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -404,33 +412,32 @@ position: absolute;
 .objToolbox {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  float: right;
   background-color: #f8f9fa;
-  height:40px;
-  margin-bottom: 10px;
+  width: 100%;
+  height: 48px;
   padding: 10px;
-  border-radius: 2px;
+  border-radius: 4px;
   border: 1px solid #ddd;
 }
 
 .icons {
   height: 26px;
-  fill: #494949;
+  fill: #284d60;
 }
 
 .orientation-text {
   position: relative;
   font-size: 14px;
   text-align: center;
-  border-radius: 100%;
+  border-radius: 4px;
+  padding: 1%;
   text-align: center;
   background-color: #e8e8e8;
   box-shadow: inset 0.05em 0.05em 0.15em #494949;;
   color: #494949;
   font-weight: 500;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
+  margin: 1vw;
 }
 
 #west-ost-visualiser {
@@ -453,18 +460,41 @@ position: absolute;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .iconscontainer {
-  background-color: #e8e8e8;
+  background-color: #eee;
   margin-left: 5px;
   border-radius: 4px;
   padding: 0px 4px 0px 4px;
   border: 1px solid #ddd;
+  cursor: pointer;
 }
 
 .iconscontainer label{
   font-size: 12px;
+  cursor: pointer;
+  color: #000;
+}
+
+.iconscontainer span:hover{
+  color: #284d60;
+}
+
+.iconscontainer span{
+  color: #0088ff;
+}
+
+.roomChangerbtn label{
+  display: block;
+}
+
+.room-icons {
+  display: none;
+  width: 40px;
+  margin: auto;
+  padding: 2px;
 }
 
 
@@ -479,65 +509,36 @@ position: absolute;
   .hideStep2 {
     display: none;
   }
-  .roomdimension {
-    flex-direction: column;
-    height: 140px;
-  }
-  #container {
-    height: 1127px;
-  }
 }
 
 @media only screen and (max-width: 1000px) {
-  #toolbar {
-    width: 20%;
-  }
+
 
   .hideStep3 {
     display: none;
   }
 
-  #container-visualiser {
-    width: 80%;
+  .iconscontainer label{
+    display: none;
   }
 
-  #workspaceHeader {
-
+  .orientation-text {
+    font-size: 12px;
   }
 
-  .horizontal-left-side-element {
-    flex-direction: column;
+
+  .custom-room-icons{
+    border: 1px solid #ddd;
+    border-radius: 0px 4px 4px 0px;
+    background-color: #e8e8e8;
+    height: 50px;
+    width: 30px;
+    line-height: 50px;
+    padding: 0px;
+    cursor: pointer;
+    color: #0088ff;
   }
 
-  #workspaceHeader {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #workspaceHeader .headerRight{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  #workspaceHeader .headerLeft{
-    display: flex;
-    align-items: center;
-  }
-  .roomChangerbtn {
-    display: flex;
-    width: 120px;
-    height: 40px;
-  }
-  #headerLeft{
-    display: flex;
-    margin-top: 10px;
-
-  }
-
-  .iconscontainer{
-
-  }
 
 }
 
@@ -545,53 +546,27 @@ position: absolute;
   .hideStep4 {
     display: none;
   }
-  .roomChangerbtn {
-    display: flex;
-    width: 92px;
-    height: 40px;
-  }
-  #workspaceHeader{
-    display: flex;
-    align-items: center;
-  }
-  #workspaceHeader .headerRight{
-    position: relative;
-    width: 100%;
-  }
-  #workspaceHeader #headerLeft{
-    position: relative;
-    width: 100%;
-    margin-top: 0px;
-    float: right;
-  }
-  #workspaceHeader .headerRight button{
-    font-size: 10px;
-    height: 30px;
-    border-radius: 4px 0px 0px 4px;
-  }
-  .custom-room-icons {
-    border: 1px solid #ddd;
-    border-radius: 0px 4px 4px 0px;
-    background-color: #e8e8e8;
-    width: 32%;
-    height: 30px;
-    padding: 2px;
-    cursor: pointer;
-  }
-  .btnEmptyRoom{
-    border-radius: 4px;
+
+  .roomChangerbtn label{
+    display: none;
   }
 
-
+  .room-icons {
+    display: block;
+  }
 }
-
 
 @media only screen and (max-width: 530px) {
   .hideStep5 {
     display: none;
   }
-}
 
+  #workspaceHeader {
+    width: 100%;
+    gap: 6px;
+  }
+
+}
 
 #loader {
   position: absolute;

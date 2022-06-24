@@ -302,7 +302,6 @@
 
 </div>
 
-
 <div id="container">
 
   <div id="toolbar">
@@ -311,7 +310,7 @@
 
       <div class="hideStep4"><label class="label-left-dark label-left-title">Raumfläche</label></div>
 
-      <div class="horizontal-left-side-element roomdimension" style="  align-items: center;">
+      <div class="horizontal-left-side-element roomdimension" style="align-items: center;">
 
           <div><label class="label-left-dark">Länge(m)</label></div>
           <input type="number" min="{{minHeight}}" max="{{maxHeight}}" [(ngModel)]="standardRooms[currentRoomId].height" (change)="updateVisualisation(standardRooms[currentRoomId].height,standardRooms[currentRoomId].height)">
@@ -533,76 +532,121 @@
   <div id="container-visualiser">
 
     <div id="workspaceHeader">
-          <div class="headerRight">
+          <div id="headerRight">
             <div id="standardRoomsChanger" style="visibility: hidden;">
               <div class="roomChangerbtn">
-                <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Unterricht</button>
+                <button class="btn" id="btn0" (click)="currentRoomId = 0; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)"><label>Unterricht</label>
+                  <svg class="room-icons" style="fill: #284d60;" viewBox="0 0 342.75 233.55">
+                    <g>
+                      <path d="M337.44,0H5.31C2.38,0,0,2.38,0,5.31V210.93c0,2.93,2.38,5.31,5.31,5.31h30.62c4.56-17.94,16.09-33.33,32.29-42.76-4.25-6.65-6.58-14.44-6.58-22.46,0-23.02,18.73-41.75,41.75-41.75,14,0,26.42,6.93,33.99,17.54,7.58-10.61,19.99-17.54,34-17.54s26.42,6.93,33.99,17.54c7.58-10.61,19.99-17.54,34-17.54,23.02,0,41.75,18.73,41.75,41.75,0,8.02-2.33,15.8-6.58,22.45,16.2,9.43,27.73,24.82,32.29,42.76h30.62c2.93,0,5.31-2.38,5.31-5.31V5.31c0-2.93-2.38-5.31-5.31-5.31Z"/>
+                      <path d="M101.3,176.69c15.86,1.25,29-11.89,27.75-27.75-.98-12.48-11.09-22.59-23.57-23.57-15.86-1.25-29,11.89-27.75,27.75,.98,12.48,11.09,22.59,23.57,23.57Z"/>
+                      <path d="M237.28,176.69c15.86,1.25,29-11.89,27.75-27.75-.98-12.48-11.09-22.59-23.57-23.57-15.86-1.25-29,11.89-27.75,27.75,.98,12.48,11.09,22.59,23.57,23.57Z"/>
+                      <path d="M169.29,176.69c15.86,1.25,29-11.89,27.75-27.75-.98-12.48-11.09-22.59-23.57-23.57-15.86-1.25-29,11.89-27.75,27.75,.98,12.48,11.1,22.59,23.57,23.57Z"/>
+                      <path d="M171.38,179.94c-27.61,0-50.34,20.86-53.29,47.68-.35,3.16,2.1,5.94,5.28,5.94h96.03c3.18,0,5.63-2.78,5.28-5.94-2.95-26.82-25.69-47.68-53.29-47.68Z"/>
+                      <path d="M125.17,184.56c-6.65-2.97-14.02-4.62-21.78-4.62-27.61,0-50.34,20.86-53.29,47.68-.35,3.16,2.1,5.94,5.28,5.94h50.74c2.77,0,5.06-2.13,5.29-4.89,1.11-13.69,6.83-26.1,15.6-35.68,2.45-2.68,1.49-6.95-1.83-8.43Z"/>
+                      <path d="M239.36,179.94c-7.76,0-15.12,1.65-21.78,4.62-3.32,1.48-4.28,5.75-1.83,8.43,8.77,9.58,14.49,21.98,15.6,35.68,.22,2.76,2.52,4.89,5.29,4.89h50.74c3.18,0,5.63-2.78,5.28-5.94-2.95-26.82-25.69-47.68-53.29-47.68Z"/>
+                    </g></svg>
+                </button>
                 <span (click)="popUpForm = true; nrRoomToCustomize = 0; currentRoomId = 0; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
               tune
               </span>
               </div>
               <div class="roomChangerbtn">
-                <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Konferenz</button>
+                <button class="btn" id="btn1" (click)="currentRoomId = 1; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)"><label>Konferenz</label>
+                  <svg class="room-icons" style="fill: #284d60;" viewBox="0 0 290.03 250.25">
+                    <g>
+                      <circle cx="144.85" cy="14.68" r="14.55" transform="translate(.5 33.67) rotate(-13.28)"/>
+                      <path d="M120.35,61.32h48.99c3.32,0,5.84-3.05,5.15-6.3-2.9-13.71-15.07-24-29.65-24s-26.75,10.29-29.65,24c-.69,3.25,1.83,6.3,5.15,6.3Z"/>
+                      <circle  cx="29.89" cy="142.57" r="14.55" transform="translate(-22.45 6.63) rotate(-9.22)"/>
+                      <path  d="M29.89,158.91c-14.57,0-26.75,10.29-29.65,24-.69,3.25,1.83,6.3,5.15,6.3H54.38c3.32,0,5.84-3.05,5.15-6.3-2.9-13.71-15.07-24-29.65-24Z"/>
+                      <circle  cx="39.14" cy="65.68" r="14.55"/>
+                      <path  d="M68.79,106.02c-2.9-13.71-15.07-24-29.65-24s-26.75,10.29-29.65,24c-.69,3.25,1.83,6.3,5.15,6.3H63.64c3.32,0,5.84-3.05,5.15-6.3Z"/>
+                      <circle  cx="260.15" cy="142.57" r="14.55" transform="translate(28.87 328.36) rotate(-67.5)"/>
+                      <path  d="M289.79,182.91c-2.9-13.71-15.07-24-29.65-24s-26.75,10.29-29.65,24c-.69,3.25,1.83,6.3,5.15,6.3h48.99c3.32,0,5.84-3.05,5.15-6.3Z"/>
+                      <circle  cx="250.89" cy="65.68" r="14.55"/>
+                      <path  d="M280.54,106.02c-2.9-13.71-15.07-24-29.65-24s-26.75,10.29-29.65,24c-.69,3.25,1.83,6.3,5.15,6.3h48.99c3.32,0,5.84-3.05,5.15-6.3Z"/>
+                      <path  d="M205.06,77.34c-.32-2.64-2.56-4.62-5.21-4.62H89.85c-2.66,0-4.89,1.98-5.21,4.62l-17.59,146.17c-.38,3.13,2.06,5.88,5.21,5.88h35.75c3.2-5.67,7.67-10.54,13.02-14.2-1.74-3.53-2.73-7.51-2.73-11.71,0-14.64,11.91-26.55,26.55-26.55s26.55,11.91,26.55,26.55c0,4.2-.98,8.17-2.73,11.71,5.36,3.66,9.82,8.53,13.02,14.2h35.75c3.15,0,5.59-2.75,5.21-5.88l-17.59-146.17Z"/>
+                      <circle  cx="144.85" cy="203.48" r="14.55" transform="translate(-101.46 162.02) rotate(-45)"/>
+                      <path  d="M144.85,219.82c-14.57,0-26.75,10.29-29.65,24-.69,3.25,1.83,6.3,5.15,6.3h48.99c3.32,0,5.84-3.05,5.15-6.3-2.9-13.71-15.07-24-29.65-24Z"/>
+                  </g>
+                  </svg>
+                </button>
                 <span (click)="popUpForm = true; nrRoomToCustomize = 1; currentRoomId = 1; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
               tune
               </span>
               </div>
               <div class="roomChangerbtn">
-                <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Workshop</button>
+
+                <button class="btn" id="btn2" (click)="currentRoomId = 2; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)"><label>Workshop</label>
+
+                  <svg class="room-icons" style=" fill: #284d60;" viewBox="0 0 248.45 250">
+                      <g>
+                        <circle cx="32.62" cy="107.49" r="15.88" transform="translate(-23.82 10.37) rotate(-13.28)"/>
+                        <path d="M65.15,152.45c-2.8-15.43-16.3-27.12-32.54-27.12S2.88,137.02,.08,152.45c-.56,3.11,1.92,5.94,5.08,5.94H60.08c3.16,0,5.64-2.84,5.08-5.94Z"/>
+                        <circle cx="215.84" cy="107.49" r="15.88" transform="translate(-24.7 90.78) rotate(-22.5)"/>
+                        <path d="M248.37,152.45c-2.8-15.43-16.3-27.12-32.54-27.12s-29.6,11.58-32.49,26.9c-.6,3.2,1.79,6.17,5.04,6.17h54.92c3.16,0,5.64-2.84,5.08-5.94Z"/>
+                        <circle cx="124.23" cy="199.1" r="15.88"/>
+                        <path d="M124.23,216.93c-16.15,0-29.6,11.58-32.49,26.9-.6,3.2,1.79,6.17,5.04,6.17h54.91c3.16,0,5.64-2.84,5.08-5.94-2.8-15.43-16.3-27.12-32.54-27.12Z"/>
+                        <circle cx="124.23" cy="15.88" r="15.88"/>
+                        <path d="M156.76,60.84c-2.8-15.43-16.3-27.12-32.54-27.12s-29.74,11.7-32.54,27.12c-.56,3.11,1.92,5.94,5.08,5.94h54.92c3.16,0,5.64-2.84,5.08-5.94Z"/>
+                        <path d="M214.75,165.69c-1.49-.72-3.29-.1-4.01,1.39-11.39,23.54-32.15,41.64-56.98,49.65-1.58,.51-2.44,2.2-1.93,3.78,.41,1.27,1.59,2.08,2.85,2.08,.31,0,.62-.05,.92-.15,26.38-8.52,48.44-27.74,60.54-52.75,.72-1.49,.1-3.29-1.39-4.01Z"/>
+                        <path d="M93.77,222.59c1.27,0,2.44-.81,2.85-2.08,.51-1.58-.36-3.27-1.93-3.78-24.83-8.02-45.6-26.11-56.98-49.65-.72-1.49-2.52-2.11-4.01-1.39-1.49,.72-2.12,2.52-1.39,4.01,12.09,25.01,34.16,44.23,60.54,52.75,.31,.1,.62,.15,.92,.15Z"/>
+                        <path d="M145.93,31.74c28.23,6.52,51.76,25.23,64.57,51.33,.52,1.06,1.59,1.68,2.7,1.68,.44,0,.89-.1,1.32-.31,1.49-.73,2.1-2.53,1.37-4.02-13.61-27.73-38.61-47.61-68.61-54.54-1.61-.37-3.22,.63-3.6,2.25-.37,1.61,.63,3.23,2.25,3.6Z"/>
+                        <path d="M33.69,84.44c.42,.21,.88,.31,1.32,.31,1.11,0,2.17-.62,2.7-1.68,12.81-26.11,36.35-44.82,64.57-51.33,1.61-.37,2.62-1.98,2.25-3.6-.37-1.62-1.99-2.62-3.6-2.25-29.99,6.93-55,26.8-68.61,54.54-.73,1.49-.12,3.29,1.37,4.02Z"/>
+                  </g>
+                  </svg>
+
+                </button>
                 <span (click)="popUpForm = true; nrRoomToCustomize = 2; currentRoomId = 2; isToCustomizeRoomUnterricht = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToSaveRoom = false;" class="material-icons-outlined custom-room-icons">
               tune
               </span>
               </div>
               <div class="roomChangerbtn">
-                <button class="btn btnEmptyRoom" id="btn3" style="border-radius: 8px 8px 8px 8px;" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
+                <button class="btn" id="btn3" style="border-radius: 4px;" (click)="currentRoomId = 3; updateVisualisation(standardRooms[currentRoomId].width,standardRooms[currentRoomId].height)">Leer</button>
               </div>
                </div>
           </div>
-      <div *ngIf="isRoomSaved" class="headerRight" style="margin-top: 10px; position: absolute;">
-        <input class="objToolbox" [(ngModel)]="roomname">
-      </div>
+
           <div id="headerLeft">
-            <div class="iconscontainer">
-              <span (click)="reset()" class="material-icons p-1">restart_alt</span>
-              <label>Reset</label>
+            <div (click)="reset()" class="iconscontainer">
+              <span class="material-icons p-1">restart_alt</span>
+              <label>Zurücksetzen</label>
             </div>
 
-            <div class="iconscontainer">
-              <span (click)="downloadAsImage()" class="material-icons p-1">image</span>
-              <label>PNG</label>
+            <div (click)="downloadAsImage()"  class="iconscontainer">
+              <span class="material-icons p-1">image</span>
+              <label>PNG Herunterladen</label>
             </div>
 
-            <div class="iconscontainer">
-              <span (click)="savePdf()" class="material-icons p-1">picture_as_pdf</span>
-              <label>PDF</label>
+            <div (click)="savePdf()"  class="iconscontainer">
+              <span class="material-icons p-1">picture_as_pdf</span>
+              <label>PDF Herunterladen</label>
             </div>
 
-            <div class="iconscontainer">
-              <span (click)="ExportAsCsv()" class="material-icons p-1">download</span>
-              <label>CSV</label>
+            <div (click)="ExportAsCsv()"  class="iconscontainer">
+              <span class="material-icons p-1">download</span>
+              <label>CSV Herunterladen</label>
             </div>
 
-            <div class="iconscontainer">
-              <span (click)="popUpForm = true; isToSaveRoom = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToCustomizeRoomUnterricht = false;" class="material-icons p-1">save</span>
-              <label>Save</label>
+            <div (click)="popUpForm = true; isToSaveRoom = true; isToDelete = false; isToAddDesk = false; isToAddDoor = false; isToAddWindow = false; isToAddBoard = false; isRoomEmpty = false; isToCustomizeRoomUnterricht = false;" class="iconscontainer">
+              <span class="material-icons p-1">save</span>
+              <label>Speichern</label>
             </div>
-
-
           </div>
-    </div>
 
-    <div id="colorZoomBar">
+      <div id="colorZoomBar">
 
-      <div id="colorPickerTrigger" (click)="showPicker = true;">
-        <span class="material-icons">colorize</span>
+        <div id="colorPickerTrigger" (click)="showPicker = true;">
+          <span class="material-icons">colorize</span>
+        </div>
+        <div id="zoomRange">
+          <span class="material-icons-outlined">zoom_in</span>
+          <input type="range" id="zoom"  (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
+          <span class="material-icons-outlined">zoom_out</span>
+        </div>
+
+
       </div>
-      <div id="zoomRange">
-        <span class="material-icons-outlined">zoom_in</span>
-        <input type="range" id="zoom"  (change)="changeStageScale();"  [(ngModel)]="zoomValue" value="{{zoomValue}}" min="0" max="10" step="0.5">
-        <span class="material-icons-outlined">zoom_out</span>
-      </div>
-
-
     </div>
 
       <color-photoshop id="color-photoshop" *ngIf="showPicker" style="z-index: 1000; position: absolute;" [color]="primaryColor" (onAccept)="handleAccept();" (onCancel)="handleCancel()" (onChangeComplete)="changeColor($event)">
@@ -610,20 +654,19 @@
 
     <div id="west-ost-visualiser">
 
-      <div class="orientation-text west-ost">W</div>
 
       <div id="nsv-container">
-        <div class="orientation-text sued-nort">N</div>
+        <div class="orientation-text">Vorne</div>
         <div id="roomvisualiser">
         </div>
-        <div class="orientation-text sued-nort">S</div>
+        <div class="orientation-text">Hinten</div>
       </div>
 
-      <div class="orientation-text west-ost">O</div>
 
     </div>
 
   </div>
+
 
 </div>
 

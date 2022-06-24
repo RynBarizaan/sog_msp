@@ -112,7 +112,7 @@ export class RoomComponent implements OnInit {
   widthChair?: number;
   heightChair?: number;
   // initial color and change color
-  primaryColor = '#11b0e7';
+  primaryColor = '#dadada';
   showPicker: boolean = false;
   // room saved then switch elements in visualisation
   isRoomSaved: boolean = false;
@@ -123,7 +123,6 @@ export class RoomComponent implements OnInit {
   isToAddBoard: boolean = false;
   isToSaveRoom: boolean = false;
   isRoomEmpty: boolean = false;
-  isNameOfRooms: boolean = false;
 
   isToCustomizeRoomUnterricht: boolean = false;
   isToCustomizeRoomKonferrenz: boolean = false;
@@ -132,8 +131,6 @@ export class RoomComponent implements OnInit {
   // Delete Element
   isToDelete: boolean = false;
   currentId?: any;
-  // Room name
-  roomname: string = 'My Room name';
 
   deskToAdd: {elementtyp: string, place: number, x:number, y: number, degRotation: number, bgClr: string} =
     {
@@ -217,6 +214,8 @@ export class RoomComponent implements OnInit {
       this.standardRooms[0].width = roomDimension.width;
       this.standardRooms[0].height = roomDimension.height;
     } else {
+      let e: any = document.getElementById('headerRight');
+      e.style.display = 'block';
       this.isRoomSaved = false;
       let c: any = document.getElementById('standardRoomsChanger');
       c.style.display = 'flex';
@@ -1321,15 +1320,10 @@ export class RoomComponent implements OnInit {
 
     if(element == 'door' || element == 'window' || element == 'board') {
 
-
         this.allElements[id].xNotSmallerZ = 0;
-
         this.allElements[id].xNotBiggerZ = this.widthStage - objWidth;
-
         this.allElements[id].yNotSmallerZ = 0;
-
         this.allElements[id].yNotBiggerZ = this.heightStage - objHeight;
-
 
       if((this.allElements[id].platzierung == 'hinten') || (this.allElements[id].platzierung == 'vorne')) {
         this.allElements[id].xNotBiggerZ = this.widthStage - objHeight;
@@ -1472,6 +1466,7 @@ export class RoomComponent implements OnInit {
    if(x < this.allElements[id].xNotSmallerZ){
      x = this.allElements[id].xNotSmallerZ;
      this.allElements[id].x = x;
+     console.log(this.allElements[id].x)
    }
    if(x > this.allElements[id].xNotBiggerZ){
      x = this.allElements[id].xNotBiggerZ;
@@ -1588,7 +1583,7 @@ export class RoomComponent implements OnInit {
               behavior: 'smooth'
             });
           } else if (this.allElements[i].element === 'door') {
-            elemr.parentElement.parentElement.style.backgroundColor = '#ddd'
+            elemr.parentElement.parentElement.style.backgroundColor = '#8DD8F5'
             let element: any = document.getElementById('doors-container')
             element.scrollTo({
               top: 80 * this.allElements[i].elementid,
@@ -1596,7 +1591,7 @@ export class RoomComponent implements OnInit {
               behavior: 'smooth'
             });
           } else if (this.allElements[i].element === 'window') {
-            elemr.parentElement.parentElement.style.backgroundColor = '#ddd'
+            elemr.parentElement.parentElement.style.backgroundColor = '#8DD8F5'
             let element: any = document.getElementById('windows-container')
             element.scrollTo({
               top: 80 * this.allElements[i].elementid,
@@ -1604,7 +1599,7 @@ export class RoomComponent implements OnInit {
               behavior: 'smooth'
             });
           } else if (this.allElements[i].element === 'board') {
-            elemr.parentElement.parentElement.style.backgroundColor = '#ddd'
+            elemr.parentElement.parentElement.style.backgroundColor = '#8DD8F5'
             let element: any = document.getElementById('boards-container')
             element.scrollTo({
               top: 80 * this.allElements[i].elementid,
@@ -1832,7 +1827,7 @@ export class RoomComponent implements OnInit {
       let img = this.stage.toDataURL({ pixelRatio: 3 });
       let pdf = new jsPDF();
       pdf.setFont('Arial');
-      pdf.text(this.roomname,10,12);
+      pdf.text('My Room',10,12);
       pdf.setFontSize(50);
       pdf.addImage(img, 'PNG',6,20,200,200);
       pdf.save('room.pdf');
@@ -1843,7 +1838,7 @@ export class RoomComponent implements OnInit {
   downloadAsImage() {
     let dataURL = this.stage.toDataURL({ pixelRatio: 3 });
     let link: any = document.createElement('a');
-    link.download = this.roomname;
+    link.download = 'My Room';
     link.href = dataURL;
     document.body.appendChild(link);
     link.click();
@@ -1853,6 +1848,8 @@ export class RoomComponent implements OnInit {
 
   // Set initial rooms
   reset(): void {
+    let e: any = document.getElementById('headerRight');
+    e.style.display = 'block';
     this.allElements = JSON.parse(JSON.stringify(objectsData));
     this.standardRooms[0].width = 10;
     this.standardRooms[0].height = 10;
@@ -1910,7 +1907,6 @@ export class RoomComponent implements OnInit {
   // Save room in localstorage
   saveRoom() {
     this.route.navigate(['mainmenu']);
-
     this.makeRoomDetailsReady();
 
     for(let i = 0; i < this.roomElements.length; i++) {
