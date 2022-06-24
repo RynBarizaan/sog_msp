@@ -14,24 +14,24 @@ export class SittingPlacesGenerator implements OnInit {
   listOfContacts: Array<any> = JSON.parse(sessionStorage.getItem("person"));
   // @ts-ignore
   listOfTables: Array<any> = JSON.parse(sessionStorage.getItem("room"));
-  // @ts-ignore
-  listePersonen: Array<any> = [];
   statusOfTables: Array<any> = [];
-  edited : boolean = false;
-  currentId?: number;
-  Türnähe: Array<any> = [];
-  Fensternähe: Array<any> = [];
+  nighbore:Array<any>=[];
+  Tuernaehe: Array<any> = [];
+  Fensternaehe: Array<any> = [];
   Frontal: Array<any> = [];
-  Tafelnähe: Array<any> = [];
+  Tafelnaehe: Array<any> = [];
   VorneImRaum: Array<any> = [];
   HintenImRaum: Array<any> = [];
-  TürnäheUndHintenImRaum: Array<any> = [];
-  TürnäheUndVorneImRaum: Array<any> = [];
-  FensternäheUndHintenImRaum: Array<any> = [];
-  FensternäheUndVorneImRaum: Array<any> = [];
-  TafelnäheUndHintenImRaum: Array<any> = [];
-  TafelnäheUndVorneImRaum: Array<any> = [];
+  TuernaeheUndHintenImRaum: Array<any> = [];
+  TuernaeheUndVorneImRaum: Array<any> = [];
+  FensternaeheUndHintenImRaum: Array<any> = [];
+  FensternaeheUndVorneImRaum: Array<any> = [];
+  TafelnaeheUndHintenImRaum: Array<any> = [];
+  TafelnaeheUndVorneImRaum: Array<any> = [];
   PepoelWithoutProperties: Array<any> = [];
+  listePersonen: Array<any> = [];
+  edited : boolean = false;
+  currentId?: number;
   width?: number;
   height?: number;
   heightOFTable?: number;
@@ -698,32 +698,32 @@ export class SittingPlacesGenerator implements OnInit {
       if (this.listOfContacts[x]["Frontal"]){
         this.Frontal.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Türnähe"] && this.listOfContacts[x]["VorneImRaum"]){
-        this.TürnäheUndVorneImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Tuernaehe"] && this.listOfContacts[x]["VorneImRaum"]){
+        this.TuernaeheUndVorneImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Türnähe"] && this.listOfContacts[x]["HintenImRaum"]){
-        this.TürnäheUndHintenImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Tuernaehe"] && this.listOfContacts[x]["HintenImRaum"]){
+        this.TuernaeheUndHintenImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Fensternähe"] && this.listOfContacts[x]["VorneImRaum"]){
-        this.FensternäheUndVorneImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Fensternaehe"] && this.listOfContacts[x]["VorneImRaum"]){
+        this.FensternaeheUndVorneImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Fensternähe"] && this.listOfContacts[x]["HintenImRaum"]){
-        this.FensternäheUndHintenImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Fensternaehe"] && this.listOfContacts[x]["HintenImRaum"]){
+        this.FensternaeheUndHintenImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Tafelnähe"] && this.listOfContacts[x]["VorneImRaum"]){
-        this.TafelnäheUndVorneImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Tafelnaehe"] && this.listOfContacts[x]["VorneImRaum"]){
+        this.TafelnaeheUndVorneImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Tafelnähe"] && this.listOfContacts[x]["HintenImRaum"]){
-        this.TafelnäheUndHintenImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Tafelnaehe"] && this.listOfContacts[x]["HintenImRaum"]){
+        this.TafelnaeheUndHintenImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Türnähe"]){
-        this.Türnähe.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Tuernaehe"]){
+        this.Tuernaehe.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Fensternähe"]){
-        this.Fensternähe.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Fensternaehe"]){
+        this.Fensternaehe.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
-      else if (this.listOfContacts[x]["Tafelnähe"]){
-        this.Tafelnähe.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
+      else if (this.listOfContacts[x]["Tafelnaehe"]){
+        this.Tafelnaehe.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
       }
       else if (this.listOfContacts[x]["VorneImRaum"]){
         this.VorneImRaum.push(this.listOfContacts[x]["Vorname"]+" "+this.listOfContacts[x]["Nachname"]);
@@ -736,17 +736,17 @@ export class SittingPlacesGenerator implements OnInit {
       }
     }
     this.shuffle(this.Frontal);
-    this.shuffle(this.TürnäheUndVorneImRaum);
-    this.shuffle(this.TürnäheUndHintenImRaum);
-    this.shuffle(this.FensternäheUndVorneImRaum);
-    this.shuffle(this.FensternäheUndHintenImRaum);
-    this.shuffle(this.TafelnäheUndVorneImRaum);
-    this.shuffle(this.TafelnäheUndHintenImRaum);
-    this.shuffle(this.Türnähe);
-    this.shuffle(this.Fensternähe);
+    this.shuffle(this.TuernaeheUndVorneImRaum);
+    this.shuffle(this.TuernaeheUndHintenImRaum);
+    this.shuffle(this.FensternaeheUndVorneImRaum);
+    this.shuffle(this.FensternaeheUndHintenImRaum);
+    this.shuffle(this.TafelnaeheUndVorneImRaum);
+    this.shuffle(this.TafelnaeheUndHintenImRaum);
+    this.shuffle(this.Tuernaehe);
+    this.shuffle(this.Fensternaehe);
     this.shuffle(this.VorneImRaum);
     this.shuffle(this.HintenImRaum);
-    this.shuffle(this.Tafelnähe);
+    this.shuffle(this.Tafelnaehe);
   }
 //////// calculate the Area of Room from Meter to PX //////
   CalculateRoomArea(){
@@ -754,19 +754,16 @@ export class SittingPlacesGenerator implements OnInit {
     let heightAndwidth: any = JSON.parse(sessionStorage.getItem("roomDimension"));
     let width = heightAndwidth.width;
     let height = heightAndwidth.height;
-    console.log(this.heightOFTable+","+this.widthOFTable);
     try {
       if (width > height){
         this.width = 700;
         this.height = 700/(width/height);
         this.oneMeterInPX = this.width/width;
-        console.log(this.height+","+this.width);
       }
       else if(width <height){
         this.height=700;
         this.width= 700/(height/width);
         this.oneMeterInPX = this.height/height;
-        console.log(this.height+","+this.width);
       }
       else if(width = height){
         this.height = 700;
@@ -781,9 +778,6 @@ export class SittingPlacesGenerator implements OnInit {
       this.customizeTheGroupThroughProperties();
       this.setTypesOfTables();
       this.listePerson();
-      console.log(this.listePersonen);
-      console.log(this.listOfContacts);
-      console.log(this.listOfTables);
     }
     catch (Exception){
       console.log(Exception);
@@ -854,7 +848,6 @@ setXAndYAfterRotation(indexOfElement: number){
     this.newx = this.oldx+(this.rotation/1.91);
     this.newy= (this.oldy+this.rotation)-(this.rotation/2.640);
   }
-  console.log(this.newx+"!"+this.newy);
 
 
 }
@@ -894,16 +887,16 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && ((this.newy < this.listOfTables[x].y + (3 * this.oneMeterInPX)) &&(this.newx + (this.widthOFTable)) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
 
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
               // @ts-ignore
               else if ((this.newy == this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
             }
           }
@@ -914,15 +907,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && (this.newy < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.newx < this.oneMeterInPX)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && (this.newx < this.oneMeterInPX) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
               // @ts-ignore
               else if ((this.newy == this.listOfTables[x].y) && (this.newx < this.oneMeterInPX)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
 
               }
             }
@@ -934,16 +927,16 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy < this.oneMeterInPX)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
 
               // @ts-ignore
               else if ((this.newx < this.listOfTables[x].x) && (this.newy < this.oneMeterInPX) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
               // @ts-ignore
               else if ((this.newx == this.listOfTables[x].x) && (this.newy < this.oneMeterInPX)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
             }
           }
@@ -954,15 +947,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
               // @ts-ignore
               else if ((this.newx < this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
               // @ts-ignore
               else if ((this.newx == this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
-                this.statusOfTables[y].Türnähe= true;
+                this.statusOfTables[y].Tuernaehe= true;
               }
             }
           }
@@ -976,15 +969,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && ((this.newy < this.listOfTables[x].y + (3 * this.oneMeterInPX)) && ((this.newx) + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
               // @ts-ignore
               else if ((this.newy == this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
             }
           }
@@ -995,15 +988,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && (this.newy < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.newx < this.oneMeterInPX)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && (this.newx < this.oneMeterInPX) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
               // @ts-ignore
               else if ((this.newy == this.listOfTables[x].y) && (this.newx < this.oneMeterInPX)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
             }
           }
@@ -1014,16 +1007,16 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy < this.oneMeterInPX)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
 
               // @ts-ignore
               else if ((this.newx < this.listOfTables[x].x) && (this.newy < this.oneMeterInPX) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
               // @ts-ignore
               else if ((this.newx == this.listOfTables[x].x) && (this.newy < this.oneMeterInPX)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
             }
           }
@@ -1035,15 +1028,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
               // @ts-ignore
               else if ((this.newx < this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
               // @ts-ignore
               else if ((this.newx == this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
-                this.statusOfTables[y].Fensternähe= true;
+                this.statusOfTables[y].Fensternaehe= true;
               }
             }
           }
@@ -1057,15 +1050,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && ((this.newy < this.listOfTables[x].y + (3 * this.oneMeterInPX)) && ((this.newx) + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
               // @ts-ignore
               else if ((this.newy == this.listOfTables[x].y) && ((this.newx + this.widthOFTable) > (this.width - this.oneMeterInPX))) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
             }
           }
@@ -1076,15 +1069,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newy > this.listOfTables[x].y) && (this.newy < this.listOfTables[x].y + 3 * this.oneMeterInPX) && (this.newx < this.oneMeterInPX)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
               // @ts-ignore
               else if ((this.newy < this.listOfTables[x].y) && (this.newx < this.oneMeterInPX) && ((this.newy + this.oneMeterInPX + this.heightOFTable) > this.listOfTables[x].y)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
               // @ts-ignore
               else if ((this.newy == this.listOfTables[x].y) && (this.newx < this.oneMeterInPX)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
             }
           }
@@ -1095,16 +1088,16 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy < this.oneMeterInPX*2)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
 
               }
               // @ts-ignore
               else if ((this.newx < this.listOfTables[x].x) && (this.newy < this.oneMeterInPX*2) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
               // @ts-ignore
               else if ((this.newx == this.listOfTables[x].x) && (this.newy < this.oneMeterInPX*2)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
             }
           }
@@ -1115,15 +1108,15 @@ setXAndYAfterRotation(indexOfElement: number){
               this.setXAndYAfterRotation(y);
               // @ts-ignore
               if ((this.newx > this.listOfTables[x].x) && (this.newx < this.listOfTables[x].x + 3 * this.oneMeterInPX) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
               // @ts-ignore
               else if ((this.newx < this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable) && ((this.newx + this.oneMeterInPX + this.widthOFTable) > this.listOfTables[x].x)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
               // @ts-ignore
               else if ((this.newx == this.listOfTables[x].x) && (this.newy > this.height - this.oneMeterInPX - this.heightOFTable)) {
-                this.statusOfTables[y].Tafelnähe= true;
+                this.statusOfTables[y].Tafelnaehe= true;
               }
             }
           }
@@ -1132,10 +1125,57 @@ setXAndYAfterRotation(indexOfElement: number){
     }
     this.setPesronToTable();
   }
+
+
+  //////////// set the Person to all beside Table to check it letter if he/she is a Neighbor band  ///////
+  setPersonNameToNighbore(myTableIndex: number,myName:string){
+    for (var x=0; x< this.listOfTables.length; x++) {
+
+      //////1
+      if ((this.listOfTables[myTableIndex].x > this.listOfTables[x].x || this.listOfTables[myTableIndex].x == this.listOfTables[x].x) && this.listOfTables[myTableIndex].y > this.listOfTables[x].y) {
+        if ((this.listOfTables[myTableIndex].x < this.listOfTables[x].x + this.oneMeterInPX + this.listOfTables[x].objectWidth) && (this.listOfTables[myTableIndex].y < this.listOfTables[x].y + this.oneMeterInPX + this.listOfTables[x].objectHeight)) {
+          this.nighbore = this.listOfContacts.filter(p => p.Vorname + " " + p.Nachname == myName);
+          if (this.nighbore[0]["AusnahmenVonNachbern"][0] != null){
+            this.statusOfTables[x].AusnahmenVonNachbern=this.nighbore[0]["AusnahmenVonNachbern"];
+          }
+        }
+
+      }
+      ///////2
+      if ((this.listOfTables[myTableIndex].x > this.listOfTables[x].x ||this.listOfTables[myTableIndex].x == this.listOfTables[x].x) && this.listOfTables[myTableIndex].y < this.listOfTables[x].y){
+
+        if ((this.listOfTables[myTableIndex].x<this.listOfTables[x].x+this.oneMeterInPX+this.listOfTables[x].objectWidth)&&(this.listOfTables[myTableIndex].y>this.listOfTables[x].y-(this.oneMeterInPX+this.listOfTables[x].objectHeight))){
+          this.nighbore = this.listOfContacts.filter(p => p.Vorname + " " + p.Nachname == myName);
+          if (this.nighbore[0]["AusnahmenVonNachbern"][0] != null){
+            this.statusOfTables[x].AusnahmenVonNachbern=this.nighbore[0]["AusnahmenVonNachbern"]
+          }
+        }
+      }
+      if (this.listOfTables[myTableIndex].x < this.listOfTables[x].x && (this.listOfTables[myTableIndex].y > this.listOfTables[x].y || this.listOfTables[myTableIndex].y == this.listOfTables[x].y)){
+
+        if ((this.listOfTables[myTableIndex].x>this.listOfTables[x].x-(this.oneMeterInPX+this.listOfTables[x].objectWidth))&&(this.listOfTables[myTableIndex].y<this.listOfTables[x].y+this.oneMeterInPX+this.listOfTables[x].objectHeight)){
+          this.nighbore = this.listOfContacts.filter(p => p.Vorname + " " + p.Nachname == myName);
+          if (this.nighbore[0]["AusnahmenVonNachbern"][0] != null){
+            this.statusOfTables[x].AusnahmenVonNachbern=this.nighbore[0]["AusnahmenVonNachbern"]
+          }
+        }
+      }
+      ///////////4
+      if (this.listOfTables[myTableIndex].x < this.listOfTables[x].x && (this.listOfTables[myTableIndex].y < this.listOfTables[x].y|| this.listOfTables[myTableIndex].y == this.listOfTables[x].y)){
+
+        if ((this.listOfTables[myTableIndex].x>this.listOfTables[x].x-(this.oneMeterInPX+this.listOfTables[x].objectWidth))&&(this.listOfTables[myTableIndex].y>this.listOfTables[x].y-(this.oneMeterInPX+this.listOfTables[x].objectHeight))){
+          this.nighbore = this.listOfContacts.filter(p => p.Vorname + " " + p.Nachname == myName);
+          if (this.nighbore[0]["AusnahmenVonNachbern"][0] != null){
+            this.statusOfTables[x].AusnahmenVonNachbern=this.nighbore[0]["AusnahmenVonNachbern"]
+          }
+        }
+      }
+    }
+  }
+
+
+
 ///////// push the right Person(person with properties or not) in the right place(Table) ////////
-
-
-
   setPesronToTable(){
     for (var x=0; x<this.statusOfTables.length; x++){
       if ((this.statusOfTables[x].Frontal)&&(this.Frontal.length != 0 )){
@@ -1154,147 +1194,147 @@ setXAndYAfterRotation(indexOfElement: number){
           }
           }
       }
-      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Türnähe)&&this.TürnäheUndVorneImRaum.length != 0){
+      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Tuernaehe)&&this.TuernaeheUndVorneImRaum.length != 0){
         if ( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.TürnäheUndVorneImRaum.shift();
+          var theRemovedElement = this.TuernaeheUndVorneImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.TürnäheUndVorneImRaum.length != 0 ){
-            var theRemovedElement = this.TürnäheUndVorneImRaum.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TuernaeheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TuernaeheUndVorneImRaum.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.TürnäheUndVorneImRaum.length != 0 ){
-            var theRemovedElement = this.TürnäheUndVorneImRaum.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TuernaeheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TuernaeheUndVorneImRaum.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
 
       }
-      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Türnähe)&&(this.TürnäheUndHintenImRaum.length != 0)){
+      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Tuernaehe)&&(this.TuernaeheUndHintenImRaum.length != 0)){
         if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.TürnäheUndHintenImRaum.shift();
+          var theRemovedElement = this.TuernaeheUndHintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.TürnäheUndHintenImRaum.length != 0 ){
-            var theRemovedElement = this.TürnäheUndHintenImRaum.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TuernaeheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TuernaeheUndHintenImRaum.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.TürnäheUndHintenImRaum.length != 0 ){
-            var theRemovedElement = this.TürnäheUndHintenImRaum.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TuernaeheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TuernaeheUndHintenImRaum.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
       }
-      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Tafelnähe)&&(this.TafelnäheUndVorneImRaum.length != 0)){
+      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Tafelnaehe)&&(this.TafelnaeheUndVorneImRaum.length != 0)){
         if(this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.TafelnäheUndVorneImRaum.shift();
+          var theRemovedElement = this.TafelnaeheUndVorneImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.TafelnäheUndVorneImRaum.length != 0 ){
-            var theRemovedElement = this.TafelnäheUndVorneImRaum.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TafelnaeheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnaeheUndVorneImRaum.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.TafelnäheUndVorneImRaum.length != 0 ){
-            var theRemovedElement = this.TafelnäheUndVorneImRaum.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TafelnaeheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnaeheUndVorneImRaum.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
       }
-      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Tafelnähe)&&(this.TafelnäheUndHintenImRaum.length != 0)){
+      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Tafelnaehe)&&(this.TafelnaeheUndHintenImRaum.length != 0)){
         if(this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.TafelnäheUndHintenImRaum.shift();
+          var theRemovedElement = this.TafelnaeheUndHintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.TafelnäheUndHintenImRaum.length != 0 ){
-            var theRemovedElement = this.TafelnäheUndHintenImRaum.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.TafelnaeheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnaeheUndHintenImRaum.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.TafelnäheUndHintenImRaum.length != 0 ){
-            var theRemovedElement = this.TafelnäheUndHintenImRaum.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.TafelnaeheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.TafelnaeheUndHintenImRaum.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
       }
-      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Fensternähe)&&(this.FensternäheUndVorneImRaum.length != 0)){
+      else if ((this.statusOfTables[x].VorneImRaum && this.statusOfTables[x].Fensternaehe)&&(this.FensternaeheUndVorneImRaum.length != 0)){
         if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.FensternäheUndVorneImRaum.shift();
+          var theRemovedElement = this.FensternaeheUndVorneImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.FensternäheUndVorneImRaum.length != 0 ){
-            var theRemovedElement = this.FensternäheUndVorneImRaum.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.FensternaeheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.FensternaeheUndVorneImRaum.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.FensternäheUndVorneImRaum.length != 0 ){
-            var theRemovedElement = this.FensternäheUndVorneImRaum.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.FensternaeheUndVorneImRaum.length != 0 ){
+            var theRemovedElement = this.FensternaeheUndVorneImRaum.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
       }
-      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Fensternähe)&&(this.FensternäheUndHintenImRaum.length != 0)){
+      else if ((this.statusOfTables[x].HintenImRaum && this.statusOfTables[x].Fensternaehe)&&(this.FensternaeheUndHintenImRaum.length != 0)){
         if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.FensternäheUndHintenImRaum.shift();
+          var theRemovedElement = this.FensternaeheUndHintenImRaum.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.FensternäheUndHintenImRaum.length != 0 ){
-            var theRemovedElement = this.FensternäheUndHintenImRaum.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.FensternaeheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.FensternaeheUndHintenImRaum.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.FensternäheUndHintenImRaum.length != 0 ){
-            var theRemovedElement = this.FensternäheUndHintenImRaum.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.FensternaeheUndHintenImRaum.length != 0 ){
+            var theRemovedElement = this.FensternaeheUndHintenImRaum.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
       }
-      else if ((this.statusOfTables[x].Türnähe)&&(this.Türnähe.length != 0)){
+      else if ((this.statusOfTables[x].Tuernaehe)&&(this.Tuernaehe.length != 0)){
         if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.Türnähe.shift();
+          var theRemovedElement = this.Tuernaehe.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.Türnähe.length != 0 ){
-            var theRemovedElement = this.Türnähe.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.Tuernaehe.length != 0 ){
+            var theRemovedElement = this.Tuernaehe.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.Türnähe.length != 0 ){
-            var theRemovedElement = this.Türnähe.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.Tuernaehe.length != 0 ){
+            var theRemovedElement = this.Tuernaehe.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
       }
-      else if ((this.statusOfTables[x].Tafelnähe)&&(this.Tafelnähe.length != 0)){
+      else if ((this.statusOfTables[x].Tafelnaehe)&&(this.Tafelnaehe.length != 0)){
         if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.Tafelnähe.shift();
+          var theRemovedElement = this.Tafelnaehe.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.Tafelnähe.length != 0 ){
-            var theRemovedElement = this.Tafelnähe.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.Tafelnaehe.length != 0 ){
+            var theRemovedElement = this.Tafelnaehe.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.Tafelnähe.length != 0 ){
-            var theRemovedElement = this.Tafelnähe.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.Tafelnaehe.length != 0 ){
+            var theRemovedElement = this.Tafelnaehe.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
       }
-      else if ((this.statusOfTables[x].Fensternähe)&&(this.Fensternähe.length != 0)){
+      else if ((this.statusOfTables[x].Fensternaehe)&&(this.Fensternaehe.length != 0)){
         if( this.listOfTables[x].firstname1 == "Vorname" && this.listOfTables[x].place == 1){
-          var theRemovedElement = this.Fensternähe.shift();
+          var theRemovedElement = this.Fensternaehe.shift();
           this.listOfTables[x].firstname1 = theRemovedElement;
         }
         else if (this.listOfTables[x].place == 2 ){
-          if (this.listOfTables[x].firstname1 == "Vorname" && this.Fensternähe.length != 0 ){
-            var theRemovedElement = this.Fensternähe.shift();
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.Fensternaehe.length != 0 ){
+            var theRemovedElement = this.Fensternaehe.shift();
             this.listOfTables[x].firstname1 = theRemovedElement;
           }
-          if (this.listOfTables[x].lastname1 == "Nachname" && this.Fensternähe.length != 0 ){
-            var theRemovedElement = this.Fensternähe.shift();
+          if (this.listOfTables[x].lastname1 == "Nachname" && this.Fensternaehe.length != 0 ){
+            var theRemovedElement = this.Fensternaehe.shift();
             this.listOfTables[x].lastname1 = theRemovedElement;
           }
         }
@@ -1333,27 +1373,56 @@ setXAndYAfterRotation(indexOfElement: number){
       }
     }
 
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Türnähe);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Fensternähe);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Tuernaehe);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Fensternaehe);
     Array.prototype.push.apply(this.PepoelWithoutProperties, this.Frontal);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Tafelnähe);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.Tafelnaehe);
     Array.prototype.push.apply(this.PepoelWithoutProperties, this.VorneImRaum);
     Array.prototype.push.apply(this.PepoelWithoutProperties, this.HintenImRaum);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TürnäheUndHintenImRaum);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TürnäheUndVorneImRaum);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.FensternäheUndHintenImRaum);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.FensternäheUndVorneImRaum);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TafelnäheUndHintenImRaum);
-    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TafelnäheUndVorneImRaum);
-    console.log(this.PepoelWithoutProperties);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TuernaeheUndHintenImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TuernaeheUndVorneImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.FensternaeheUndHintenImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.FensternaeheUndVorneImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TafelnaeheUndHintenImRaum);
+    Array.prototype.push.apply(this.PepoelWithoutProperties, this.TafelnaeheUndVorneImRaum);
     this.shuffle(this.PepoelWithoutProperties);
     for (var x=0; x<this.statusOfTables.length; x++){
         if (this.listOfTables[x].place == 1) {
-          if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].firstname1 == "Vorname") {
-            var theRemovedElement = this.PepoelWithoutProperties.shift();
-            this.listOfTables[x].firstname1 = theRemovedElement;
+          if (this.listOfTables[x].firstname1 == "Vorname" && this.PepoelWithoutProperties.length != 0) {
+              var theRemovedElement = this.PepoelWithoutProperties.shift();
+            this.setPersonNameToNighbore(x,theRemovedElement);
+            if (this.statusOfTables[x].AusnahmenVonNachbern.length != 0 ){
+              for (var k=0; k<this.statusOfTables[x].AusnahmenVonNachbern.length; k++){
+                if (this.statusOfTables[x].AusnahmenVonNachbern[k] == theRemovedElement){
+                for(var d=this.statusOfTables.length-1; d>=0; d--){
+                  if (this.listOfTables[d].firstname1 == "Vorname" && theRemovedElement != null ) {
+                    this.listOfTables[d].firstname1 = theRemovedElement;
+                    theRemovedElement=null;
+                  }
+
+                }
+                }
+                else {
+                  this.PepoelWithoutProperties.push(theRemovedElement);
+                }
+              }
+            }
+            else {
+              this.listOfTables[x].firstname1 = theRemovedElement;
+            }
           }
+          if (x == this.statusOfTables.length-1){
+            for(var x1=0; x1<this.statusOfTables.length; x1++){
+              if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x1].firstname1 == "Vorname") {
+                var theRemovedElement = this.PepoelWithoutProperties.shift();
+                this.listOfTables[x1].firstname1 = theRemovedElement;
+              }
+            }
+          }
+
         }
+
+
         else if (this.listOfTables[x].place == 2){
           if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].firstname1 == "Vorname") {
             var theRemovedElement = this.PepoelWithoutProperties.shift();
@@ -1361,30 +1430,65 @@ setXAndYAfterRotation(indexOfElement: number){
           }
           if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x].lastname1 == "Nachname") {
             var theRemovedElement = this.PepoelWithoutProperties.shift();
-            this.listOfTables[x].lastname1 = theRemovedElement;
-          }
+            this.nighbore = this.listOfContacts.filter(p => p.Vorname + " " + p.Nachname == theRemovedElement);
+            for (var l = 0; l < this.nighbore[0]["AusnahmenVonNachbern"].length; l++) {
+              var theFirstNameOfTable = this.listOfTables[x].firstname1
+              if (this.nighbore[0]["AusnahmenVonNachbern"][l] != theFirstNameOfTable) {
+                this.listOfTables[x].lastname1 = theRemovedElement;
+              }
+              else if (this.nighbore[0]["AusnahmenVonNachbern"][l] == theFirstNameOfTable) {
+                for (var d = this.statusOfTables.length - 1; d >= 0; d--) {
+                  if (this.listOfTables[d].firstname1 == "Vorname" && theRemovedElement != null) {
+                    this.listOfTables[d].firstname1 = theRemovedElement;
+                  }
+                  else {
+                    this.PepoelWithoutProperties.push(theRemovedElement);
+                  }
 
+
+                }
+              }
+              else {
+                this.PepoelWithoutProperties.push(theRemovedElement);
+              }
+
+            }
+            if (x == this.statusOfTables.length - 1) {
+            for (var x2 = 0; x2 < this.statusOfTables.length*2; x2++) {
+              if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x2].lastname1 == "Nachname") {
+                var theRemovedElement = this.PepoelWithoutProperties.shift();
+                this.listOfTables[x2].lastname1 = theRemovedElement;
+                if (this.PepoelWithoutProperties.length != 0 && this.listOfTables[x2].firstname1 == "Vorname") {
+                  var theRemovedElement = this.PepoelWithoutProperties.shift();
+                  this.listOfTables[x2].firstname1 = theRemovedElement;
+                }
+              }
+            }
+          }
+          }
         }
       }
      }
+
+
   newGenerator(){
     // @ts-ignore
     this.listOfContacts= JSON.parse(sessionStorage.getItem("person"));
     // @ts-ignore
     this.listOfTables= JSON.parse(sessionStorage.getItem("room"));
     this.statusOfTables= [];
-    this.Türnähe = [];
-    this.Fensternähe = [];
+    this.Tuernaehe = [];
+    this.Fensternaehe = [];
     this.Frontal = [];
-    this.Tafelnähe= [];
+    this.Tafelnaehe= [];
     this.VorneImRaum= [];
     this.HintenImRaum= [];
-    this.TürnäheUndHintenImRaum= [];
-    this.TürnäheUndVorneImRaum = [];
-    this.FensternäheUndHintenImRaum= [];
-    this.FensternäheUndVorneImRaum= [];
-    this.TafelnäheUndHintenImRaum = [];
-    this.TafelnäheUndVorneImRaum = [];
+    this.TuernaeheUndHintenImRaum= [];
+    this.TuernaeheUndVorneImRaum = [];
+    this.FensternaeheUndHintenImRaum= [];
+    this.FensternaeheUndVorneImRaum= [];
+    this.TafelnaeheUndHintenImRaum = [];
+    this.TafelnaeheUndVorneImRaum = [];
     this.PepoelWithoutProperties = [];
     this.CalculateRoomArea();
     this.drawRoom();
@@ -1394,7 +1498,6 @@ setXAndYAfterRotation(indexOfElement: number){
       let loader: any = document.getElementById('loader');
       loader.style.visibility = 'hidden';
       this.showLoader = false;},400);
-
   }
 
   listePerson () {

@@ -56,7 +56,6 @@ export class GroupTableComponent {
       this.listOfContacts[id][property] = editField;
       sessionStorage.setItem("person", JSON.stringify(this.listOfContacts));
 
-    console.log(this.listOfContacts);
   }
 
   //// back to mainmenu  /////

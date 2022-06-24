@@ -142,7 +142,6 @@ export class MainmenuComponent implements OnInit {
         }
         else {
           this.router.navigate(['/sitting-places-generator']);
-          console.log(countOfTable);
         }
       }
       catch (Exception){

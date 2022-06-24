@@ -134,8 +134,6 @@ export class PersonPropertiesComponent implements OnInit {
   }
 
   saveProperties() {
-    //console.log(this.firstName)
-    //console.log(this.neighborList);
     /////select check boxes Elements from HTML/////
     const checkboxBesideDoor = document.getElementById('besideDoor',) as HTMLInputElement | null;
     const checkboxBesideWindow = document.getElementById('besideWindow',) as HTMLInputElement | null;
@@ -174,8 +172,6 @@ export class PersonPropertiesComponent implements OnInit {
             // @ts-ignore
             this.listOfContacts[index]['AusnahmenVonNachbern'][this.index-2]=this.listOfContacts[this.index - 1]['Vorname'] + " " + this.listOfContacts[this.index - 1]['Nachname'];
           }
-          // @ts-ignore
-          console.log(this.listOfContacts[this.index-1]['AusnahmenVonNachbern']);
         }
 
         //////// delete the Neighbors  /////////
@@ -204,8 +200,6 @@ export class PersonPropertiesComponent implements OnInit {
             delete this.listOfContacts[index]['AusnahmenVonNachbern'][this.index-2];
           }
           //this.listOfContacts[index]['AusnahmenVonNachbern'].splice(x,1);
-          // @ts-ignore
-          console.log(this.listOfContacts[this.index-1]['AusnahmenVonNachbern']);
         }}
       catch (error){
         console.log("there are nothing selected");
@@ -217,7 +211,6 @@ export class PersonPropertiesComponent implements OnInit {
     if (checkboxBesideDoor?.checked) {
       // @ts-ignore
       this.listOfContacts[this.index-1]['Tuernaehe'] = true;
-      console.log(this.listOfContacts);
     }
     else {
 
@@ -227,7 +220,6 @@ export class PersonPropertiesComponent implements OnInit {
     if (checkboxBesideWindow?.checked) {
       // @ts-ignore
       this.listOfContacts[this.index-1]['Fensternaehe'] = true;
-      console.log(this.listOfContacts);
     }
     else {
       // @ts-ignore
@@ -236,7 +228,6 @@ export class PersonPropertiesComponent implements OnInit {
     if (checkboxBesideBoard?.checked) {
       // @ts-ignore
       this.listOfContacts[this.index-1]['Tafelnaehe'] = true;
-      console.log(this.listOfContacts);
     }
     else {
       // @ts-ignore
@@ -245,7 +236,6 @@ export class PersonPropertiesComponent implements OnInit {
     if (checkboxInFront?.checked) {
       // @ts-ignore
       this.listOfContacts[this.index-1]['Frontal'] = true;
-      console.log(this.listOfContacts);
     }
     else {
       // @ts-ignore
@@ -254,7 +244,6 @@ export class PersonPropertiesComponent implements OnInit {
     if (checkboxfrontOfTheRoom?.checked) {
       // @ts-ignore
       this.listOfContacts[this.index-1]['VorneImRaum'] = true;
-      console.log(this.listOfContacts);
     }
     else {
       // @ts-ignore
@@ -263,7 +252,6 @@ export class PersonPropertiesComponent implements OnInit {
     if (checkboxbackOfTheRoom?.checked) {
       // @ts-ignore
       this.listOfContacts[this.index-1]['HintenImRaum'] = true;
-      console.log(this.listOfContacts);
     }
     else {
       // @ts-ignore
@@ -273,7 +261,6 @@ export class PersonPropertiesComponent implements OnInit {
 
 
     sessionStorage.setItem("person", JSON.stringify(this.listOfContacts));
-    console.log(this.listOfContacts);
 
   }
 }
