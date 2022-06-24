@@ -8,6 +8,8 @@
   display: flex;
   flex-direction: row;
   font-family: 'Segoe UI';
+  font-size: 20px;
+
 }
 
 #container-visualiser {
@@ -19,9 +21,10 @@
 
 #generator-table {
   position: relative;
-  width: 30%;
+  width: 35%;
   height: 100%;
   padding:1%;
+  font-family: 'Segoe UI';
 }
 
 #roomvisualiserHeader {
@@ -56,6 +59,11 @@
   color: #777;
 }
 
+.table {
+  table-layout: fixed;
+  font-family: 'Segoe UI'
+}
+
 #roomvisualiser {
 margin-left: 17.5%;
 }
@@ -75,6 +83,9 @@ margin-left: 17.5%;
   position: absolute;
   z-index: 100;
   margin: auto;
+}
+.pointer {
+  cursor: pointer;
 }
 
 @keyframes loader-animation {

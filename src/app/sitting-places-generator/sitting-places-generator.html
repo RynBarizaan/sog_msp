@@ -1,7 +1,50 @@
 <div id="container">
 
   <div id="generator-table">
-      <h2>Liste der Personen</h2>
+
+    <div class="container">
+      <h2 class="text-center">Liste der Personen</h2>
+      <table class="table table-hover ">
+        <thead  class="table-dark text-center">
+        <tr>
+          <th>Nr</th>
+          <th>Name</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let group of listePersonen; let i=index;" class="text-center " >
+        <tr *ngIf="group.lastname1.length != 0 "  (click)="toggleDisplay(i)" class="pointer">
+          <td>
+            {{group.id}}
+          </td>
+          <td >
+            <ng-container *ngIf="group.firstname1">Person 1:{{group.firstname1}}</ng-container><br>
+            <ng-container *ngIf="group.lastname1 !='Nachname'">Person 2:{{group.lastname1}}</ng-container>
+          </td>
+        </tr>
+        <tr *ngIf="group.Tuernaehe != false ||
+                     group.Fensternaehe != false ||
+                     group.Frontal != false ||
+                     group.Tafelnaehe != false ||
+                     group.VorneImRaum != false ||
+                     group.HintenImRaum != false " class="table-info"  >
+          <td *ngIf="show[i]"><b>Eigenschaften:</b></td>
+          <td *ngIf="show[i]">
+            <ng-container *ngIf="group.Tuernaehe != false">Türnähe</ng-container><br>
+            <ng-container *ngIf="group.Fensternaehe != false">Fensternähe</ng-container><br>
+            <ng-container *ngIf="group.Frontal != false">Frontal</ng-container><br>
+            <ng-container *ngIf="group.Tafelnaehe != false">Tafelnähe</ng-container><br>
+            <ng-container *ngIf="group.VorneImRaum != false">Vorne im Raum</ng-container><br>
+            <ng-container *ngIf="group.HintenImRaum != false">Hinten im Raum</ng-container><br>
+
+          </td>
+        </tr>
+        <tr *ngIf="group.AusnahmenVonNachbern.length != 0 && group.AusnahmenVonNachbern != ',' && show[i]" class="table-danger" >
+         <td>Darf nicht neben:</td>
+          <td>{{group.AusnahmenVonNachbern}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div id="container-visualiser">

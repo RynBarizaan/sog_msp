@@ -61,13 +61,13 @@ export class GroupTableConfirmedComponent implements OnInit {
     this.setNeighborList(firstName, lastName);
     ////// call Properties Status /////
     var element = <HTMLInputElement> document.getElementById("besideDoor");
-    element.checked =this.listOfContacts[index-1]['Türnähe'];
+    element.checked =this.listOfContacts[index-1]['Tuernaehe'];
     element.disabled =false;
     var element1 = <HTMLInputElement> document.getElementById("besideWindow");
-    element1.checked =this.listOfContacts[index-1]['Fensternähe'];
+    element1.checked =this.listOfContacts[index-1]['Fensternaehe'];
     element1.disabled =false;
     var element2 = <HTMLInputElement> document.getElementById("besideBoard");
-    element2.checked =this.listOfContacts[index-1]['Tafelnähe'];
+    element2.checked =this.listOfContacts[index-1]['Tafelnaehe'];
     element2.disabled =false;
     var element3 = <HTMLInputElement> document.getElementById("inFront");
     element3.checked =this.listOfContacts[index-1]['Frontal'];
@@ -81,19 +81,19 @@ export class GroupTableConfirmedComponent implements OnInit {
     /////////////////
 
     //////// set Rule of beside the Door ////
-    if (this.listOfContacts[index-1]['Türnähe']){
+    if (this.listOfContacts[index-1]['Tuernaehe']){
       element3.disabled=true;
       element1.disabled=true;
       element2.disabled =true;
     }
     //////// set Rule of beside the Window ////
-    if (this.listOfContacts[index-1]['Fensternähe']){
+    if (this.listOfContacts[index-1]['Fensternaehe']){
       element3.disabled=true;
       element.disabled=true;
       element2.disabled=true;
     }
     //////// set Rule of beside the Board ////
-    if (this.listOfContacts[index-1]['Tafelnähe']){
+    if (this.listOfContacts[index-1]['Tafelnaehe']){
       element3.disabled=true;
       element.disabled=true;
       element1.disabled=true;

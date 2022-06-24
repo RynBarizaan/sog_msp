@@ -14,7 +14,11 @@ export class SittingPlacesGenerator implements OnInit {
   listOfContacts: Array<any> = JSON.parse(sessionStorage.getItem("person"));
   // @ts-ignore
   listOfTables: Array<any> = JSON.parse(sessionStorage.getItem("room"));
+  // @ts-ignore
+  listePersonen: Array<any> = [];
   statusOfTables: Array<any> = [];
+  edited : boolean = false;
+  currentId?: number;
   Türnähe: Array<any> = [];
   Fensternähe: Array<any> = [];
   Frontal: Array<any> = [];
@@ -776,6 +780,9 @@ export class SittingPlacesGenerator implements OnInit {
       }
       this.customizeTheGroupThroughProperties();
       this.setTypesOfTables();
+      this.listePerson();
+      console.log(this.listePersonen);
+      console.log(this.listOfContacts);
       console.log(this.listOfTables);
     }
     catch (Exception){
@@ -1126,6 +1133,9 @@ setXAndYAfterRotation(indexOfElement: number){
     this.setPesronToTable();
   }
 ///////// push the right Person(person with properties or not) in the right place(Table) ////////
+
+
+
   setPesronToTable(){
     for (var x=0; x<this.statusOfTables.length; x++){
       if ((this.statusOfTables[x].Frontal)&&(this.Frontal.length != 0 )){
@@ -1385,5 +1395,20 @@ setXAndYAfterRotation(indexOfElement: number){
       loader.style.visibility = 'hidden';
       this.showLoader = false;},400);
 
+  }
+
+
+
+  listePerson () {
+    let contacts = this.listOfContacts.map(subject => {
+      let tables = this.listOfTables.find(element => element.firstname1 === subject.Vorname + " "+ subject.Nachname)
+      return { ...subject, ...tables }
+    });
+    this.listePersonen = contacts;
+  }
+  show = new Array(this.listePersonen.length).fill(false);
+  toggleDisplay(index: string | number) {
+    // @ts-ignore
+    this.show[index] = !this.show[index];
   }
 }

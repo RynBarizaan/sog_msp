@@ -216,31 +216,31 @@ export class PersonPropertiesComponent implements OnInit {
     //////// set or remove the Properties  ////////
     if (checkboxBesideDoor?.checked) {
       // @ts-ignore
-      this.listOfContacts[this.index-1]['Türnähe'] = true;
+      this.listOfContacts[this.index-1]['Tuernaehe'] = true;
       console.log(this.listOfContacts);
     }
     else {
 
       // @ts-ignore
-      this.listOfContacts[this.index-1]['Türnähe'] = false;
+      this.listOfContacts[this.index-1]['Tuernaehe'] = false;
     }
     if (checkboxBesideWindow?.checked) {
       // @ts-ignore
-      this.listOfContacts[this.index-1]['Fensternähe'] = true;
+      this.listOfContacts[this.index-1]['Fensternaehe'] = true;
       console.log(this.listOfContacts);
     }
     else {
       // @ts-ignore
-      this.listOfContacts[this.index-1]['Fensternähe'] = false;
+      this.listOfContacts[this.index-1]['Fensternaehe'] = false;
     }
     if (checkboxBesideBoard?.checked) {
       // @ts-ignore
-      this.listOfContacts[this.index-1]['Tafelnähe'] = true;
+      this.listOfContacts[this.index-1]['Tafelnaehe'] = true;
       console.log(this.listOfContacts);
     }
     else {
       // @ts-ignore
-      this.listOfContacts[this.index-1]['Tafelnähe'] = false;
+      this.listOfContacts[this.index-1]['Tafelnaehe'] = false;
     }
     if (checkboxInFront?.checked) {
       // @ts-ignore
