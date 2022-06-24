@@ -25,7 +25,7 @@
         <br>
 
         <span class="material-icons md-48">file_open</span>
-        <br><input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)" accept=".csv"  class="form-control form-control-lg btn-file" style="width: 80%; left:22px; top: 1vh;"/>
+        <br><input type="file" #csvReader name="Upload CSV" id="txtFileUpload" (change)="uploadListener($event)"  [disabled]="(myInput.value.length === 0)"  accept=".csv"  class="form-control form-control-lg btn-file" style="width: 80%; left:22px; top: 1vh;"/>
         <br><small id="FileTypHelp" class="form-text text-danger" style="top: -2vh; margin-left: 70px;">{{messageIfNoFile}}</small> <br>
         <small id="WrongFile" class="form-text text-danger" style="margin-left: 70px">{{messageIfWrongPass}}</small> <br>
 
