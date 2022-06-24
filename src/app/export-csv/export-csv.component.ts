@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import {encrypt} from "../model/encrypt";
 import {GroupTableConfirmedComponent} from "../group-table-confirmed/group-table-confirmed.component";
+import { saveAs } from 'file-saver';
 
 declare var window: any;
 
@@ -45,6 +46,9 @@ export class ExportCSVComponent {
   confirmFormControl = new FormControl('', [
     Validators.required,
   ]);
+  confirmFormControl1 = new FormControl('', [
+    Validators.required,
+  ]);
   onStrengthChanged(strength: any): boolean {
     if (strength === 100 && this.password === this.confirmPassword && this.password !="") {
       return this.inputType = true;
@@ -56,15 +60,25 @@ export class ExportCSVComponent {
 
   @ViewChild('myInput') myInput!: ElementRef;
   @ViewChild('myInput2') myInput2!: ElementRef;
+  @ViewChild('myInput1') myInput1!: ElementRef;
 
 
   //Export Data as Encrypt/CSV
+  inputValue!: string;
+  messageFilenameEmpty!: string;
+  onKey(event: any ) {
+    this.inputValue = event.target.value;
+  }
 
   ExportGroupCSV() {
+
     // @ts-ignore
     this.listOfContacts= JSON.parse(sessionStorage.getItem("person"));
+
     this.myInput2.nativeElement.focus();
+    this.myInput1.nativeElement.focus();
     this.myInput.nativeElement.focus();
+    console.log(this.inputValue)
     var arr = [];
     arr =[];
     this.Encrypt =[];
@@ -83,7 +97,7 @@ export class ExportCSVComponent {
       };
     if (this.inputType){
       console.log(arr)
-      new ngxCsv(this.Encrypt, "Liste der Personen", options);
+      new ngxCsv(this.Encrypt, this.inputValue, options);
       this.closeModal();
       }
     }

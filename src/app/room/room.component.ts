@@ -1,4 +1,4 @@
-import {Component, OnInit, SimpleChanges} from '@angular/core';
+import {Component, ElementRef, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import Konva from 'konva';
 import { jsPDF } from "jspdf"
 import html2canvas from "html2canvas";
@@ -33,6 +33,7 @@ import {Router} from "@angular/router";
 import {toNumbers} from "@angular/compiler-cli/src/diagnostics/typescript_version";
 import {encrypt} from "../model/encrypt";
 import * as CryptoJS from "crypto-js";
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-room',
@@ -123,6 +124,8 @@ export class RoomComponent implements OnInit {
   isToAddBoard: boolean = false;
   isToSaveRoom: boolean = false;
   isRoomEmpty: boolean = false;
+  isRoomNameEmpty: boolean = false;
+
 
   isToCustomizeRoomUnterricht: boolean = false;
   isToCustomizeRoomKonferrenz: boolean = false;
@@ -1953,6 +1956,27 @@ export class RoomComponent implements OnInit {
   }
 
   // Export csv file
+  confirmFormControl1 = new FormControl('', [
+    Validators.required,
+  ]);
+
+  @ViewChild('myInput1') myInput1!: ElementRef;
+
+  //Export Data as Encrypt/CSV
+  inputValue!: string;
+  onKey(event: any ) {
+    this.inputValue = event.target.value;
+  }
+
+  modalBox(){
+    //Error message for if room is empty
+    if (this.roomElements.length == 0 || this.roomElements ==[]) {
+      this.isRoomEmpty = true;
+    }
+    else {
+      this.isRoomNameEmpty = true;
+    }
+  }
 
   Encrypt: Array<any> = [];
   password = "123";
@@ -1962,6 +1986,7 @@ export class RoomComponent implements OnInit {
     let arr =[];
     this.Encrypt =[];
     this.makeRoomDetailsReady();
+    this.myInput1.nativeElement.focus();
 
 
     for(let element of this.roomElements) {
@@ -1972,27 +1997,23 @@ export class RoomComponent implements OnInit {
       "height":  this.standardRooms[this.currentRoomId].height,
     }
     var options = {
+
       fieldSeparator: ',',
       quoteStrings: '',
       decimalseparator: '.',
       showLabels: true,
       showTitle: false,
       useBom: false,
-        headers: ["RoomInfos"]
+      headers: ["RoomInfos"]
     };
-    //Error message for if room is empty
-    if (this.roomElements.length == 0 || this.roomElements ==[]){
-      this.isRoomEmpty = true;
-    }
-    else {
 
       this.roomElements.unshift(roomStage);
       for (let i = 0; i < this.roomElements.length; i++) {
         arr.push(JSON.stringify(this.roomElements[i]));
         this.Encrypt.push(new encrypt(CryptoJS.AES.encrypt(arr[i].toString(), this.password.trim()).toString()));
       }
-      new ngxCsv(this.Encrypt, "room", options);
-    }
+      new ngxCsv(this.Encrypt, this.inputValue, options);
+
     }
 
     hideAllPopups() {
@@ -2001,6 +2022,7 @@ export class RoomComponent implements OnInit {
         loader.style.visibility = 'hidden';
         this.showLoader = false;
         this.isRoomEmpty = false;
+        this.isRoomNameEmpty = false;
         this.isToDelete = false;
         this.isToAddDesk = false;
         this.isToAddDoor = false;

@@ -9,10 +9,25 @@
       </button>
     </div>
       <div class="modal-body">
+       <!-- <small id="FileTypHelp1" class="form-text text-secondary" style="margin-left: 10px">Gruppe Name*</small>
+        <input id="nameOfGroup" class="form-control form-control-lg" type="text" placeholder="Gruppe Name" (keyup)="onKey($event)">
+        <small id="FileTypHelp2" class="form-text text-danger" style="margin-left: 10px">{{messageFilenameEmpty}}</small>-->
         <div>
+          <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
+            <mat-label>Gruppe Name</mat-label>
+            <input #myInput1
+                   matInput  placeholder="Name des gruppe eingeben"
+                   [formControl]="confirmFormControl1"
+                   required
+                   (keyup)="onKey($event)"/>
+            <mat-error *ngIf="confirmFormControl1.hasError('required')">
+              Bitte name ihre gruppe eingeben
+            </mat-error>
+
+          </mat-form-field>
+
           <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color" >
             <mat-label>Passwort</mat-label>
-
             <input #myInput matInput
                    #passwordWithValidation
                    placeholder="Neue passwort eingeben"
@@ -27,13 +42,11 @@
               {{passwordWithValidation.value.length}} / 25
             </mat-hint>
             <mat-error
-              *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')"
-            >
+              *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')">
               Bitte neue password eingeben
             </mat-error>
             <mat-error
-              *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('pattern')"
-            >
+              *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('pattern')">
               Passwort ist ungültig
             </mat-error>
           </mat-form-field>
@@ -41,8 +54,7 @@
           <mat-password-strength
             #passwordComponentWithValidation
             (onStrengthChanged)="onStrengthChanged($event)"
-            [password]="passwordWithValidation.value"
-          >
+            [password]="passwordWithValidation.value">
           </mat-password-strength>
           <!--Password's strength info-->
           <mat-password-strength-info
@@ -52,8 +64,6 @@
             [specialCharsCriteriaMsg]="'Enthält mindestens ein Sonderzeichen' "
             [minCharsCriteriaMsg]="'Enthält mindestens 8 Zeichen' "
             [passwordComponent]="passwordComponentWithValidation">
-
-          >
           </mat-password-strength-info>
           <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
             <mat-label>Passwort bestätigen</mat-label>
