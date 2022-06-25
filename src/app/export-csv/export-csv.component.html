@@ -14,14 +14,14 @@
         <small id="FileTypHelp2" class="form-text text-danger" style="margin-left: 10px">{{messageFilenameEmpty}}</small>-->
         <div>
           <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
-            <mat-label>Gruppen Name</mat-label>
+            <mat-label>Gruppenname</mat-label>
             <input #myInput1
                    matInput  placeholder="Gruppenname"
                    [formControl]="confirmFormControl1"
                    required
                    (keyup)="onKey($event)"/>
             <mat-error *ngIf="confirmFormControl1.hasError('required')">
-              Bitte name ihrer Gruppe eingeben
+              Bitte Namen der Gruppe eingeben
             </mat-error>
 
           </mat-form-field>
@@ -43,7 +43,7 @@
             </mat-hint>
             <mat-error
               *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')">
-              Bitte neues Passwort eingeben
+              Bitte Passwort eingeben
             </mat-error>
             <mat-error
               *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('pattern')">
@@ -66,9 +66,9 @@
             [passwordComponent]="passwordComponentWithValidation">
           </mat-password-strength-info>
           <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
-            <mat-label>Passwort bestätigen</mat-label>
+            <mat-label>Passwort wiederholen</mat-label>
             <input #myInput2
-              matInput  placeholder="Passwort bestätigen" [type]="hide ?
+              matInput  placeholder="Passwort wiederholen" [type]="hide ?
               'password' : 'text'"
               [formControl]="confirmFormControl"
                    required
@@ -80,7 +80,7 @@
               Bitte Passwort wiederholen
             </mat-error>
             <mat-error *ngIf="confirmFormControl.hasError('pattern')">
-              Passwort & Passwort Wiederholung stimmen nicht überein            </mat-error>
+              Passwörter stimmen nicht überein            </mat-error>
           </mat-form-field>
 
         </div>
