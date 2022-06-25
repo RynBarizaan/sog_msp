@@ -16,7 +16,7 @@
           <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
             <mat-label>Gruppen Name</mat-label>
             <input #myInput1
-                   matInput  placeholder="Name der Gruppe eingeben"
+                   matInput  placeholder="Gruppenname"
                    [formControl]="confirmFormControl1"
                    required
                    (keyup)="onKey($event)"/>
@@ -30,7 +30,7 @@
             <mat-label>Passwort</mat-label>
             <input #myInput matInput
                    #passwordWithValidation
-                   placeholder="Neues Passwort eingeben"
+                   placeholder="Passwort"
                    [type]="hide ? 'password': 'text'"
                    required
                    [formControl]="passwordComponentWithValidation.passwordFormControl"
@@ -58,11 +58,11 @@
           </mat-password-strength>
           <!--Password's strength info-->
           <mat-password-strength-info
-            [lowerCaseCriteriaMsg]="'Enthält mindestens ein unteres Zeichen '"
-            [upperCaseCriteriaMsg]="'Enthält mindestens ein oberes Zeichen '"
-            [digitsCriteriaMsg]="'Enthält mindestens eine Ziffer '"
-            [specialCharsCriteriaMsg]="'Enthält mindestens ein Sonderzeichen' "
-            [minCharsCriteriaMsg]="'Enthält mindestens 8 Zeichen' "
+            [lowerCaseCriteriaMsg]="'Muss mindestens einen Kleinbuchstaben enthalten'"
+            [upperCaseCriteriaMsg]="'Muss mindestens einen Großbuchstaben enthalten'"
+            [digitsCriteriaMsg]="'Muss mindestens eine Zahl enthalten'"
+            [specialCharsCriteriaMsg]="'Muss mindestens ein Sonderzeichen enthalten' "
+            [minCharsCriteriaMsg]="'Mindestlänge von 8 Zeichen' "
             [passwordComponent]="passwordComponentWithValidation">
           </mat-password-strength-info>
           <mat-form-field appearance="outline" style="width: 100%" [color]="passwordComponentWithValidation.color">
@@ -77,17 +77,17 @@
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' :
               'visibility'}}</mat-icon>
             <mat-error *ngIf="confirmFormControl.hasError('required')">
-              Bitte erneut das Passwort eingeben
+              Bitte Passwort wiederholen
             </mat-error>
             <mat-error *ngIf="confirmFormControl.hasError('pattern')">
-              Passwort & Passwort bestätigen stimmen nicht überein            </mat-error>
+              Passwort & Passwort Wiederholung stimmen nicht überein            </mat-error>
           </mat-form-field>
 
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Schlißen</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Schließen</button>
         <button type="button" class="btn btn-outline-dark" (click)="ExportGroupCSV()">Speichern und als CSV herunterladen</button>
       </div>
     </div>
